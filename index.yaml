@@ -3,9 +3,9 @@ entries:
   backup-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-01-06T02:24:34.927196232Z"
+    created: "2021-01-14T05:45:28.257322159Z"
     description: A Backup Operator Helm chart for Kubernetes
-    digest: 4e689d31ecc4e52d4a896501abeb6beec4e009439edfbd68dbdc68b339130083
+    digest: 73910f0b6b6653453f8aa4dcb436316c5b1eccd04d981404e07943a0c7e97798
     name: backup-operator
     type: application
     urls:
@@ -14,16 +14,16 @@ entries:
   mysql-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-01-06T02:24:34.928498651Z"
+    created: "2021-01-14T05:45:28.258684065Z"
     dependencies:
     - name: backup-operator
       repository: file://../backup-operator
       version: 0.1.0
     description: A MySQL Database Operator Helm chart for Kubernetes
-    digest: 59de87c61b3b1bca65d3b3b724d28278c63e37fea530408f267132ab5266edd5
+    digest: 030d6e2e54b3514b5fa6aff4b77964fd0a98e36cf3490a339cf7f65f3eb68d3f
     name: mysql-operator
     type: application
     urls:
     - https://squids-io.github.io/charts/mysql-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2021-01-06T02:24:34.92641432Z"
+generated: "2021-01-14T05:45:28.256503676Z"
