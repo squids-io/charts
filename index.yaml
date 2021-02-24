@@ -3,31 +3,64 @@ entries:
   backup-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.699293279Z"
+    created: "2021-02-24T11:15:46.269849052Z"
     description: A Backup Operator Helm chart for Kubernetes
-    digest: 942497ad1e7f9d50b44293c7bac62821af25f724287cbe5a1b665e833e636680
+    digest: db474cc4212181eaea51e2f6e22fa220481d7203e1906d6218dba006cc0d7164
     name: backup-operator
     type: application
     urls:
     - https://squids-io.github.io/charts/backup-operator-0.1.0.tgz
     version: 0.1.0
+  elasticsearch:
+  - apiVersion: v2
+    appVersion: 6.8.7
+    created: "2021-02-24T11:15:46.270446561Z"
+    description: A Helm chart for Kubernetes
+    digest: 6071e246e168390d29fb000f18bd631f85c865439b0e9e85d01ec5ed5700b24b
+    name: elasticsearch
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/elasticsearch-0.1.0.tgz
+    version: 0.1.0
+  fluentbit:
+  - apiVersion: v2
+    appVersion: 1.4.5
+    created: "2021-02-24T11:15:46.271066671Z"
+    description: A Helm chart for Kubernetes
+    digest: c6b831013c20377330c9cb77ee802c750ce514726ae29ee936eaed62a8d367d9
+    name: fluentbit
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/fluentbit-0.1.0.tgz
+    version: 0.1.0
   grafana:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.702022269Z"
+    created: "2021-02-24T11:15:46.272977001Z"
     description: grafana chart
-    digest: 929e2283450c9b6cb208940cb7c4e15b6cc89db4afc7519d6334a94a0122c946
+    digest: d03bfb95716ff41ec8de945b7f3c1400cd1a8ee8b2fe202873f28086e3432743
     name: grafana
     type: application
     urls:
     - https://squids-io.github.io/charts/grafana-0.1.0.tgz
     version: 0.1.0
+  kibana:
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2021-02-24T11:15:46.273383808Z"
+    description: A Helm chart for Kubernetes
+    digest: 58d13970589ef282007c56adba9a82a235dffa344e150aec8d32d8c9c269baa9
+    name: kibana
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/kibana-0.1.0.tgz
+    version: 0.1.0
   monitor:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.702911665Z"
+    created: "2021-02-24T11:15:46.274313622Z"
     description: A high avaliable monitoring architecture
-    digest: 8a547226ff746d6cade8985cd14e0446677b56b26e69fd5b052a9b3f9b3c41d2
+    digest: e9deee89c09e1d583163a20be99cc4509a80c1aaa9f67c60e10a8c8c3f52962c
     name: monitor
     type: application
     urls:
@@ -36,9 +69,9 @@ entries:
   mysql-exporter:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.703241364Z"
+    created: "2021-02-24T11:15:46.274653028Z"
     description: mysql exporter
-    digest: c2233d97ffa971db7ec9ae494238baef4aee36628ed40846aca23c2f349449de
+    digest: 679ef4395fadf2de1bb9f765868bc49b8a35b17eef6f4f91e66904d1fe2c315b
     name: mysql-exporter
     type: application
     urls:
@@ -47,13 +80,13 @@ entries:
   mysql-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.704695158Z"
+    created: "2021-02-24T11:15:46.278060782Z"
     dependencies:
     - name: backup-operator
       repository: file://../backup-operator
       version: 0.1.0
     description: A MySQL Database Operator Helm chart for Kubernetes
-    digest: 0b03cfa5ef658d93b4ecd32210d75cb075831b888447a0ece750551cc06a95ff
+    digest: 75317a4615fa73c7c3a1b4074a4d919482575a6f04d526a81e22e89b5d2eb670
     name: mysql-operator
     type: application
     urls:
@@ -62,9 +95,9 @@ entries:
   node-exporter:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.704952857Z"
+    created: "2021-02-24T11:15:46.278414487Z"
     description: node exporter
-    digest: ae0a4f9ec0eff8425badd0b7a72a496d6ea6e2d45086937d4ff4e40710919e18
+    digest: 390c52eaf28a1d402d64c8c4036d55043dcb8debdf3a4ceb96f0fea27490dc97
     name: node-exporter
     type: application
     urls:
@@ -73,12 +106,12 @@ entries:
   volume-exporter:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-02-24T07:19:47.705236656Z"
+    created: "2021-02-24T11:15:46.278683592Z"
     description: volume exporter
-    digest: f5a2fbd74603e06704df2da318f87844904176bf52269f4c5094aeef909c160e
+    digest: e21aa237811024b50f093135d1ec5e95cc6d780c58aa8d32d837524b861dd639
     name: volume-exporter
     type: application
     urls:
     - https://squids-io.github.io/charts/volume-exporter-0.1.0.tgz
     version: 0.1.0
-generated: "2021-02-24T07:19:47.698265183Z"
+generated: "2021-02-24T11:15:46.26908274Z"
