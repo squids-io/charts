@@ -3,27 +3,82 @@ entries:
   backup-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-01-21T09:39:50.351567907Z"
+    created: "2021-02-24T07:19:47.699293279Z"
     description: A Backup Operator Helm chart for Kubernetes
-    digest: e31bf7668bfdd7f8936b74727a7a565aaa575db770d3a2f80917eca4e242d19c
+    digest: 942497ad1e7f9d50b44293c7bac62821af25f724287cbe5a1b665e833e636680
     name: backup-operator
     type: application
     urls:
     - https://squids-io.github.io/charts/backup-operator-0.1.0.tgz
     version: 0.1.0
+  grafana:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-02-24T07:19:47.702022269Z"
+    description: grafana chart
+    digest: 929e2283450c9b6cb208940cb7c4e15b6cc89db4afc7519d6334a94a0122c946
+    name: grafana
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/grafana-0.1.0.tgz
+    version: 0.1.0
+  monitor:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-02-24T07:19:47.702911665Z"
+    description: A high avaliable monitoring architecture
+    digest: 8a547226ff746d6cade8985cd14e0446677b56b26e69fd5b052a9b3f9b3c41d2
+    name: monitor
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/monitor-0.1.0.tgz
+    version: 0.1.0
+  mysql-exporter:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-02-24T07:19:47.703241364Z"
+    description: mysql exporter
+    digest: c2233d97ffa971db7ec9ae494238baef4aee36628ed40846aca23c2f349449de
+    name: mysql-exporter
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/mysql-exporter-0.1.0.tgz
+    version: 0.1.0
   mysql-operator:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2021-01-21T09:39:50.352805287Z"
+    created: "2021-02-24T07:19:47.704695158Z"
     dependencies:
     - name: backup-operator
       repository: file://../backup-operator
       version: 0.1.0
     description: A MySQL Database Operator Helm chart for Kubernetes
-    digest: 87a1c440422caab42e6cbec62efa99856d5bcdf74718078dbf7feaf8b6a2d167
+    digest: 0b03cfa5ef658d93b4ecd32210d75cb075831b888447a0ece750551cc06a95ff
     name: mysql-operator
     type: application
     urls:
     - https://squids-io.github.io/charts/mysql-operator-0.1.0.tgz
     version: 0.1.0
-generated: "2021-01-21T09:39:50.345032486Z"
+  node-exporter:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-02-24T07:19:47.704952857Z"
+    description: node exporter
+    digest: ae0a4f9ec0eff8425badd0b7a72a496d6ea6e2d45086937d4ff4e40710919e18
+    name: node-exporter
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/node-exporter-0.1.0.tgz
+    version: 0.1.0
+  volume-exporter:
+  - apiVersion: v2
+    appVersion: 1.0.0
+    created: "2021-02-24T07:19:47.705236656Z"
+    description: volume exporter
+    digest: f5a2fbd74603e06704df2da318f87844904176bf52269f4c5094aeef909c160e
+    name: volume-exporter
+    type: application
+    urls:
+    - https://squids-io.github.io/charts/volume-exporter-0.1.0.tgz
+    version: 0.1.0
+generated: "2021-02-24T07:19:47.698265183Z"
