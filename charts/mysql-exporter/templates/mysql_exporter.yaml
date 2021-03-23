@@ -57,7 +57,7 @@ metadata:
     app.kubernetes.io/instance: RELEASE-NAME
     app.kubernetes.io/managed-by: Helm
 spec:
-  replicas: {{ .Values.mysqlExporterCount }}
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       app.kubernetes.io/name: mysqld-exporter

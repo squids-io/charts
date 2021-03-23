@@ -81,6 +81,9 @@ spec:
               subPath: dashboards.yaml
             - name: grafana-dashboards
               mountPath: /var/lib/grafana/dashboards/
+            - name: grafana-config
+              mountPath: /etc/grafana/grafana.ini
+              subPath: grafana.ini
       volumes:
         - name: grafana-dashboards
           configMap:
@@ -88,6 +91,9 @@ spec:
         - name: grafana-provisioning
           configMap:
             name: grafana-provisioning
+        - name: grafana-config
+          configMap:
+            name: grafana-config
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
