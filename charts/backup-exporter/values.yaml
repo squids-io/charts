@@ -1,0 +1,27 @@
+global:
+  registry: docker.io
+  repository: squids
+
+image:
+  pullPolicy: IfNotPresent
+  tag: v0.1.0
+
+replicaCount: 1
+
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+
+tolerations:
+- effect: NoSchedule
+  key: node-role.kubernetes.io/master
+  operator: Exists
+
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: backup-exporter
+        topologyKey: kubernetes.io/hostname
+
+resources: {}

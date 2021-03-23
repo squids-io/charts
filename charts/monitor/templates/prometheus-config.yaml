@@ -105,6 +105,18 @@ data:
             target_label: alertingTargetName
             replacement: $1
             action: replace
+        - job_name: 'backup-exporter'
+          scrape_interval: 1m
+          scrape_timeout: 50s
+          kubernetes_sd_configs:
+          - role: pod
+          relabel_configs:
+          - source_labels: [__address__]
+            separator: ;
+            regex: (.*)
+            target_label: __address__
+            replacement: backup-exporter:9100
+            action: replace
         - job_name: 'volume-exporter'
           scrape_interval: 1m
           scrape_timeout: 50s
