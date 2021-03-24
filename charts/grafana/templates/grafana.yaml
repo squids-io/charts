@@ -60,7 +60,7 @@ spec:
     spec:
       containers:
         - name: grafana
-          image: grafana/grafana:{{ .Values.image.tag }}
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/grafana:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
             runAsUser: 0
