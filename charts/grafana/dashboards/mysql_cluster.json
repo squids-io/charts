@@ -15,7 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1616581443261,
+  "iteration": 1616738153366,
   "links": [],
   "panels": [
     {
@@ -104,9 +104,11 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "decimals": 1,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -172,7 +174,8 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "$$hashKey": "object:114",
+          "format": "percent",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -180,6 +183,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:115",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -199,9 +203,11 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
+      "decimals": 1,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -267,7 +273,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "percent",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -356,7 +362,8 @@
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {}
+          "custom": {},
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -428,7 +435,7 @@
       },
       "yaxes": [
         {
-          "format": "short",
+          "format": "bytes",
           "label": null,
           "logBase": 1,
           "max": null,
@@ -1176,10 +1183,46 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(mysql_global_status_commands_total{command=~\"insert|delete|insert_select|replace|replace_select|select|update\", instance=\"$ins\"}[5m]))",
+          "expr": "rate(mysql_global_status_commands_total{command=\"insert\", instance=\"$ins\"}[5m])",
           "interval": "1m",
-          "legendFormat": "",
+          "legendFormat": "insert",
           "refId": "A"
+        },
+        {
+          "expr": "rate(mysql_global_status_commands_total{command=\"delete\", instance=\"$ins\"}[5m])",
+          "interval": "",
+          "legendFormat": "delete",
+          "refId": "B"
+        },
+        {
+          "expr": "rate(mysql_global_status_commands_total{command=\"insert_select\", instance=\"$ins\"}[5m])",
+          "interval": "",
+          "legendFormat": "insert_select",
+          "refId": "C"
+        },
+        {
+          "expr": "rate(mysql_global_status_commands_total{command=\"replace\", instance=\"$ins\"}[5m])",
+          "interval": "",
+          "legendFormat": "replace",
+          "refId": "D"
+        },
+        {
+          "expr": "rate(mysql_global_status_commands_total{command=\"replace_select\", instance=\"$ins\"}[5m])",
+          "interval": "",
+          "legendFormat": "replace_select",
+          "refId": "E"
+        },
+        {
+          "expr": "rate(mysql_global_status_commands_total{command=\"select\", instance=\"$ins\"}[5m])",
+          "interval": "",
+          "legendFormat": "select",
+          "refId": "F"
+        },
+        {
+          "expr": "rate(mysql_global_status_commands_total{command=\"update\", instance=\"$ins\"}[5m])",
+          "interval": "",
+          "legendFormat": "update",
+          "refId": "G"
         }
       ],
       "thresholds": [],
@@ -1233,8 +1276,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "mysql-1468244d95ac46349b74415419522966-replica0-0",
-          "value": "mysql-1468244d95ac46349b74415419522966-replica0-0"
+          "text": "mysql-bc6c7b7cf3194752b2267f105f44a55a-replica0-0",
+          "value": "mysql-bc6c7b7cf3194752b2267f105f44a55a-replica0-0"
         },
         "datasource": "Prometheus",
         "definition": "label_values(mysql_up, instance)",
@@ -1266,8 +1309,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "mysql-012d3914068b465f90a731a20c338e4a",
-          "value": "mysql-012d3914068b465f90a731a20c338e4a"
+          "text": "mysql-bc6c7b7cf3194752b2267f105f44a55a",
+          "value": "mysql-bc6c7b7cf3194752b2267f105f44a55a"
         },
         "datasource": "Prometheus",
         "definition": "label_values(backup_set_size_bytes, cluster_name)",
@@ -1279,7 +1322,7 @@
         "name": "cluster_name",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "mysql-012d3914068b465f90a731a20c338e4a",
             "value": "mysql-012d3914068b465f90a731a20c338e4a"
           },
