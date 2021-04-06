@@ -15,14 +15,16 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1616738153366,
+  "iteration": 1617008153196,
   "links": [],
   "panels": [
     {
       "datasource": "Prometheus",
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "custom": {},
+          "displayName": "Instance Health",
           "mappings": [
             {
               "from": "",
@@ -80,7 +82,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value"
       },
       "pluginVersion": "7.3.6",
       "targets": [
@@ -300,6 +302,7 @@
         "defaults": {
           "custom": {},
           "decimals": 0,
+          "displayName": "DB Usage Ratio",
           "mappings": [],
           "thresholds": {
             "mode": "percentage",
@@ -337,7 +340,7 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto"
+        "textMode": "value"
       },
       "pluginVersion": "7.3.6",
       "targets": [
@@ -1276,8 +1279,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "mysql-bc6c7b7cf3194752b2267f105f44a55a-replica0-0",
-          "value": "mysql-bc6c7b7cf3194752b2267f105f44a55a-replica0-0"
+          "text": "mysql-5368e2b8dad04eb4b4a3dda1758b52d4-replica0-0",
+          "value": "mysql-5368e2b8dad04eb4b4a3dda1758b52d4-replica0-0"
         },
         "datasource": "Prometheus",
         "definition": "label_values(mysql_up, instance)",
@@ -1309,8 +1312,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "mysql-bc6c7b7cf3194752b2267f105f44a55a",
-          "value": "mysql-bc6c7b7cf3194752b2267f105f44a55a"
+          "text": "mysql-5368e2b8dad04eb4b4a3dda1758b52d4",
+          "value": "mysql-5368e2b8dad04eb4b4a3dda1758b52d4"
         },
         "datasource": "Prometheus",
         "definition": "label_values(backup_set_size_bytes, cluster_name)",
