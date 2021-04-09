@@ -1,0 +1,30 @@
+# Default values for operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+global:
+  registry: docker.io
+  repository: squids
+
+image:
+  pullPolicy: IfNotPresent
+  leaderTag: v1.0.0
+  operator:
+    operator: v1.0.0
+
+nodeSelector: {}
+tolerations:
+  - effect: NoSchedule
+    key: squids/node
+    operator: Exists
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: redis-operator
+        topologyKey: kubernetes.io/hostname
