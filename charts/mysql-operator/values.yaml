@@ -55,7 +55,9 @@ config:
 #  - name: net.ipv4.tcp_keepalive_probes
 #    value: 5
 
-nodeSelector: {}
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+
 tolerations:
 - effect: NoSchedule
   key: squids/node
