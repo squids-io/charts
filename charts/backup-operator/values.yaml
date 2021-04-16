@@ -15,7 +15,9 @@ image:
   operator:
     operator: v1.0.0
 
-nodeSelector: {}
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+
 tolerations:
   - effect: NoSchedule
     key: squids/node
