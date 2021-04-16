@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-user
+  namespace: squids
+  labels:
+    app: squids-user
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: squids-user
+  template:
+    metadata:
+      labels:
+        app: squids-user
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squids-user
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/squids-user:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: config-volume
+          configMap:
+            name: squids-user

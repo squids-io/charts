@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-trade
+  namespace: squids
+  labels:
+    app: squids-trade
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: squids-trade
+  template:
+    metadata:
+      labels:
+        app: squids-trade
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squids-trade
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/squids-trade:{{ .Values.image.tag }}
+          ports:
+            - containerPort: 29528
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: config-volume
+          configMap:
+            name: squids-trade

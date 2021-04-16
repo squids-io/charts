@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squidshub-headless
+  namespace: squids
+  labels:
+    app-name: squidshub
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+  selector:
+    app-name: squidshub
