@@ -22,7 +22,7 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy}}
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/squids-trade:{{ .Values.image.tag }}
           ports:
-            - containerPort: 29528
+            - containerPort: {{ .Values.image.containerPort }}
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime

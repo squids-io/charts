@@ -17,8 +17,12 @@ service:
   port: 29529
 
 mysql: 
-  username: lisi
+  username: squids
   password: squids123456
+mail:
+  mailbox: tao.zou@woqutech.com
+  host: smtp.exmail.qq.com
+  password: 7HRgaJspRVp3BjYF
 
 serviceAccount:
   # Specifies whether a service account should be created

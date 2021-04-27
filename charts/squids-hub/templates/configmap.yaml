@@ -12,7 +12,7 @@ data:
     spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
     
     modulservice.UserModulGatewayUrl=http://squidsuser-headless:29529/api/v1
-    modulservice.TradeModulGatewayUrl=http://localhost:7001/api/v1
+    modulservice.TradeModulGatewayUrl=http://squidstrade-headless:29528/api/v1
 
     spring.redis.host=squids-redis-headless
     spring.redis.database=0

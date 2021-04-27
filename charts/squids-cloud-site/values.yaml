@@ -18,6 +18,14 @@ containers:
     containerPort: 443
     hostport: 443
 
+
+service:
+  type: ClusterIP
+  http:
+    port: 80
+  https:
+    port: 443
+
 imagePullSecrets: []
 nameOverride: ""
 fullnameOverride: ""
@@ -43,10 +51,6 @@ securityContext: {}
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
   # runAsUser: 1000
-
-service:
-  type: ClusterIP
-  port: 80
 
 ingress:
   enabled: false

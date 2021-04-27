@@ -33,8 +33,8 @@ data:
 
 
     paypal-config:
-      clientId: AbwmOBxXF5WOWVRzDB3eU02rXaQxQT2g7Nd8uwXDJNbLJBvwhFsQ5YNTgZ1ZZDoARCghA3qjwZAW3t8Q
-      clientSecret: EO-TQL9n-fbO1J7eZ0lsMlLNT76utzb-fKVND8-jxsi21uWj7m7Dbggn5XSqWSKdWSSl0WfNoawbbLix
+      clientId: {{ .Values.paypal.clientId }}
+      clientSecret: {{ .Values.paypal.clientSecret }}
       cancelUrl: https://squids.io
       returnUrl: https://squids.io/api/v1/tradeRechargeOrder/paySuccess
 
