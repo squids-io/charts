@@ -64,7 +64,7 @@ spec:
             - name: DEBUG
               value: "true"
             - name: DISABLE_TLS
-              value: "false"
+              value: "{{ .Values.disableTls }}"
       volumes:
         - name: localtime
           hostPath:
