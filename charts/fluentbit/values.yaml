@@ -9,8 +9,8 @@ image:
 nameOverride: ""
 resources:
   requests:
-    cpu: "1"
-    memory: 2Gi
+    cpu: "10m"
+    memory: "50Mi"
 
 database:
   nodeSelector: {}

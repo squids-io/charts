@@ -63,6 +63,8 @@ spec:
                   fieldPath: metadata.namespace
             - name: DEBUG
               value: "true"
+            - name: DISABLE_TLS
+              value: "false"
       volumes:
         - name: localtime
           hostPath:
