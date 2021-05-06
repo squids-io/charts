@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squids-cloud-site
+  namespace: squids
+  labels:
+    app-name: squids-cloud-site
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app-name: squids-cloud-site
+  template:
+    metadata:
+      labels:
+        app-name: squids-cloud-site
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squids-cloud-site
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image:  {{ .Values.image.registry }}/{{ .Values.image.repository }}/cloud-site:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.containers.http.containerPort}}
+              hostPort: {{ .Values.containers.http.containerPort}}
+            - containerPort: {{ .Values.containers.ssl.containerPort}}
+              hostPort: {{ .Values.containers.ssl.containerPort}}
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: config-volume
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+            - name: passwd
+              mountPath: /etc/nginx/passwd
+            - name: cert
+              mountPath: /etc/nginx/cert
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: passwd
+          hostPath:
+            path: /squids/passwd
+        - name: config-volume
+          configMap:
+            name: nginx-conf
+        - name: cert
+          hostPath:
+            path: /squids/nginx/cert

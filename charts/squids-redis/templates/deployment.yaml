@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squids-redis
+  namespace: squids
+  labels:
+    app: squids-redis
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: squids-redis
+  template:
+    metadata:
+      labels:
+        app: squids-redis
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squids-redis
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: redis:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          resources:
+            limits:
+              cpu: 1000m
+              memory: 1024Mi
+            requests:
+              cpu: 1000m
+              memory: 1024Mi
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: data
+              mountPath: /data
+            - name: redis-conf
+              mountPath: /etc/redis/
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: data
+          hostPath:
+            path: /redis/data
+        - name: redis-conf
+          configMap:
+            name: redis-conf

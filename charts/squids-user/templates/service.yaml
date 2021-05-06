@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squidsuser-headless
+  namespace: squids
+  labels:
+    app: squids-user
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+  selector:
+    app: squids-user
