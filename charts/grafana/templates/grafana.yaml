@@ -84,6 +84,8 @@ spec:
             - name: grafana-config
               mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
+            - name: grafana-secret
+              mountPath: /grafana/ssl/
       volumes:
         - name: grafana-dashboards
           configMap:
@@ -94,6 +96,9 @@ spec:
         - name: grafana-config
           configMap:
             name: grafana-config
+        - name: grafana-secret
+          secret:
+            secretName: grafana-secret
       {{- with .Values.nodeSelector }}
       nodeSelector:
         {{- toYaml . | nindent 8 }}
