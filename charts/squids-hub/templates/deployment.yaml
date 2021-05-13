@@ -1,0 +1,62 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-hub
+  namespace: squids
+  labels:
+    app-name: squidshub
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app-name: squidshub
+  template:
+    metadata:
+      labels:
+        app-name: squidshub
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squidshub
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/squidshub:{{ .Values.image.tag }}
+          env:
+            - name: TERRAFORM_FILE_PATH
+              value: "/terraform_file"
+            - name: APISERVER_CERT_ROOT_PATH
+              value: "/apiserver_tls"
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          volumeMounts:
+            - name: tmpterra
+              mountPath: /terraform_file
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: config-volume
+              mountPath: /config
+            - name: tls
+              mountPath: /apiserver_tls
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: config-volume
+          configMap:
+            name: squidshub
+        - name: tmpterra
+          hostPath:
+            path: /tmpterra
+        - name: tls
+          secret:
+            secretName: squids.tls
+            items:
+            - key: ca.crt
+              path: ca.pem
+              mode: 0400 
+            - key: tls.crt
+              path: client-cert.pem
+              mode: 0400 
+            - key: tls.key
+              path: client-key.pem
+              mode: 0400 
