@@ -10,22 +10,21 @@ image:
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: v1
-  containerPort: 29528 
-
-env: pro
-server:
-  host: localhost
-
+  containerPort: 29528
 service:
   type: ClusterIP
   port: 29528
 
+# squids config
+env: pro
+server:
+  host: localhost
 mysql: 
   username: squids
   password: squids123456
 paypal:
-  clientId: xx
-  clientSecret: xx
+  clientId: abc
+  clientSecret: abc
 
 serviceAccount:
   # Specifies whether a service account should be created

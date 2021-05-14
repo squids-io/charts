@@ -11,22 +11,28 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: v1
   containerPort: 29529 
-
-env: pro
-server:
-  host: localhost
-
 service:
   type: ClusterIP
   port: 29529
 
+# squids config
+env: pro
+server:
+  host: localhost
 mysql: 
   username: squids
   password: squids123456
+oauth2:
+  github:
+    id: abc
+    secret: abc
+  google:
+    id: abc
+    secret: abc
 mail:
-  mailbox: abc@woqutech.com
-  host: xxx
-  password: xxx
+  mailbox: abc@squids.com
+  host: abc
+  password: abc
 
 serviceAccount:
   # Specifies whether a service account should be created
