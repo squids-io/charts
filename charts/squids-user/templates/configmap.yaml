@@ -22,7 +22,16 @@ data:
           stat-view-servlet: #访问监控网页的登录用户名和密码
             login-username: druid
             login-password: druid
-
+        security:
+          oauth2:
+            client:
+              registration:
+                github:
+                  client-id: {{ .Values.oauth2.github.id }}
+                  client-secret: {{ .Values.oauth2.github.secret }}
+                google:
+                  client-id: {{ .Values.oauth2.google.id }}
+                  client-secret: {{ .Values.oauth2.google.secret }}
 
       redis:
         host: squids-redis-headless # Redis服务器地址

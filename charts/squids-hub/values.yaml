@@ -12,15 +12,14 @@ image:
   tag: v1
   containerPort: 29527
 
-
-env: pro
-server:
-  host: localhost
-
 service:
   type: ClusterIP
   port: 29527
 
+#squids config
+env: pro
+server:
+  host: localhost
 mysql: 
   username: squids
   password: squids123456
