@@ -53,10 +53,7 @@ spec:
             items:
             - key: ca.crt
               path: ca.pem
-              mode: 0400 
             - key: tls.crt
               path: client-cert.pem
-              mode: 0400 
             - key: tls.key
               path: client-key.pem
-              mode: 0400 
