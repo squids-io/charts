@@ -71,7 +71,7 @@ spec:
       serviceAccountName: "mysqld-exporter"
       containers:
         - name: mysqld-exporter
-          image: grds/mysqld-exporter:{{ .Values.image.tag }}
+          image: squids/mysqld-exporter:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}

@@ -11,6 +11,8 @@ monitorPort: 9090
 replicasCount: 3
 adminPassword: admin
 
+enableHttps: true
+
 nodeSelector:
   node-role.kubernetes.io/master: ""
 

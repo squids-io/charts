@@ -4,4 +4,11 @@ metadata:
   name: grafana-config
   namespace: {{.Release.Namespace}}
 data:
-{{ (.Files.Glob "config/*.ini").AsConfig | indent 2 }}
+  grafana.ini: |
+{{ if .Values.enableHttps }}
+    {{ range .Files.Lines "config/grafana.ini" }}
+    {{ . }}{{ end }}
+{{ else }}
+    {{ range .Files.Lines "config/grafana-http.ini" }}
+    {{ . }}{{ end }}
+{{ end }}
