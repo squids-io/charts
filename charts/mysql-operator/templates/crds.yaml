@@ -38,6 +38,12 @@ spec:
               description: 'ClusterSpec describes cluster-related attributes, Such
                 as: cluster database version, cluster operation mode'
               properties:
+                characterSet:
+                  description: Database Character set
+                  type: string
+                image:
+                  description: Image describes database image
+                  type: string
                 matchLabels:
                   additionalProperties:
                     type: string
@@ -79,6 +85,9 @@ spec:
                       - operator
                     type: object
                   type: array
+                timezone:
+                  description: 'Database timezone, like: +08:00'
+                  type: string
                 version:
                   description: 'Version describes database version(like mysql: 5.6、5.7、8.0)'
                   type: string
