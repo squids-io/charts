@@ -15,8 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1620714453109,
+  "iteration": 1622187582923,
   "links": [],
   "panels": [
     {
@@ -143,7 +142,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum((rate(container_cpu_usage_seconds_total{container=\"mysql\",pod=\"mysql-f534f297b43e48cdb728deb99ecba9e3-replica0-0\"}[5m]) / ignoring(cpu) (container_spec_cpu_quota / 100000)) * 100)",
+          "expr": "sum((rate(container_cpu_usage_seconds_total{container=\"redis\",pod=\"$ins\"}[5m]) / ignoring(cpu) (container_spec_cpu_quota / 100000)) * 100)",
           "interval": "5m",
           "legendFormat": "",
           "refId": "A"
@@ -238,7 +237,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum((container_memory_rss{container=\"mysql\", pod=\"mysql-f534f297b43e48cdb728deb99ecba9e3-replica0-0\"}/container_spec_memory_limit_bytes)*100)",
+          "expr": "sum((container_memory_rss{container=\"redis\", pod=\"$ins\"}/container_spec_memory_limit_bytes)*100)",
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -331,7 +330,8 @@
       "pluginVersion": "7.3.6",
       "targets": [
         {
-          "expr": "",
+          "expr": "irate(redis_keyspace_hits_total{instance=\"$ins\"}[5m])/ (irate(redis_keyspace_hits_total{instance=\"$ins\"}[5m]) + irate(redis_keyspace_misses_total{instance=\"$ins\"}[5m])) * 100",
+          "instant": true,
           "interval": "",
           "legendFormat": "",
           "refId": "A"
@@ -391,16 +391,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mysql_filesystem_used_bytes{instance=\"mysql-f534f297b43e48cdb728deb99ecba9e3-replica0-0\"}",
+          "expr": "redis_mem_fragmentation_ratio{instance=\"$ins\"}",
           "interval": "5m",
           "legendFormat": "used",
           "refId": "A"
-        },
-        {
-          "expr": "mysql_filesystem_size_bytes{instance=\"mysql-f534f297b43e48cdb728deb99ecba9e3-replica0-0\"}",
-          "interval": "5m",
-          "legendFormat": "total",
-          "refId": "B"
         }
       ],
       "thresholds": [],
@@ -1373,8 +1367,8 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "mysqlcluster-sample-replica0-0",
-          "value": "mysqlcluster-sample-replica0-0"
+          "text": "redis-gudc8p6a2vcll9of-0",
+          "value": "redis-gudc8p6a2vcll9of-0"
         },
         "datasource": "Prometheus",
         "definition": "label_values(redis_up, instance)",
@@ -1386,7 +1380,7 @@
         "name": "ins",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "redis-cluster-hello-0",
             "value": "redis-cluster-hello-0"
           },
@@ -1417,5 +1411,5 @@
   "timezone": "",
   "title": "redis Copy",
   "uid": "4sigSwXMz",
-  "version": 26
+  "version": 1
 }
