@@ -13,6 +13,23 @@ image:
   pullPolicy: IfNotPresent
   prometheusTag: v2.19.2
   thanosTag: v0.16.0-rc.1
+  alertmanagerTag: v0.21.0
+
+alertmanagerSts:
+  replicaCount: 3
+
+  smtp_from: xxx
+  smtp_auth_username: xxx
+  smtp_auth_password: xxx
+  smtp_receiver: xxx
+
+  nodeSelector:
+    node-role.kubernetes.io/master: ""
+
+  tolerations:
+    - effect: NoSchedule
+      key: node-role.kubernetes.io/master
+      operator: Exists
 
 prometheusSts:
   replicaCount: 3

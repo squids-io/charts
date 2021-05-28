@@ -11,9 +11,33 @@ data:
           external_labels:
             cluster: prometheus-ha
             prometheus_replica: $(POD_NAME)
+        alerting:
+          # 告警配置文件
+          alertmanagers:
+            # 修改：使用静态绑定
+            - static_configs:
+                # 修改：targets、指定地址与端口
+                - targets: ["alertmanager-headless:9093"]
         rule_files:
         - /etc/prometheus/rules/*rules.yaml
         scrape_configs:
+        - job_name: kubernetes-apiservers
+          scrape_interval: 1m
+          scrape_timeout: 10s
+          metrics_path: /metrics
+          scheme: https
+          kubernetes_sd_configs:
+          - role: endpoints
+          bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+          tls_config:
+            ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+            insecure_skip_verify: true
+          relabel_configs:
+          - source_labels: [__meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name]
+            separator: ;
+            regex: default;kubernetes;https
+            replacement: $1
+            action: keep
         - job_name: cadvisor
           metrics_path: /metrics/cadvisor
           scrape_interval: 10s
@@ -27,7 +51,7 @@ data:
           relabel_configs:
           - action: labelmap
             regex: __meta_kubernetes_node_label_(.+)
-          - source_labels: [__meta_kubernetes_node_address_ExternalIP]
+          - source_labels: [__meta_kubernetes_node_address_InternalIP]
             action: replace
             target_label: __address__
             replacement: $1:10250
@@ -35,7 +59,7 @@ data:
           kubernetes_sd_configs:
           - role: node
           relabel_configs:
-          - source_labels: [__meta_kubernetes_node_address_ExternalIP]
+          - source_labels: [__meta_kubernetes_node_address_InternalIP]
             action: replace
             target_label: __address__
             replacement: $1:9100
@@ -208,3 +232,45 @@ data:
                 rate(container_cpu_usage_seconds_total{job="cadvisor", image!="", container!=""}[5m])
               )
             record: namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+          - alert: node up
+            expr: up{job="node"} == 0
+            for: 15s
+            annotations:
+              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+          - alert: kubernetes apiservers  up
+            expr: up{job="kubernetes-apiservers"} == 0
+            for: 15s
+            annotations:
+              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+          - alert: etcd up
+            expr: up{job="etcd-exporter"} == 0
+            for: 15s
+            annotations:
+              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+          - alert: backup-exporter up
+            expr: up{job="backup-exporter"} == 0
+            for: 15s
+            annotations:
+              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+          - alert: Node Filesystem Usage
+            expr: (node_filesystem_size_bytes{device="/dev/root"} - node_filesystem_free_bytes{device="/dev/root"}) / node_filesystem_size_bytes{device="/dev/root"} * 100 > 80
+            for: 2m
+            annotations:
+              summary: "{{"{{"}}$labels.instance{{"}}"}}: High Filesystem usage detected"
+              description: "{{"{{"}}$labels.instance{{"}}"}}: Filesystem usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
+          - alert: Node Memory Usage
+            expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 80
+            for: 2m
+            annotations:
+              summary: "{{"{{"}}$labels.instance{{"}}"}}: High Memory usage detected"
+              description: "{{"{{"}}$labels.instance{{"}}"}}: Memory usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
+          - alert: Node CPU Load
+            expr: (100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node",mode="idle"}[5m])) * 100)) > 80
+            for: 5m
+            annotations:
+              summary: "{{"{{"}}$labels.instance{{"}}"}}: High CPU usage detected"
+              description: "{{"{{"}}$labels.instance{{"}}"}}: CPU usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
