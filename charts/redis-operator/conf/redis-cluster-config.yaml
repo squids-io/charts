@@ -1,0 +1,141 @@
+"6.x":
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: timeout
+  defaultValue: 0
+  type: string
+  needRestart: false
+  range: 0 or positive integer
+  description: Close the connection after a client is idle for N seconds (0 to disable)
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: loglevel
+  defaultValue: notice
+  type: string
+  needRestart: false
+  range: debug/verbose/notice/warning
+  description: Specify the server verbosity level
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: databases
+  defaultValue: 16
+  type: string
+  needRestart: false
+  range: 0 or positive integer
+  description: Set the number of databases
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: maxclients
+  defaultValue: 10000
+  type: string
+  needRestart: false
+  range: 0-20000
+  description: Set the max number of connected clients at the same time
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: maxmemory-policy
+  defaultValue: noeviction
+  type: string
+  needRestart: false
+  range: volatile-lru/allkeys-lru/volatile-lfu/allkeys-lfu/volatile-random/allkeys-random/volatile-ttl/noeviction
+  description: How Redis will select what to remove when maxmemory
+  engine: redis
+  show: false
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: maxmemory-samples
+  defaultValue: 20
+  type: string
+  needRestart: false
+  range: 5-30
+  description: The number of samples detected by lru. Use lru or ttl elimination algorithm to randomly select sample keys from the list that needs to be eliminated, and select the key that has been idle for the longest time to remove
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: replica-ignore-maxmemory
+  defaultValue: yes
+  type: string
+  needRestart: false
+  range: yes/no
+  description: Whether the slave opens the maximum memory limit
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: replica-lazy-flush
+  defaultValue: no
+  type: string
+  needRestart: false
+  range: yes/no
+  description: Flush sync or async
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: appendonly
+  defaultValue: yes
+  type: string
+  needRestart: false
+  range: yes/no
+  description: AOF Enable or not
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: appendfsync
+  defaultValue: everysec
+  type: string
+  needRestart: false
+  range: always/everysec/no
+  description: AOF fsync policy
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: aof-use-rdb-preamble
+  defaultValue: yes
+  type: string
+  needRestart: false
+  range: yes/no
+  description: When rewriting the AOF file, Redis is able to use an RDB preamble in the AOF file for faster rewrites and recoveries
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: aof-rewrite-incremental-fsync
+  defaultValue: yes
+  type: string
+  needRestart: false
+  range: yes/no
+  description: When a child rewrites the AOF file, if the following option is enabled the file will be fsync-ed every 32 MB of data generated. This is useful in order to commit the file to the disk more incrementally and avoid big latency spikes
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: slowlog-log-slower-than
+  defaultValue: 10000
+  type: string
+  needRestart: false
+  range: 0-10000
+  description: The following time is expressed in microseconds, so 1000000 is equivalent to one second. Note that a negative number disables the slow log, while a value of zero forces the logging of every command
+  engine: redis
+  show: true
+  version: 6.x
+- uuid: 28bde50bd14a11eab013ee77d8cf02a0
+  name: active-defrag-cycle-min
+  defaultValue: 5
+  type: string
+  needRestart: false
+  range: 5-15
+  description: Minimal effort for defrag in CPU percentage, to be used when the lower threshold is reached
+  engine: redis
+  show: true
+  version: 6.x
