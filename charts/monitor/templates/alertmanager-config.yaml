@@ -10,16 +10,16 @@ data:
   alertmanager.yml: |
     global:
       resolve_timeout: 5m
-      smtp_from: "notification@squids.io"
+      smtp_from: {{ .Values.alertmanagerSts.smtp_from }}
       smtp_smarthost: smtp.exmail.qq.com:465
       smtp_hello: "qq.com"
-      smtp_auth_username: notification@squids.io
-      smtp_auth_password: vnDAQ9VVWTEo9aCN
+      smtp_auth_username: {{ .Values.alertmanagerSts.smtp_auth_username }}
+      smtp_auth_password: {{ .Values.alertmanagerSts.smtp_auth_password }}
       smtp_require_tls: false
     receivers:
     - name: squids
       email_configs:
-      - to: "notification@squids.io"
+      - to: {{ .Values.alertmanagerSts.smtp_receiver }}
         send_resolved: false
     route:
       group_interval: 5m

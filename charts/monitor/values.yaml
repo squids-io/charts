@@ -18,6 +18,11 @@ image:
 alertmanagerSts:
   replicaCount: 3
 
+  smtp_from: xxx
+  smtp_auth_username: xxx
+  smtp_auth_password: xxx
+  smtp_receiver: xxx
+
   nodeSelector:
     node-role.kubernetes.io/master: ""
 
