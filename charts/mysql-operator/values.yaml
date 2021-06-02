@@ -77,11 +77,3 @@ affinity:
 ##
 createCustomResource: true
 
-service:
-  type: NodePort
-  port: 8443
-  nodePort: 30443
-  healthPort: 80
-  healthNodePort: 30442
-
-disableTls: "false"
