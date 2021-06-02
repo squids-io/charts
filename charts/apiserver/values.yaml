@@ -9,11 +9,11 @@ global:
   repository: squids
 
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   apiserver:
-    tag: dev
+    tag: v1.0.0
   qfbbackupjob:
-    tag: dev
+    tag: v1.0.0
 
 service:
   type: NodePort
