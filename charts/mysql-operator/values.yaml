@@ -78,10 +78,10 @@ affinity:
 createCustomResource: true
 
 service:
-  type: ClusterIP
+  type: NodePort
   port: 8443
-  nodePort: ""
+  nodePort: 30443
   healthPort: 80
-  healthNodePort: ""
+  healthNodePort: 30442
 
 disableTls: "false"
