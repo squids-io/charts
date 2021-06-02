@@ -51,22 +51,6 @@ spec:
               mountPath: /etc/localtime
             - name: logdir
               mountPath: /var/log/operator
-        - name: apiserver
-          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/apiserver:{{include "apiserver.tag" .}}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          command:
-            - /apiserver
-          env:
-            - name: NAMESPACE
-              valueFrom:
-                fieldRef:
-                  fieldPath: metadata.namespace
-            - name: DEBUG
-              value: "true"
-            - name: DISABLE_TLS
-              value: "{{ .Values.disableTls }}"
-            - name: BACKUP_TRIGGER_IMAGE
-              value: {{ .Values.global.registry }}/{{ .Values.global.repository }}/qfb-backup-job:{{ .Values.image.qfbBackupTag }}
       volumes:
         - name: localtime
           hostPath:
