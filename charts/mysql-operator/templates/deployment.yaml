@@ -65,6 +65,8 @@ spec:
               value: "true"
             - name: DISABLE_TLS
               value: "{{ .Values.disableTls }}"
+            - name: BACKUP_TRIGGER_IMAGE
+              value: {{ .Values.global.registry }}/{{ .Values.global.repository }}/qfb-backup-job:{{ .Values.image.qfbBackupTag }}
       volumes:
         - name: localtime
           hostPath:
