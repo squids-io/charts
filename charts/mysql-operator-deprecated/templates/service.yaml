@@ -1,0 +1,34 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-operator
+  labels:
+    app.kubernetes.io/name: mysql-operator
+    vendor: squids
+spec:
+  selector:
+    app.kubernetes.io/name: mysql-operator
+    vendor: squids
+  type: {{ .Values.service.type }}
+  sessionAffinity: None
+  ports:
+    - name: apiserver
+      protocol: TCP
+      port: {{ .Values.service.port }}
+      targetPort: 8443
+      {{- if or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer") }}
+      {{- if .Values.service.nodePort }}
+      nodePort: {{ .Values.service.nodePort }}
+      {{- end }}
+      {{- end }}
+    - name: apiserver-health
+      protocol: TCP
+      port: {{ .Values.service.healthPort }}
+      targetPort: 80
+      {{- if or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer") }}
+      {{- if .Values.service.healthNodePort }}
+      nodePort: {{ .Values.service.healthNodePort }}
+      {{- end }}
+      {{- end }}
+    - name: metrics
+      port: 8080
