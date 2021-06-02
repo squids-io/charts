@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: apiserver
+  labels:
+    app.kubernetes.io/name: apiserver
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: apiserver
+      vendor: squids
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      name: apiserver
+      labels:
+        app.kubernetes.io/name: apiserver
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        vendor: squids
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: apiserver
+      containers:
+        - name: apiserver
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/apiserver:{{ .Values.image.apiserver.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /apiserver
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DEBUG
+              value: "true"
+            - name: DISABLE_TLS
+              value: "{{ .Values.disableTls }}"
+            - name: BACKUP_TRIGGER_IMAGE
+              value: {{ .Values.global.registry }}/{{ .Values.global.repository }}/qfb-backup-job:{{ .Values.image.qfbbackupjob.tag }}
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: logdir
+          hostPath:
+            path: /apps/logs/squids/operator/
+            type: DirectoryOrCreate
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 8 }}
+  {{- end }}
