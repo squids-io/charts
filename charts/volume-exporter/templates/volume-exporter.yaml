@@ -67,7 +67,7 @@ spec:
               name: varlibkubeletpods
               mountPropagation: HostToContainer
             - name: localdir
-              mountPath: /opt/local-path-provisioner
+              mountPath: /squids-data/local-path-provisioner
               readOnly: true
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
@@ -77,7 +77,7 @@ spec:
             path: /var/lib/kubelet/pods
         - name: localdir
           hostPath:
-            path: /opt/local-path-provisioner
+            path: /squids-data/local-path-provisioner
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
