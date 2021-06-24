@@ -149,14 +149,6 @@ rules:
     verbs:
       - update
   - apiGroups:
-      - mssql.squids.io
-    resources:
-      - mssqlclusters/status
-    verbs:
-      - get
-      - patch
-      - update
-  - apiGroups:
       - storage.k8s.io
     resources:
       - storageclasses
