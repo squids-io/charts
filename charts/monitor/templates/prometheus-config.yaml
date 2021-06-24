@@ -168,6 +168,33 @@ data:
             target_label: namespace
             replacement: $1
             action: replace
+        - job_name: 'mssql-exporter'
+          scrape_interval: 1m
+          scrape_timeout: 50s
+          kubernetes_sd_configs:
+          - role: pod
+          relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_ip]
+            action: replace
+            target_label: __address__
+            replacement: $1:4000
+          - source_labels: [__meta_kubernetes_pod_label_db_type]
+            separator: ;
+            regex: (mssql)
+            replacement: $1
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_name]
+            separator: ;
+            regex: (.*)
+            target_label: instance
+            replacement: $1
+            action: replace
+          - source_labels: [__meta_kubernetes_namespace]
+            separator: ;
+            regex: (.*)
+            target_label: namespace
+            replacement: $1
+            action: replace
         - job_name: 'volume-exporter'
           scrape_interval: 1m
           scrape_timeout: 50s
