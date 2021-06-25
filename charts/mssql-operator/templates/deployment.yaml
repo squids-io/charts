@@ -38,7 +38,8 @@ spec:
           args:
             - metrics-bind-address ":8080"
             - health-probe-bind-address ":8081"
-            - leader-elect false
+            - leader-elect {{ .Values.leaderElect }}
+            - development {{ .Values.development }}
           env:
             - name: NAMESPACE
               valueFrom:
