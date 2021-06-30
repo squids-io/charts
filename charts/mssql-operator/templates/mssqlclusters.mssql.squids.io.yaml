@@ -205,10 +205,12 @@ spec:
                         - size
                       type: object
                   type: object
-                elbDNS:
-                  type: string
                 enableSSL:
                   type: boolean
+                entryPoint:
+                  description: entryPoint of mssql cluster, e.g., aws elb DNS, aliyun
+                    elb DNS, public IPv4
+                  type: string
                 replicas:
                   description: 'Replicas describes the number of candidates for the
                   master database only one master database in the same time and the
