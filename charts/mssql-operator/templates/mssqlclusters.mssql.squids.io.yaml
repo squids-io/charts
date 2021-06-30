@@ -5,6 +5,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
   name: mssqlclusters.mssql.squids.io
 spec:
   group: mssql.squids.io
@@ -204,6 +205,10 @@ spec:
                         - size
                       type: object
                   type: object
+                elbDNS:
+                  type: string
+                enableSSL:
+                  type: boolean
                 replicas:
                   description: 'Replicas describes the number of candidates for the
                   master database only one master database in the same time and the
