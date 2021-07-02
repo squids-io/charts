@@ -15,8 +15,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 6,
-  "iteration": 1624615820909,
+  "iteration": 1625207008935,
   "links": [],
   "panels": [
     {
@@ -60,12 +59,16 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "red",
                 "value": null
               },
               {
                 "color": "red",
                 "value": 0
+              },
+              {
+                "color": "green",
+                "value": 1
               }
             ]
           }
@@ -159,7 +162,7 @@
         {
           "expr": "sum((rate(container_cpu_usage_seconds_total{container=\"mssql\",pod=\"$ins\"}[5m]) / ignoring(cpu) (container_spec_cpu_quota / 100000)) * 100)",
           "interval": "5m",
-          "legendFormat": "",
+          "legendFormat": "cpu_usage_ratio",
           "refId": "A"
         }
       ],
@@ -254,7 +257,7 @@
         {
           "expr": "sum((container_memory_rss{container=\"mssql\", pod=\"$ins\"}/container_spec_memory_limit_bytes)*100)",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "memory_usage_ratio",
           "refId": "A"
         }
       ],
@@ -300,62 +303,99 @@
       }
     },
     {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
+          "custom": {}
         },
         "overrides": []
       },
+      "fill": 1,
+      "fillGradient": 0,
       "gridPos": {
         "h": 8,
         "w": 8,
         "x": 0,
         "y": 9
       },
-      "id": 10,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "auto"
+      "hiddenSeries": false,
+      "id": 26,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
       "pluginVersion": "7.3.6",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
       "targets": [
         {
           "expr": "mssql_cache_hit_ratio{instance=\"$ins\"}",
-          "instant": true,
-          "interval": "",
-          "legendFormat": "",
+          "interval": "5m",
+          "legendFormat": "cache_hit_ratio",
           "refId": "A"
         }
       ],
+      "thresholds": [],
       "timeFrom": null,
+      "timeRegions": [],
       "timeShift": null,
-      "title": "Cache Ratio",
-      "type": "stat"
+      "title": "Cache Hit Ratio",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     },
     {
       "aliasColors": {},
@@ -609,7 +649,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mssql_dm_os_performance_counters{instance=\"$ins\"}",
+          "expr": "increase(mssql_dm_os_performance_counters{instance=\"$ins\"}[2m])",
           "hide": false,
           "interval": "",
           "legendFormat": "{{counter_name}}",
@@ -857,10 +897,9 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "sqlserver-43etvjkq773ofcy9-replica0-0",
+          "value": "sqlserver-43etvjkq773ofcy9-replica0-0"
         },
         "datasource": "Prometheus",
         "definition": "label_values(mssql_up, instance)",
@@ -873,7 +912,7 @@
         "options": [
           {
             "isNone": true,
-            "selected": true,
+            "selected": false,
             "text": "None",
             "value": ""
           }
@@ -892,12 +931,12 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "SQLServer Overview",
   "uid": "B-BrFZznz",
-  "version": 24
+  "version": 1
 }
