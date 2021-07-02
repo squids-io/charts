@@ -50,7 +50,7 @@ parseConfig:
         regex: '(?P<level>[A-Z])(?P<glog_time>[^A-Z]*)  (?P<glog_idx>.) (?P<glog_file>[^:]*):(?P<glog_fileidx>[^\]]*)] (?P<glog_msg>(.|\n|\r)*)'
       - name: parseMssqlLog
         key: log
-        regex: ^\s+(?P<origin_time>\d{4}-\d{1,2}-\d{1,2}(\S)+\W(\S)+)(\s+)(?P<content>.*)
+        regex: (?P<origin_time>\d{4}-\d{1,2}-\d{1,2}\s\d{2}:\d{2}:\d{2}.\d{2})(\s+)(?P<content>.*)
       - name: parseMaxScaleLog
         key: log
         regex: '(?P<origin_time>\d+-\d+-\d+\s\d+:\d+:\S+\s)+\s*(?P<logType>\w+)\s*:\s*(?P<content>(.+))'
