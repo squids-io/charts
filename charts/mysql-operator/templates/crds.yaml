@@ -211,6 +211,18 @@ spec:
                 when creating a cluster ignore this parameter when you don't have
                 a restory source
               properties:
+                independentStorageSource:
+                  properties:
+                    awsAccessKeyID:
+                      description: aws s3
+                      type: string
+                    awsEndpoint:
+                      type: string
+                    awsSecretAccessKey:
+                      type: string
+                    storageInterfaceType:
+                      type: string
+                  type: object
                 masterSource:
                   type: boolean
                 remoteBackupSource:
