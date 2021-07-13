@@ -1,0 +1,76 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backup-operator-new
+  labels:
+    app.kubernetes.io/name: backup-operator-new
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: backup-operator-new
+      vendor: squids
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      name: backup-operator-new
+      labels:
+        app.kubernetes.io/name: backup-operator-new
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        vendor: squids
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: backup-operator
+      containers:
+      - command:
+        - /manager
+        args:
+          - --leader-elect
+        image: {{ .Values.global.registry }}/{{.Values.global.repository}}/backup-operator-new:{{include "operator.tag" .}}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: operator
+        securityContext:
+          allowPrivilegeEscalation: false
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8091
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8091
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          limits:
+            cpu: 100m
+            memory: 30Mi
+          requests:
+            cpu: 100m
+            memory: 20Mi
+        volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+          - name: logdir
+            mountPath: /var/log/operator
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: logdir
+          hostPath:
+            path: /apps/logs/squids/operator/
+            type: DirectoryOrCreate
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
