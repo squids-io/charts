@@ -1,0 +1,84 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "mssql-operator.fullname" . }}
+  labels:
+    {{- include "mssql-operator.labels" . | nindent 4 }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+  selector:
+    matchLabels:
+      {{- include "mssql-operator.selectorLabels" . | nindent 6 }}
+      vendor: squids
+  template:
+    metadata:
+      name: mysql-operator
+      {{- with .Values.podAnnotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "mssql-operator.selectorLabels" . | nindent 8 }}
+        vendor: squids
+    spec:
+      terminationGracePeriodSeconds: 10
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "mssql-operator.serviceAccountName" . }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /manager
+          args:
+            - metrics-bind-address ":8080"
+            - health-probe-bind-address ":8081"
+            - leader-elect {{ .Values.leaderElect }}
+            - development {{ .Values.development }}
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DATABASE_IMAGE_PREFIX
+              value: "squids/mssql"
+            - name: EXPORTER_IMAGE_PREFIX
+              value: "squids/mssql-exporter"
+            - name: LEADER_IMAGE_PREFIX
+              value: "squids/mssql-leader"
+            - name: RESTORER_IMAGE_PREFIX
+              value: "squids/mssql"
+            - name: COMMON_IMAGE_TAG
+              value: "v1.0.0"
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: logdir
+              mountPath: /var/log/operator
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: logdir
+          hostPath:
+            path: /apps/logs/squids/operator/
+            type: DirectoryOrCreate
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
