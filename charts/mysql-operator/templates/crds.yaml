@@ -215,15 +215,28 @@ spec:
                   type: boolean
                 remoteBackupSource:
                   properties:
+                    awsAccessKeyID:
+                      description: fields for backup in IndependentStorage-awsS3
+                      type: string
+                    awsEndpoint:
+                      type: string
+                    awsS3Url:
+                      type: string
+                    awsSecretAccessKey:
+                      type: string
                     backupName:
                       type: string
                     backupSetUuid:
+                      description: fields for backup, the backup created by squids
                       type: string
                     kind:
                       type: string
                     namespace:
                       type: string
                     pointInTime:
+                      type: string
+                    storageInterfaceType:
+                      description: field for backup in IndependentStorage
                       type: string
                   type: object
               type: object
