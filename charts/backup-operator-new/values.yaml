@@ -39,3 +39,7 @@ resources:
   requests:
     cpu: "10m"
     memory: "50Mi"
+
+serviceAccount: backup-operator-new
+clusterRole: backup-operator-new
+clusterRoleBinding: backup-operator-new

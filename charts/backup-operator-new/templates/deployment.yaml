@@ -2,6 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: backup-operator-new
+  namespace: {{.Release.Namespace}}
   labels:
     app.kubernetes.io/name: backup-operator-new
 spec:
@@ -19,7 +20,7 @@ spec:
         vendor: squids
     spec:
       terminationGracePeriodSeconds: 10
-      serviceAccountName: backup-operator
+      serviceAccountName: {{ .Values.serviceAccount }}
       containers:
       - command:
         - /manager
