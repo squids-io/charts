@@ -1,0 +1,183 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.4.1
+  creationTimestamp: null
+  name: backuppolicies.backup.squids.io
+spec:
+  group: backup.squids.io
+  names:
+    kind: BackupPolicy
+    listKind: BackupPolicyList
+    plural: backuppolicies
+    singular: backuppolicy
+  scope: Namespaced
+  versions:
+  - name: v1
+    schema:
+      openAPIV3Schema:
+        description: BackupPolicy is the Schema for the backuppolicies API
+        properties:
+          apiVersion:
+            description: 'APIVersion defines the versioned schema of this representation
+              of an object. Servers should convert recognized schemas to the latest
+              internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+            type: string
+          kind:
+            description: 'Kind is a string value representing the REST resource this
+              object represents. Servers may infer this from the endpoint the client
+              submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+            type: string
+          metadata:
+            type: object
+          spec:
+            description: BackupPolicySpec defines the desired state of BackupPolicy
+            properties:
+              backupStorageInterface:
+                description: Storage interface to manage backup set.
+                properties:
+                  jfs:
+                    description: JFS storage interface
+                    properties:
+                      awsAccessKey:
+                        type: string
+                      awsSecretKey:
+                        type: string
+                      bucket:
+                        type: string
+                    required:
+                    - awsAccessKey
+                    - awsSecretKey
+                    - bucket
+                    type: object
+                  nas:
+                    description: NAS storage interface
+                    properties:
+                      address:
+                        type: string
+                      backupPath:
+                        type: string
+                      name:
+                        type: string
+                      password:
+                        type: string
+                      port:
+                        type: integer
+                      protocol:
+                        type: string
+                      username:
+                        type: string
+                    required:
+                    - address
+                    - backupPath
+                    - name
+                    - port
+                    - protocol
+                    type: object
+                  s3:
+                    description: AWS s3 storage interface
+                    properties:
+                      awsAccessKeyId:
+                        type: string
+                      awsEndpoint:
+                        type: string
+                      awsSecretAccessKey:
+                        type: string
+                    required:
+                    - awsAccessKeyId
+                    - awsEndpoint
+                    - awsSecretAccessKey
+                    type: object
+                type: object
+              clusterName:
+                description: Name of database cluster
+                type: string
+              dbType:
+                description: Type of database
+                type: string
+              desiredPolicyStatus:
+                type: string
+              extraLabels:
+                additionalProperties:
+                  type: string
+                description: Extra labels to cronjob/job/pod.
+                type: object
+              storageInterfaceType:
+                description: Specifies storage backend
+                type: string
+              strategy:
+                description: Strategy to manage lifecycle of backup.
+                properties:
+                  backupBinlog:
+                    description: 是否备份binlog
+                    type: boolean
+                  backupSetExpireDuration:
+                    default: 7d
+                    description: 备份数据保留时长
+                    type: string
+                  binlogBackupSchedule:
+                    default: '*/30 * * * *'
+                    description: MySQL binlog的备份周期
+                    type: string
+                  binlogRetentionDays:
+                    default: 7
+                    description: MySQL binlog保留天数
+                    type: integer
+                  cleanBackupSchedule:
+                    default: 0 */1 * * *
+                    description: 清理备份的周期, crontab格式
+                    type: string
+                  fullBackupSchedule:
+                    default: 0 0 * * 0
+                    description: 全量备份的周期，crontab格式
+                    type: string
+                  fullBackupSetRetentionNumber:
+                    default: 1
+                    description: 全量备份的保留个数
+                    type: integer
+                  incrementalBackupSchedule:
+                    default: 0 0 * * 1,2,3,4,5,6
+                    description: 增量备份的周期，crontab格式
+                    type: string
+                  retentionPolicy:
+                    description: 备份集保留策略
+                    enum:
+                    - FullBackupSetNumber
+                    - ExpireDuration
+                    type: string
+                required:
+                - backupBinlog
+                - fullBackupSchedule
+                - retentionPolicy
+                type: object
+            required:
+            - dbType
+            - desiredPolicyStatus
+            - storageInterfaceType
+            - strategy
+            type: object
+          status:
+            description: BackupPolicyStatus defines the observed state of BackupPolicy
+            properties:
+              status:
+                description: 'INSERT ADDITIONAL STATUS FIELD - define observed state
+                  of cluster Important: Start "make" to regenerate code after modifying
+                  this file'
+                type: string
+            required:
+            - status
+            type: object
+        type: object
+    served: true
+    storage: true
+    subresources:
+      status: {}
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []

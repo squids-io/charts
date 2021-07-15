@@ -1,0 +1,45 @@
+# Default values for backup-operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+global:
+  registry: docker.io
+  repository: squids
+
+tag: latest
+image:
+  pullPolicy: Always
+  operator:
+    operator: v1.0.0
+
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+
+tolerations:
+  - effect: NoSchedule
+    key: squids/node
+    operator: Exists
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+affinity:
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: backup-operator-new
+        topologyKey: kubernetes.io/hostname
+
+# Deploy CRDs used by Logging Operator.
+#
+createCustomResource: true
+
+resources:
+  requests:
+    cpu: "10m"
+    memory: "50Mi"
+
+serviceAccount: backup-operator-new
+clusterRole: backup-operator-new
+clusterRoleBinding: backup-operator-new
