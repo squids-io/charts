@@ -119,7 +119,6 @@ spec:
                     description: 备份数据保留时长
                     type: string
                   binlogBackupSchedule:
-                    default: '*/30 * * * *'
                     description: MySQL binlog的备份周期
                     type: string
                   binlogRetentionDays:
@@ -139,7 +138,6 @@ spec:
                     description: 全量备份的保留个数
                     type: integer
                   incrementalBackupSchedule:
-                    default: 0 0 * * 1,2,3,4,5,6
                     description: 增量备份的周期，crontab格式
                     type: string
                   retentionPolicy:

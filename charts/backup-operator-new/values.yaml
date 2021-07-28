@@ -28,7 +28,7 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
           matchLabels:
-            app.kubernetes.io/name: backup-operator-new
+            app.kubernetes.io/name: backup-operator
         topologyKey: kubernetes.io/hostname
 
 # Deploy CRDs used by Logging Operator.
@@ -40,6 +40,6 @@ resources:
     cpu: "10m"
     memory: "50Mi"
 
-serviceAccount: backup-operator-new
-clusterRole: backup-operator-new
-clusterRoleBinding: backup-operator-new
+serviceAccount: backup-operator
+clusterRole: backup-operator
+clusterRoleBinding: backup-operator

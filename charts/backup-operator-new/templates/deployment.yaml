@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backup-operator-new
+  name: backup-operator
   namespace: {{.Release.Namespace}}
   labels:
-    app.kubernetes.io/name: backup-operator-new
+    app.kubernetes.io/name: backup-operator
 spec:
   selector:
     matchLabels:
-      app.kubernetes.io/name: backup-operator-new
+      app.kubernetes.io/name: backup-operator
       vendor: squids
   replicas: {{ .Values.replicaCount }}
   template:
     metadata:
-      name: backup-operator-new
+      name: backup-operator
       labels:
-        app.kubernetes.io/name: backup-operator-new
+        app.kubernetes.io/name: backup-operator
         app.kubernetes.io/instance: {{ .Release.Name }}
         vendor: squids
     spec:
