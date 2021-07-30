@@ -36,6 +36,9 @@ spec:
         spec:
           description: RedisHASpec defines the desired state of RedisHA
           properties:
+            backupImage:
+              description: BackupImage for redis cluster exec backup action
+              type: string
             clusterSpec:
               description: 'ClusterSpec describes cluster-related attributes, Such
                 as: cluster database version, cluster operation mode'
@@ -83,8 +86,8 @@ spec:
                           type: string
                         type: array
                     required:
-                      - key
-                      - operator
+                    - key
+                    - operator
                     type: object
                   type: array
                 timezone:
@@ -94,8 +97,8 @@ spec:
                   description: 'Version describes database version(like mysql: 5.6、5.7、8.0)'
                   type: string
               required:
-                - mode
-                - version
+              - mode
+              - version
               type: object
             databaseResource:
               description: DatabaseResource describes the cluster database compute
@@ -108,8 +111,8 @@ spec:
                     limits:
                       additionalProperties:
                         anyOf:
-                          - type: integer
-                          - type: string
+                        - type: integer
+                        - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Limits describes the maximum amount of compute
@@ -118,8 +121,8 @@ spec:
                     requests:
                       additionalProperties:
                         anyOf:
-                          - type: integer
-                          - type: string
+                        - type: integer
+                        - type: string
                         pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                         x-kubernetes-int-or-string: true
                       description: 'Requests describes the minimum amount of compute
@@ -145,7 +148,7 @@ spec:
                         definition If not specified, use default StorageClass
                       type: string
                   required:
-                    - size
+                  - size
                   type: object
               type: object
             exporterImage:
@@ -176,8 +179,8 @@ spec:
                           limits:
                             additionalProperties:
                               anyOf:
-                                - type: integer
-                                - type: string
+                              - type: integer
+                              - type: string
                               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                               x-kubernetes-int-or-string: true
                             description: 'Limits describes the maximum amount of compute
@@ -186,8 +189,8 @@ spec:
                           requests:
                             additionalProperties:
                               anyOf:
-                                - type: integer
-                                - type: string
+                              - type: integer
+                              - type: string
                               pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                               x-kubernetes-int-or-string: true
                             description: 'Requests describes the minimum amount of
@@ -216,7 +219,7 @@ spec:
                               definition If not specified, use default StorageClass
                             type: string
                         required:
-                          - size
+                        - size
                         type: object
                     type: object
                 type: object
@@ -240,9 +243,19 @@ spec:
                   type: boolean
                 remoteBackupSource:
                   properties:
+                    awsAccessKeyID:
+                      description: fields for backup in IndependentStorage-awsS3
+                      type: string
+                    awsEndpoint:
+                      type: string
+                    awsS3Url:
+                      type: string
+                    awsSecretAccessKey:
+                      type: string
                     backupName:
                       type: string
                     backupSetUuid:
+                      description: fields for backup, the backup created by squids
                       type: string
                     kind:
                       type: string
@@ -250,10 +263,13 @@ spec:
                       type: string
                     pointInTime:
                       type: string
+                    storageInterfaceType:
+                      description: field for backup in IndependentStorage
+                      type: string
                   type: object
               type: object
           required:
-            - replicas
+          - replicas
           type: object
         status:
           properties:
@@ -285,8 +301,8 @@ spec:
                     description: Status of cluster condition.
                     type: string
                 required:
-                  - status
-                  - type
+                - status
+                - type
                 type: object
               type: array
             customStatus:
@@ -296,9 +312,9 @@ spec:
       type: object
   version: v1
   versions:
-    - name: v1
-      served: true
-      storage: true
+  - name: v1
+    served: true
+    storage: true
 status:
   acceptedNames:
     kind: ""
