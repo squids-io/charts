@@ -9,9 +9,7 @@ global:
 
 tag: latest
 image:
-  pullPolicy: IfNotPresent
-  qfbBackupTag: v1.0.0
-  tag: v1.0.0
+  pullPolicy: Always
   operator:
     operator: v1.0.0
 
@@ -36,3 +34,12 @@ affinity:
 # Deploy CRDs used by Logging Operator.
 #
 createCustomResource: true
+
+resources:
+  requests:
+    cpu: "10m"
+    memory: "50Mi"
+
+serviceAccount: backup-operator
+clusterRole: backup-operator
+clusterRoleBinding: backup-operator
