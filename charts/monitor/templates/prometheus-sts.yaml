@@ -216,16 +216,8 @@ spec:
         - name: thanos-objectstorage
           secret:
             secretName: thanos-objectstorage
-      {{- with .Values.prometheusSts.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
       {{- with .Values.prometheusSts.affinity }}
       affinity:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.prometheusSts.tolerations }}
-      tolerations:
         {{- toYaml . | nindent 8 }}
       {{- end }}
   volumeClaimTemplates:

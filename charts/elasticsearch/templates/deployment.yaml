@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: DaemonSet
+kind: Deployment
 metadata:
   name: {{ template "elasticsearch.name" . }}
   namespace: {{ .Release.Namespace }}
   labels:
     {{- include "elasticsearch.labels" . | nindent 4 }}
 spec:
+  replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
       {{- include "elasticsearch.selectorLabels" . | nindent 6 }}
@@ -14,12 +15,6 @@ spec:
       labels:
         {{- include "elasticsearch.selectorLabels" . | nindent 8 }}
     spec:
-      {{- with .Values.nodeSelector }}
-      nodeSelector: {{ toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.tolerations }}
-      tolerations: {{ toYaml . | nindent 8 }}
-      {{- end }}
       {{- with .Values.affinity }}
       affinity: {{ toYaml . | nindent 8 }}
       {{end}}

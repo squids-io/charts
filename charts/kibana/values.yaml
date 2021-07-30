@@ -2,6 +2,8 @@ global:
   registry: docker.io
   repository: squids
 
+replicaCount: 3
+
 image:
   name: kibana
   pullPolicy: IfNotPresent
@@ -15,17 +17,31 @@ service:
 
 resources: {}
 
-nodeSelector:
-  node-role.kubernetes.io/master: ""
+#nodeSelector:
+#  node-role.kubernetes.io/master: ""
+#
+#tolerations:
+#  - effect: NoSchedule
+#    key: squids/master
+#    operator: Exists
+#  - effect: NoSchedule
+#    key: node-role.kubernetes.io/master
+#    operator: Exists
 
-tolerations:
-  - effect: NoSchedule
-    key: squids/master
-    operator: Exists
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
-
-affinity: {}
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: squids/cluster
+              operator: In
+              values:
+                - squids-monitor
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: kibana
+        topologyKey: kubernetes.io/hostname
 
 esurl: http://elasticsearch-logging:9200

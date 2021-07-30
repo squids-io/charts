@@ -13,15 +13,23 @@ adminPassword: admin
 
 enableHttps: true
 
-nodeSelector:
-  node-role.kubernetes.io/master: ""
-
-tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
+#nodeSelector:
+#  node-role.kubernetes.io/master: ""
+#
+#tolerations:
+#  - effect: NoSchedule
+#    key: node-role.kubernetes.io/master
+#    operator: Exists
 
 affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: squids/cluster
+              operator: In
+              values:
+                - squids-monitor
   podAntiAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       - labelSelector:
