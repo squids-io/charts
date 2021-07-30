@@ -23,30 +23,49 @@ alertmanagerSts:
   smtp_auth_password: xxx
   smtp_receiver: xxx
 
-  nodeSelector:
-    node-role.kubernetes.io/master: ""
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - alertmanager
+          topologyKey: kubernetes.io/hostname
 
-  tolerations:
-    - effect: NoSchedule
-      key: node-role.kubernetes.io/master
-      operator: Exists
+#  nodeSelector:
+#    node-role.kubernetes.io/master: ""
+#
+#  tolerations:
+#    - effect: NoSchedule
+#      key: node-role.kubernetes.io/master
+#      operator: Exists
 
 prometheusSts:
   replicaCount: 3
 
   pvcSize: 200Gi
 
-  nodeSelector:
-    node-role.kubernetes.io/master: ""
-
-  tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
-
   kubePKIPath: /etc/kubernetes/pki
 
   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -56,6 +75,14 @@ prometheusSts:
                 values:
                   - prometheus
           topologyKey: kubernetes.io/hostname
+
+#  nodeSelector:
+#    node-role.kubernetes.io/master: ""
+#
+#  tolerations:
+#  - effect: NoSchedule
+#    key: node-role.kubernetes.io/master
+#    operator: Exists
 
   prometheus:
     resources: {}
@@ -72,15 +99,23 @@ thanosQuery:
   grpcPort: 10901
   replicaCount: 3
 
-  nodeSelector:
-    node-role.kubernetes.io/master: ""
-
-  tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
+#  nodeSelector:
+#    node-role.kubernetes.io/master: ""
+#
+#  tolerations:
+#  - effect: NoSchedule
+#    key: node-role.kubernetes.io/master
+#    operator: Exists
 
   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
     podAntiAffinity:
       preferredDuringSchedulingIgnoredDuringExecution:
         - podAffinityTerm:
@@ -99,15 +134,15 @@ thanosStore:
   replicaCount: 3
   pvcSize: 10Gi
 
-  nodeSelector:
-    node-role.kubernetes.io/master: ""
-
-  tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
-
   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
@@ -115,27 +150,43 @@ thanosStore:
               app.kubernetes.io/name: thanos-store
           topologyKey: kubernetes.io/hostname
 
+#  nodeSelector:
+#    node-role.kubernetes.io/master: ""
+#
+#  tolerations:
+#  - effect: NoSchedule
+#    key: node-role.kubernetes.io/master
+#    operator: Exists
+
   resources: {}
 
 thanosRule:
   replicaCount: 3
   pvcSize: 100Gi
 
-  nodeSelector:
-    node-role.kubernetes.io/master: ""
-
-  tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
-
   affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
     podAntiAffinity:
       requiredDuringSchedulingIgnoredDuringExecution:
         - labelSelector:
             matchLabels:
               app.kubernetes.io/name: thanos-rule
           topologyKey: kubernetes.io/hostname
+
+#  nodeSelector:
+#    node-role.kubernetes.io/master: ""
+#
+#  tolerations:
+#    - effect: NoSchedule
+#      key: node-role.kubernetes.io/master
+#      operator: Exists
 
   resources: {}
 
@@ -146,13 +197,32 @@ thanosCompact:
     resolution1h: 360d
   pvcSize: 100Gi
 
-  nodeSelector:
-    node-role.kubernetes.io/master: ""
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - thanos-compact
+          topologyKey: kubernetes.io/hostname
 
-  tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
+#  nodeSelector:
+#    node-role.kubernetes.io/master: ""
+#
+#  tolerations:
+#  - effect: NoSchedule
+#    key: node-role.kubernetes.io/master
+#    operator: Exists
 
   resources: {}
 

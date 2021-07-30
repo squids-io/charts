@@ -80,12 +80,8 @@ spec:
             defaultMode: 420
             name: alertmanager
           name: config
-      {{- with .Values.prometheusSts.nodeSelector }}
-      nodeSelector:
-      {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.prometheusSts.tolerations }}
-      tolerations:
+      {{- with .Values.alertmanagerSts.affinity }}
+      affinity:
       {{- toYaml . | nindent 8 }}
       {{- end }}
   updateStrategy:

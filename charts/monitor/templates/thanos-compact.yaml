@@ -81,13 +81,9 @@ spec:
         - name: thanos-objectstorage
           secret:
             secretName: thanos-objectstorage
-      {{- with .Values.thanosCompact.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-      {{- with .Values.thanosCompact.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
+      {{- with .Values.thanosCompact.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
       {{- end }}
   volumeClaimTemplates:
     - metadata:
