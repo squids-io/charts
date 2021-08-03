@@ -7,6 +7,12 @@ metadata:
   name: {{ .Values.clusterRole }}
 rules:
 - apiGroups:
+  - ""
+  resources:
+  - pods/exec
+  verbs:
+  - create
+- apiGroups:
   - backup.squids.io
   resources:
   - backuppolicies
@@ -58,3 +64,27 @@ rules:
   - get
   - patch
   - update
+- apiGroups:
+  - mssql.squids.io
+  resources:
+  - mssqlclusters
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - mysql.squids.io
+  resources:
+  - mysqlclusters
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - redis.squids.io
+  resources:
+  - redishas
+  verbs:
+  - get
+  - list
+  - watch
