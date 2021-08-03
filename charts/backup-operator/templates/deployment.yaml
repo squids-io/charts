@@ -44,12 +44,7 @@ spec:
           initialDelaySeconds: 5
           periodSeconds: 10
         resources:
-          limits:
-            cpu: 4000m
-            memory: 400Mi
-          requests:
-            cpu: 2000m
-            memory: 200Mi
+          {{- toYaml .Values.resources | nindent 12 }}
         volumeMounts:
           - name: localtime
             mountPath: /etc/localtime

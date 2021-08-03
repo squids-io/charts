@@ -37,8 +37,11 @@ createCustomResource: true
 
 resources:
   requests:
-    cpu: "10m"
-    memory: "50Mi"
+    cpu: "500m"
+    memory: "200Mi"
+  limits:
+    cpu: "4000m"
+    memory: "400Mi"
 
 serviceAccount: squids-operator
 clusterRole: backup-operator
