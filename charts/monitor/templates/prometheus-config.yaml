@@ -109,7 +109,7 @@ data:
             separator: /
             regex: (.*)
             target_label: __param_secret
-            replacement: ${1}-root-suffix
+            replacement: ${1}-component-user-suffix
             action: replace
           - source_labels: [__meta_kubernetes_pod_ip]
             separator: ;
