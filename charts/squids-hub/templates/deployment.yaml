@@ -46,7 +46,7 @@ spec:
             name: squidshub
         - name: tmpterra
           hostPath:
-            path: /tmpterra
+            path: /squids-data/terraform_file
         - name: tls
           secret:
             secretName: squids.tls

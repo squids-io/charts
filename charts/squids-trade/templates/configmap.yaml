@@ -56,6 +56,17 @@ data:
     {{ end }}
 
 
-    modulservice:
-      UserModulGatewayUrl: http://squidsuser-headless:29529/api/v1
-      HubModulGatewayUrl: http://squidshub-headless:29527/api/v1
+    moduleService:
+      UserModuleGatewayUrl: http://squidsuser-headless:29529/api/v1/
+      HubModuleGatewayUrl: http://squidshub-headless:29527/api/v1/
+
+    charging-config:
+      discount: 0.7
+      givemoney: 3000
+      overdueTime: 7
+      disableTime: 14
+
+    mail-squids:
+      mailbox: {{ .Values.mail.mailbox }}
+      host: {{ .Values.mail.host }}
+      password: {{ .Values.mail.password }}
