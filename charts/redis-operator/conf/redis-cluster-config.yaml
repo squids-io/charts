@@ -23,7 +23,7 @@
   name: databases
   defaultValue: 16
   type: int
-  needRestart: false
+  needRestart: true
   range: 0-9999
   description: Set the number of databases
   engine: redis
