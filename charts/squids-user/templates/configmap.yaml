@@ -46,9 +46,22 @@ data:
       password: {{ .Values.mail.password }}
 
       {{ if eq .Values.env "pro" }}
-      url: https://squids.io/reset_password/
+      reseturl: https://squids.io/reset_password/
+      activeurl: https://squids.io/api/v1/sso/active/
       {{ end }}
 
       {{ if eq .Values.env "test" }}
-      url: {{.Values.server.host}}/reset_password/
+      reseturl: {{.Values.server.host}}/reset_password/
+      activeurl: {{.Values.server.host}}/api/v1/sso/active/
+      {{ end }}
+
+    user-config:
+      #邀请用户奖励的佣金 转化成美元需 /1000
+      reward_amount: 5000
+      #注册地址
+      {{ if eq .Values.env "pro" }}
+      register_url: https://squids.io/login?action=join
+      {{ end }}
+      {{ if eq .Values.env "test" }}
+      register_url: {{.Values.server.host}}/login?action=join
       {{ end }}

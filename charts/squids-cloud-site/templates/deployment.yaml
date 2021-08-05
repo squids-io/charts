@@ -42,6 +42,8 @@ spec:
             - name: cert
               mountPath: /etc/nginx/cert
             {{ end }}
+            - name: grafana
+              mountPath: /usr/share/nginx/html/config
       volumes:
         - name: localtime
           hostPath:
@@ -54,6 +56,9 @@ spec:
         - name: config-volume
           configMap:
             name: nginx-conf
+        - name: grafana
+          hostPath:
+            path: /squids/nginx/config
         {{ if eq .Values.env "pro" }}
         - name: cert
           hostPath:

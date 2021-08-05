@@ -42,8 +42,21 @@ spec:
           hostPath:
             path: /etc/localtime
         - name: data
-          hostPath:
-            path: /redis/data
+          persistentVolumeClaim:
+            claimName: squids-redis-pvc
         - name: redis-conf
           configMap:
             name: redis-conf
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: squids-redis-pvc
+  namespace: squids
+spec:
+  storageClassName: local-path
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 4Gi
