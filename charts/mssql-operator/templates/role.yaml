@@ -32,6 +32,42 @@ rules:
       - patch
       - update
   - apiGroups:
+      - backup.squids.io
+    resources:
+      - backuppolicies
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - backup.squids.io
+    resources:
+      - backuppolicies/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - backup.squids.io
+    resources:
+      - backupsets
+    verbs:
+      - create
+      - delete
+      - get
+      - list
+      - patch
+      - update
+      - watch
+  - apiGroups:
+      - backup.squids.io
+    resources:
+      - backupsets/finalizers
+    verbs:
+      - update
+  - apiGroups:
       - ""
     resources:
       - configmaps
