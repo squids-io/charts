@@ -23,9 +23,10 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount }}
       containers:
       - command:
-        - /manager
+        - /backup-operator
         args:
           - --leader-elect
+          - --pprof=true
         image: {{ .Values.global.registry }}/{{.Values.global.repository}}/backup-operator-new:{{include "operator.tag" .}}
         imagePullPolicy: {{ .Values.image.pullPolicy }}
         name: operator
