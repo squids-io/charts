@@ -23,7 +23,7 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount }}
       containers:
       - command:
-        - /manager
+        - /backup-operator
         args:
           - --leader-elect
         image: {{ .Values.global.registry }}/{{.Values.global.repository}}/backup-operator-new:{{include "operator.tag" .}}
