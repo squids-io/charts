@@ -43,6 +43,6 @@ resources:
     cpu: "4000m"
     memory: "400Mi"
 
-serviceAccount: squids-operator
+serviceAccount: backup-operator
 clusterRole: backup-operator
 clusterRoleBinding: backup-operator
