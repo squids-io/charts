@@ -36,18 +36,24 @@ spec:
         spec:
           description: RedisHASpec defines the desired state of RedisHA
           properties:
-            backupImage:
-              description: BackupImage for redis cluster exec backup action
-              type: string
             clusterSpec:
               description: 'ClusterSpec describes cluster-related attributes, Such
                 as: cluster database version, cluster operation mode'
               properties:
+                backupImage:
+                  description: BackupImage for cluster exec backup action
+                  type: string
                 characterSet:
                   description: Database Character set
                   type: string
+                exporterImage:
+                  description: ExporterImage for redis monitor
+                  type: string
                 image:
                   description: Image describes database image
+                  type: string
+                leaderImage:
+                  description: LeaderImage for cluster election
                   type: string
                 matchLabels:
                   additionalProperties:
@@ -90,6 +96,9 @@ spec:
                     - operator
                     type: object
                   type: array
+                restoreImage:
+                  description: RestoreImage for cluster if restore from a backup set
+                  type: string
                 timezone:
                   description: 'Database timezone, like: +08:00'
                   type: string
@@ -151,12 +160,6 @@ spec:
                   - size
                   type: object
               type: object
-            exporterImage:
-              description: ExporterImage for redis monitor
-              type: string
-            leaderImage:
-              description: LeaderImage for redis election
-              type: string
             password:
               description: Password redis auth set requirepass and masterauth
               type: string
@@ -230,10 +233,6 @@ spec:
                 least 1
               format: int32
               type: integer
-            restoreImage:
-              description: RestoreImage for redis cluster if restore from a backup
-                set
-              type: string
             restoreSource:
               description: RestoreSource describes recover data from a data source
                 when creating a cluster ignore this parameter when you don't have

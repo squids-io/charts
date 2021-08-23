@@ -29,8 +29,8 @@ spec:
           args:
             - --enable-leader-election
           env:
-            - name: LEADER_IMAGE
-              value: {{ .Values.global.registry }}/{{ .Values.global.repository }}/redis-leader:{{.Values.image.leaderTag}}
+            - name: CURRENT_RUNTIME_ENV
+              value: "{{ .Values.currentRuntimeEnv }}"
             - name: CLUSTER_FORCE_ANTI_AFFINITY
               value: "true"
           volumeMounts:
