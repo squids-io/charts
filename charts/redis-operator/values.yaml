@@ -30,3 +30,5 @@ affinity:
           matchLabels:
             app.kubernetes.io/name: redis-operator
         topologyKey: kubernetes.io/hostname
+
+currentRuntimeEnv: "prod"

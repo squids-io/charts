@@ -60,7 +60,7 @@ spec:
             description: BackupSetStatus defines the observed state of BackupSet
             properties:
               backupService:
-                description: BackupService 备份服务名地址
+                description: BackupService 备份服务名地址 podname.namespace
                 type: string
               endTime:
                 description: EndTime

@@ -45,16 +45,10 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-            - name: DATABASE_IMAGE_PREFIX
-              value: "squids/mssql"
-            - name: EXPORTER_IMAGE_PREFIX
-              value: "squids/mssql-exporter"
-            - name: LEADER_IMAGE_PREFIX
-              value: "squids/mssql-leader"
-            - name: RESTORER_IMAGE_PREFIX
-              value: "squids/mssql"
-            - name: COMMON_IMAGE_TAG
-              value: "v1.0.0"
+            - name: CURRENT_RUNTIME_ENV
+              value: "{{ .Values.currentRuntimeEnv }}"
+            - name: CLUSTER_FORCE_ANTI_AFFINITY
+              value: "true"
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime

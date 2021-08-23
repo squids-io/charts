@@ -4,7 +4,7 @@
 
 development: true
 
-leaderElect: false
+leaderElect: true
 
 replicaCount: 1
 
@@ -100,3 +100,5 @@ affinity:
           matchLabels:
             app.kubernetes.io/name: mssql-operator
         topologyKey: kubernetes.io/hostname
+
+currentRuntimeEnv: "prod"
