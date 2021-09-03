@@ -66,6 +66,15 @@ data:
           - source_labels: [__meta_kubernetes_node_name]
             action: replace
             target_label: node_name
+          - source_labels: [__meta_kubernetes_node_annotation_organization]
+            action: replace
+            target_label: organization
+          - source_labels: [__meta_kubernetes_node_annotation_project]
+            action: replace
+            target_label: project
+          - source_labels: [__meta_kubernetes_node_annotation_cluster]
+            action: replace
+            target_label: cluster
           - source_labels: []
             action: replace
             target_label: name
@@ -78,6 +87,15 @@ data:
           kubernetes_sd_configs:
           - role: pod
           relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_organization]
+            action: replace
+            target_label: organization
+          - source_labels: [__meta_kubernetes_pod_annotation_project]
+            action: replace
+            target_label: project
+          - source_labels: [__meta_kubernetes_pod_annotation_cluster]
+            action: replace
+            target_label: cluster
           - source_labels: [__meta_kubernetes_pod_label_db_type, __meta_kubernetes_pod_label_type]
             separator: ;
             regex: mysql;database
@@ -147,6 +165,15 @@ data:
           kubernetes_sd_configs:
           - role: pod
           relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_organization]
+            action: replace
+            target_label: organization
+          - source_labels: [__meta_kubernetes_pod_annotation_project]
+            action: replace
+            target_label: project
+          - source_labels: [__meta_kubernetes_pod_annotation_cluster]
+            action: replace
+            target_label: cluster
           - source_labels: [__meta_kubernetes_pod_ip]
             action: replace
             target_label: __address__
@@ -174,6 +201,15 @@ data:
           kubernetes_sd_configs:
           - role: pod
           relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_organization]
+            action: replace
+            target_label: organization
+          - source_labels: [__meta_kubernetes_pod_annotation_project]
+            action: replace
+            target_label: project
+          - source_labels: [__meta_kubernetes_pod_annotation_cluster]
+            action: replace
+            target_label: cluster
           - source_labels: [__meta_kubernetes_pod_ip]
             action: replace
             target_label: __address__
@@ -264,46 +300,64 @@ data:
             for: 150s
             annotations:
               summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
-              description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 150 seconds."
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, cluster: {{"{{"}}$labels.cluster {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}} has been down for more than 150 seconds."
           - alert: kubernetes apiservers  up
             expr: up{job="kubernetes-apiservers"} == 0
             for: 15s
             annotations:
-              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              summary: "kubernetes apiserver down"
               description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
           - alert: etcd up
             expr: up{job="etcd-exporter"} == 0
             for: 15s
             annotations:
-              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              summary: "etcd down"
               description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
           - alert: backup-exporter up
             expr: up{job="backup-exporter"} == 0
             for: 15s
             annotations:
-              summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+              summary: "backup-exporter down"
               description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+          - alert: mysql up
+            expr: mysql_up{job="mysqld-exporter"} == 0
+            for: 60s
+            annotations:
+              summary: "mysql cluster {{"{{"}}$labels.cluster {{"}}"}} down"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}, mysql cluster: {{"{{"}}$labels.cluster {{"}}"}} has been down for more than 60 seconds."
+          - alert: redis up
+            expr: redis_up{job="redis-exporter"} == 0
+            for: 60s
+            annotations:
+              summary: "redis cluster {{"{{"}}$labels.cluster {{"}}"}} down"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}, redis cluster: {{"{{"}}$labels.cluster {{"}}"}} has been down for more than 60 seconds."
+          - alert: sqlServer up
+            expr: mssql_up{job="mssql-exporter"} == 0
+            for: 60s
+            annotations:
+              summary: "sqlServer cluster {{"{{"}}$labels.cluster {{"}}"}} down"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}, sqlServer cluster: {{"{{"}}$labels.cluster {{"}}"}} has been down for more than 60 seconds."
           - alert: Root Filesystem Usage
             expr: (node_filesystem_size_bytes{device="/dev/root"} - node_filesystem_free_bytes{device="/dev/root"}) / node_filesystem_size_bytes{device="/dev/root"} * 100 > 75
             for: 2m
             annotations:
               summary: "{{"{{"}}$labels.instance{{"}}"}}: High Filesystem usage detected"
-              description: "{{"{{"}}$labels.instance{{"}}"}}: root Filesystem usage is above 75% (current value is: {{"{{"}}$value {{"}}"}}"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, cluster: {{"{{"}}$labels.cluster {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}: root Filesystem usage is above 75% (current value is: {{"{{"}}$value {{"}}"}}"
           - alert: SSD Filesystem Usage
             expr: (node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} - node_filesystem_free_bytes{device="/dev/mapper/squids--group-squids--data"}) / node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} * 100 > 80
             for: 2m
             annotations:
               summary: "{{"{{"}}$labels.instance{{"}}"}}: High Filesystem usage detected"
-              description: "{{"{{"}}$labels.instance{{"}}"}}: SSD Filesystem usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, cluster: {{"{{"}}$labels.cluster {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}: SSD Filesystem usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
           - alert: Node Memory Usage
             expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 75
             for: 2m
             annotations:
               summary: "{{"{{"}}$labels.instance{{"}}"}}: High Memory usage detected"
-              description: "{{"{{"}}$labels.instance{{"}}"}}: Memory usage is above 75% (current value is: {{"{{"}}$value {{"}}"}}"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, cluster: {{"{{"}}$labels.cluster {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}: Memory usage is above 75% (current value is: {{"{{"}}$value {{"}}"}}"
           - alert: Node CPU Load
             expr: (100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node",mode="idle"}[5m])) * 100)) > 80
             for: 5m
             annotations:
               summary: "{{"{{"}}$labels.instance{{"}}"}}: High CPU usage detected"
-              description: "{{"{{"}}$labels.instance{{"}}"}}: CPU usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, cluster: {{"{{"}}$labels.cluster {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}: CPU usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"

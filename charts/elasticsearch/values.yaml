@@ -36,6 +36,17 @@ affinity:
             app.kubernetes.io/name: elasticsearch
         topologyKey: kubernetes.io/hostname
 
+cronjob:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+
 #tolerations:
 #- effect: NoSchedule
 #  key: squids/master

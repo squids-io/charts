@@ -19,7 +19,7 @@ spec:
          {{- with .Values.tolerations }}
           tolerations: {{ toYaml . | nindent 12 }}
          {{- end }}
-         {{- with .Values.affinity }}
+         {{- with .Values.cronjob.affinity }}
           affinity: {{ toYaml . | nindent 12 }}
          {{end}}
           containers:
