@@ -26,8 +26,6 @@ spec:
               value: "/terraform_file"
             - name: APISERVER_CERT_ROOT_PATH
               value: "/apiserver_tls"
-            - name: TF_PLUGIN_CACHE_DIR
-              value: "/terraform_plugin_cache"
           ports:
             - containerPort: {{ .Values.image.containerPort }}
           volumeMounts:
