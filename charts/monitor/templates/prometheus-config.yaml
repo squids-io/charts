@@ -66,6 +66,11 @@ data:
           - source_labels: [__meta_kubernetes_node_name]
             action: replace
             target_label: node_name
+          - source_labels: []
+            action: replace
+            target_label: name
+            replacement: node_exporter
+          {{ if .Values.serverEnabled }}
           - source_labels: [__meta_kubernetes_node_annotation_organization]
             action: replace
             target_label: organization
@@ -75,10 +80,6 @@ data:
           - source_labels: [__meta_kubernetes_node_annotation_cluster]
             action: replace
             target_label: cluster
-          - source_labels: []
-            action: replace
-            target_label: name
-            replacement: node_exporter
         - job_name: mysqld-exporter
           scrape_interval: 15s
           scrape_timeout: 10s
@@ -231,6 +232,7 @@ data:
             target_label: namespace
             replacement: $1
             action: replace
+            {{- end }}
         - job_name: 'volume-exporter'
           scrape_interval: 1m
           scrape_timeout: 50s
@@ -313,6 +315,7 @@ data:
             annotations:
               summary: "etcd down"
               description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+           {{ if .Values.serverEnabled }}
           - alert: backup-exporter up
             expr: up{job="backup-exporter"} == 0
             for: 15s
@@ -337,6 +340,7 @@ data:
             annotations:
               summary: "sqlServer cluster {{"{{"}}$labels.cluster {{"}}"}} down"
               description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}, sqlServer cluster: {{"{{"}}$labels.cluster {{"}}"}} has been down for more than 60 seconds."
+           {{- end }}
           - alert: Root Filesystem Usage
             expr: (node_filesystem_size_bytes{device="/dev/root"} - node_filesystem_free_bytes{device="/dev/root"}) / node_filesystem_size_bytes{device="/dev/root"} * 100 > 75
             for: 2m

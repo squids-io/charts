@@ -15,8 +15,10 @@ image:
   thanosTag: v0.16.0-rc.1
   alertmanagerTag: v0.21.0
 
+serverEnabled: true
+
 alertmanagerSts:
-  replicaCount: 3
+  replicaCount: 1
 
   smtp_from: xxx
   smtp_auth_username: xxx
@@ -51,7 +53,7 @@ alertmanagerSts:
 #      operator: Exists
 
 prometheusSts:
-  replicaCount: 3
+  replicaCount: 1
 
   pvcSize: 200Gi
 
@@ -97,7 +99,7 @@ prometheusSts:
 thanosQuery:
   httpPort: 9090
   grpcPort: 10901
-  replicaCount: 3
+  replicaCount: 1
 
 #  nodeSelector:
 #    node-role.kubernetes.io/master: ""
@@ -131,7 +133,7 @@ thanosQuery:
   resources: {}
 
 thanosStore:
-  replicaCount: 3
+  replicaCount: 1
   pvcSize: 10Gi
 
   affinity:
@@ -161,7 +163,7 @@ thanosStore:
   resources: {}
 
 thanosRule:
-  replicaCount: 3
+  replicaCount: 1
   pvcSize: 100Gi
 
   affinity:
