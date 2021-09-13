@@ -32,6 +32,13 @@ data:
       version: 2
       # <bool> allow users to edit datasources from the UI.
       editable: true
+    {{ if .Values.loki.enabled }}
+    - name: Loki
+      type: loki
+      access: proxy
+      url: http://loki-headless.{{.Release.Namespace}}.svc.cluster.local:{{ .Values.loki.port }}
+      version: 1
+    {{ end }}
 
 kind: ConfigMap
 metadata:
@@ -84,8 +91,10 @@ spec:
             - name: grafana-config
               mountPath: /etc/grafana/grafana.ini
               subPath: grafana.ini
+            {{ if .Values.enableHttps }}
             - name: grafana-secret
               mountPath: /grafana/ssl/
+            {{- end }}
       volumes:
         - name: grafana-dashboards
           configMap:
@@ -96,9 +105,11 @@ spec:
         - name: grafana-config
           configMap:
             name: grafana-config
+        {{ if .Values.enableHttps }}
         - name: grafana-secret
           secret:
             secretName: grafana-secret
+        {{- end }}
       {{- with .Values.affinity }}
       affinity:
         {{- toYaml . | nindent 8 }}
