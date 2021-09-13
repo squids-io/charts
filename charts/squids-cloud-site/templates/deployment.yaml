@@ -34,6 +34,10 @@ spec:
             - name: config-volume
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
+            - name: grafana
+              mountPath: /usr/share/nginx/html/config
+            - name: geoip
+              mountPath: /etc/nginx/geoip
             {{ if .Values.nginx.auth }}
             - name: passwd
               mountPath: /etc/nginx/passwd
@@ -42,8 +46,6 @@ spec:
             - name: cert
               mountPath: /etc/nginx/cert
             {{ end }}
-            - name: grafana
-              mountPath: /usr/share/nginx/html/config
       volumes:
         - name: localtime
           hostPath:
@@ -59,6 +61,9 @@ spec:
         - name: grafana
           hostPath:
             path: /squids/nginx/config
+        - name: geoip
+          hostPath:
+            path: /squids/nginx/GeoIP
         {{ if eq .Values.env "pro" }}
         - name: cert
           hostPath:
