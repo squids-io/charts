@@ -112,6 +112,15 @@ rules:
   - patch
   - update
 - apiGroups:
+  - batch
+  resources:
+  - jobs
+  verbs:
+  - create
+  - get
+  - list
+  - watch
+- apiGroups:
   - mssql.squids.io
   resources:
   - mssqlclusters
