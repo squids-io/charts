@@ -4,16 +4,26 @@
 
 replicaCount: 1
 
+#env: pro test dev
+env: dev
+
 image:
   registry: docker.io
   repository: squids
   pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.0.0
+  console:
+    name: squids-console-release
+    tag: 1.1.0
+  web:
+    name: squids-web-release
+    tag: 1.1.0
 
-env: pro
-server:
-  host: localhost
+console:
+  domain: www.google.com
+web:
+  domain: www.google.com
+
 nginx:
   auth: false
 
@@ -24,6 +34,8 @@ containers:
   ssl:
     containerPort: 443
     hostport: 443
+  web:
+    containerPort: 3000
 
 
 service:
@@ -32,19 +44,8 @@ service:
     port: 80
   https:
     port: 443
-
-imagePullSecrets: []
-nameOverride: ""
-fullnameOverride: ""
-
-serviceAccount:
-  # Specifies whether a service account should be created
-  create: false
-  # Annotations to add to the service account
-  annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
-  name: ""
+  web:
+    port: 3000
 
 podAnnotations: {}
 

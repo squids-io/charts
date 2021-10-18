@@ -1,32 +1,41 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: squids-cloud-site
+  name: squids-console
   namespace: squids
   labels:
-    app-name: squids-cloud-site
+    app-name: squids-console
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app-name: squids-cloud-site
+      app-name: squids-console
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 100%
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app-name: squids-cloud-site
+        app-name: squids-console
     spec:
       nodeSelector:
         node-role.kubernetes.io/master: ""
       containers:
-        - name: squids-cloud-site
+        - name: squids-console
           imagePullPolicy: {{ .Values.image.pullPolicy}}
-          image:  {{ .Values.image.registry }}/{{ .Values.image.repository }}/cloud-site:{{ .Values.image.tag }}
+          image:  {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.console.name }}:{{ .Values.image.console.tag }}
           ports:
             - containerPort: {{ .Values.containers.http.containerPort}}
               hostPort: {{ .Values.containers.http.containerPort}}
-            {{ if eq .Values.env "pro" }}
+            {{ if ne .Values.env "dev" }}
             - containerPort: {{ .Values.containers.ssl.containerPort}}
               hostPort: {{ .Values.containers.ssl.containerPort}}
+            {{ end }}
+            {{ if eq .Values.env "dev" }}
+            - containerPort: 8080
+              hostPort: 8080
             {{ end }}
           volumeMounts:
             - name: localtime
@@ -34,7 +43,7 @@ spec:
             - name: config-volume
               mountPath: /etc/nginx/nginx.conf
               subPath: nginx.conf
-            - name: grafana
+            - name: squids-console-config
               mountPath: /usr/share/nginx/html/config
             - name: geoip
               mountPath: /etc/nginx/geoip
@@ -42,7 +51,7 @@ spec:
             - name: passwd
               mountPath: /etc/nginx/passwd
             {{ end }}
-            {{ if eq .Values.env "pro" }}
+            {{ if ne .Values.env "dev" }}
             - name: cert
               mountPath: /etc/nginx/cert
             {{ end }}
@@ -58,13 +67,13 @@ spec:
         - name: config-volume
           configMap:
             name: nginx-conf
-        - name: grafana
-          hostPath:
-            path: /squids/nginx/config
+        - name: squids-console-config
+          configMap:
+            name: squids-console-config
         - name: geoip
           hostPath:
             path: /squids/nginx/GeoIP
-        {{ if eq .Values.env "pro" }}
+        {{ if ne .Values.env "dev" }}
         - name: cert
           hostPath:
             path: /squids/nginx/cert
