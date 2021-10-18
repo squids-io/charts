@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squids-web
+  namespace: squids
+  labels:
+    app-name: squids-web
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app-name: squids-web
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 100%
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app-name: squids-web
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squids-web
+          imagePullPolicy: Always
+          image:  {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.web.name }}:{{ .Values.image.web.tag }}
+          ports:
+            - containerPort: {{ .Values.containers.web.containerPort}}
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: squids-web-config
+              mountPath: /app/public/config
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: squids-web-config
+          configMap:
+            name: squids-web-config

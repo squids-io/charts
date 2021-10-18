@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squids-web
+  namespace: squids
+  labels:
+    app-name: squids-web
+spec:
+  ports:
+    - port: {{ .Values.service.web.port }}
+      targetPort: {{ .Values.service.web.port }}
+      protocol: TCP
+  selector:
+    app-name: squids-web
