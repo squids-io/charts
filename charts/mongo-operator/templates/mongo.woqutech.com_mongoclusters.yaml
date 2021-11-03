@@ -1,0 +1,415 @@
+
+---
+apiVersion: apiextensions.k8s.io/v1beta1
+kind: CustomResourceDefinition
+metadata:
+  annotations:
+    controller-gen.kubebuilder.io/version: v0.2.5
+  creationTimestamp: null
+  name: mongoclusters.mongo.woqutech.com
+spec:
+  group: mongo.woqutech.com
+  names:
+    kind: MongoCluster
+    listKind: MongoClusterList
+    plural: mongoclusters
+    singular: mongocluster
+  scope: Namespaced
+  validation:
+    openAPIV3Schema:
+      description: MongoCluster is the Schema for the mongoclusters API
+      properties:
+        apiVersion:
+          description: 'APIVersion defines the versioned schema of this representation
+            of an object. Servers should convert recognized schemas to the latest
+            internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources'
+          type: string
+        kind:
+          description: 'Kind is a string value representing the REST resource this
+            object represents. Servers may infer this from the endpoint the client
+            submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds'
+          type: string
+        metadata:
+          type: object
+        spec:
+          description: MongoClusterSpec defines the desired state of MongoCluster
+          properties:
+            components:
+              description: Components of Mongo Cluster singleReplicaset cluster composed
+                of primary and Secondary, maybe some nonVoting sharding cluster composed
+                of shardsvr, configsvr and mongos. mongos defined by Mongos field
+              items:
+                description: MongoReplicaSetSpec defines the desired state of MongoReplicaSet
+                properties:
+                  databaseBranch:
+                    properties:
+                      name:
+                        type: string
+                      version:
+                        type: string
+                    required:
+                    - name
+                    - version
+                    type: object
+                  index:
+                    description: 同一个角色的 mrs 可能不止一个，如 shardsvr 就不止一个，所以加一个索引加以区分 各角色不用加以区分，默认0。在
+                      mongo cluster 内定义时，由0递增即可 用途就是能与 cluster ComponentsStatus 内对应起来
+                    format: int32
+                    type: integer
+                  matchLabels:
+                    additionalProperties:
+                      type: string
+                    type: object
+                  nodeSelector:
+                    additionalProperties:
+                      type: string
+                    description: 由 mongo-operator 决定，不需要用户定义
+                    type: object
+                  nonVotingReplicas:
+                    format: int32
+                    type: integer
+                  replicaSetReplicas:
+                    format: int32
+                    type: integer
+                  replicaSetRole:
+                    type: string
+                  resources:
+                    description: ResourceRequirements describes the compute resource
+                      requirements.
+                    properties:
+                      limits:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Limits describes the maximum amount of compute
+                          resources allowed. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                        type: object
+                      requests:
+                        additionalProperties:
+                          anyOf:
+                          - type: integer
+                          - type: string
+                          pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                          x-kubernetes-int-or-string: true
+                        description: 'Requests describes the minimum amount of compute
+                          resources required. If Requests is omitted for a container,
+                          it defaults to Limits if that is explicitly specified, otherwise
+                          to an implementation-defined value. More info: https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/'
+                        type: object
+                    type: object
+                  restoreFrom:
+                    properties:
+                      clusterName:
+                        description: cluster name that restores from
+                        type: string
+                      fullBackupSetId:
+                        type: string
+                      incrementalBackupSetId:
+                        type: string
+                      initContainerEnvs:
+                        description: envs of init container that restores cluster.
+                        items:
+                          description: EnvVar represents an environment variable present
+                            in a Container.
+                          properties:
+                            name:
+                              description: Name of the environment variable. Must
+                                be a C_IDENTIFIER.
+                              type: string
+                            value:
+                              description: 'Variable references $(VAR_NAME) are expanded
+                                using the previous defined environment variables in
+                                the container and any service environment variables.
+                                If a variable cannot be resolved, the reference in
+                                the input string will be unchanged. The $(VAR_NAME)
+                                syntax can be escaped with a double $$, ie: $$(VAR_NAME).
+                                Escaped references will never be expanded, regardless
+                                of whether the variable exists or not. Defaults to
+                                "".'
+                              type: string
+                            valueFrom:
+                              description: Source for the environment variable's value.
+                                Cannot be used if value is not empty.
+                              properties:
+                                configMapKeyRef:
+                                  description: Selects a key of a ConfigMap.
+                                  properties:
+                                    key:
+                                      description: The key to select.
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
+                                      type: string
+                                    optional:
+                                      description: Specify whether the ConfigMap or
+                                        its key must be defined
+                                      type: boolean
+                                  required:
+                                  - key
+                                  type: object
+                                fieldRef:
+                                  description: 'Selects a field of the pod: supports
+                                    metadata.name, metadata.namespace, metadata.labels,
+                                    metadata.annotations, spec.nodeName, spec.serviceAccountName,
+                                    status.hostIP, status.podIP, status.podIPs.'
+                                  properties:
+                                    apiVersion:
+                                      description: Version of the schema the FieldPath
+                                        is written in terms of, defaults to "v1".
+                                      type: string
+                                    fieldPath:
+                                      description: Path of the field to select in
+                                        the specified API version.
+                                      type: string
+                                  required:
+                                  - fieldPath
+                                  type: object
+                                resourceFieldRef:
+                                  description: 'Selects a resource of the container:
+                                    only resources limits and requests (limits.cpu,
+                                    limits.memory, limits.ephemeral-storage, requests.cpu,
+                                    requests.memory and requests.ephemeral-storage)
+                                    are currently supported.'
+                                  properties:
+                                    containerName:
+                                      description: 'Container name: required for volumes,
+                                        optional for env vars'
+                                      type: string
+                                    divisor:
+                                      anyOf:
+                                      - type: integer
+                                      - type: string
+                                      description: Specifies the output format of
+                                        the exposed resources, defaults to "1"
+                                      pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
+                                      x-kubernetes-int-or-string: true
+                                    resource:
+                                      description: 'Required: resource to select'
+                                      type: string
+                                  required:
+                                  - resource
+                                  type: object
+                                secretKeyRef:
+                                  description: Selects a key of a secret in the pod's
+                                    namespace
+                                  properties:
+                                    key:
+                                      description: The key of the secret to select
+                                        from.  Must be a valid secret key.
+                                      type: string
+                                    name:
+                                      description: 'Name of the referent. More info:
+                                        https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#names
+                                        TODO: Add other useful fields. apiVersion,
+                                        kind, uid?'
+                                      type: string
+                                    optional:
+                                      description: Specify whether the Secret or its
+                                        key must be defined
+                                      type: boolean
+                                  required:
+                                  - key
+                                  type: object
+                              type: object
+                          required:
+                          - name
+                          type: object
+                        type: array
+                      onTheFlyBackupServiceName:
+                        type: string
+                      pointInTime:
+                        description: time that restores to
+                        format: date-time
+                        type: string
+                      restoreMethod:
+                        type: string
+                    required:
+                    - clusterName
+                    - fullBackupSetId
+                    - incrementalBackupSetId
+                    - initContainerEnvs
+                    - onTheFlyBackupServiceName
+                    - restoreMethod
+                    type: object
+                  storageClass:
+                    type: string
+                required:
+                - databaseBranch
+                - index
+                - nonVotingReplicas
+                - replicaSetReplicas
+                - replicaSetRole
+                - storageClass
+                type: object
+              type: array
+            mongos:
+              description: just for sharding cluster
+              properties:
+                databaseBranch:
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  - version
+                  type: object
+                imagePullPolicy:
+                  type: string
+                replicas:
+                  description: 副本数
+                  format: int32
+                  type: integer
+              required:
+              - databaseBranch
+              - imagePullPolicy
+              - replicas
+              type: object
+            nodeSelector:
+              additionalProperties:
+                type: string
+              description: 数据库集群内，各 k8s workNode 无差异，各个数据库可运行于任一个 node 上 如需要满足更复杂的场景，需在
+                mrs 上额外附加的 node selector 或配置 node 亲和性
+              type: object
+            runMode:
+              type: string
+          required:
+          - components
+          - runMode
+          type: object
+        status:
+          description: MongoClusterStatus defines the observed state of MongoCluster
+          properties:
+            clusterStatus:
+              properties:
+                PermitRollback:
+                  type: boolean
+                collisionCount:
+                  description: collisionCount is the count of hash collisions for
+                    the StatefulSet. The StatefulSet controller uses this field as
+                    a collision avoidance mechanism when it needs to create the name
+                    for the newest ControllerRevision.
+                  format: int32
+                  type: integer
+                currentReplicas:
+                  description: currentReplicas is the number of Pods created by the
+                    StatefulSet controller from the StatefulSet version indicated
+                    by currentRevision.
+                  format: int32
+                  type: integer
+                currentRevision:
+                  description: currentRevision, if not empty, indicates the version
+                    of the StatefulSet used to generate Pods in the sequence [0,currentReplicas).
+                  type: string
+                customStatus:
+                  type: string
+                fsmStatus:
+                  type: string
+                observedGeneration:
+                  description: observedGeneration is the most recent generation observed
+                    for this StatefulSet. It corresponds to the StatefulSet's generation,
+                    which is updated on mutation by the API Server.
+                  format: int64
+                  type: integer
+                readyReplicas:
+                  description: readyReplicas is the number of Pods created by the
+                    StatefulSet controller that have a Ready Condition.
+                  format: int32
+                  type: integer
+                replicas:
+                  description: replicas is the number of Pods created by the StatefulSet
+                    controller.
+                  format: int32
+                  type: integer
+                statusDetails:
+                  type: string
+                updateRevision:
+                  description: updateRevision, if not empty, indicates the version
+                    of the StatefulSet used to generate Pods in the sequence [replicas-updatedReplicas,replicas)
+                  type: string
+                updatedReplicas:
+                  description: updatedReplicas is the number of Pods created by the
+                    StatefulSet controller from the StatefulSet version indicated
+                    by updateRevision.
+                  format: int32
+                  type: integer
+              required:
+              - PermitRollback
+              - replicas
+              type: object
+            componentsStatus:
+              items:
+                description: MongoReplicaSetSummaryStatus mongo rs status viewed by
+                  cluster
+                properties:
+                  haInstanceReady:
+                    description: as ha pod ready count
+                    format: int32
+                    type: integer
+                  index:
+                    format: int32
+                    type: integer
+                  instanceReady:
+                    description: all pod in mrs ready count
+                    format: int32
+                    type: integer
+                  nonVotingInstanceReady:
+                    description: as nonVoting pod ready count
+                    format: int32
+                    type: integer
+                  replicaSetRole:
+                    type: string
+                required:
+                - haInstanceReady
+                - index
+                - instanceReady
+                - nonVotingInstanceReady
+                - replicaSetRole
+                type: object
+              type: array
+            mongosStatus:
+              properties:
+                databaseBranch:
+                  properties:
+                    name:
+                      type: string
+                    version:
+                      type: string
+                  required:
+                  - name
+                  - version
+                  type: object
+                imagePullPolicy:
+                  type: string
+                replicas:
+                  description: 副本数
+                  format: int32
+                  type: integer
+              required:
+              - databaseBranch
+              - imagePullPolicy
+              - replicas
+              type: object
+          required:
+          - clusterStatus
+          - componentsStatus
+          type: object
+      type: object
+  version: v1
+  versions:
+  - name: v1
+    served: true
+    storage: true
+status:
+  acceptedNames:
+    kind: ""
+    plural: ""
+  conditions: []
+  storedVersions: []
