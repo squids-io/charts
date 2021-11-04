@@ -4,7 +4,7 @@ apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: (devel)
   creationTimestamp: null
   name: mongoclusters.mongo.woqutech.com
 spec:
@@ -34,6 +34,8 @@ spec:
         spec:
           description: MongoClusterSpec defines the desired state of MongoCluster
           properties:
+            ServicePort:
+              type: string
             components:
               description: Components of Mongo Cluster singleReplicaset cluster composed
                 of primary and Secondary, maybe some nonVoting sharding cluster composed
@@ -56,6 +58,8 @@ spec:
                       mongo cluster 内定义时，由0递增即可 用途就是能与 cluster ComponentsStatus 内对应起来
                     format: int32
                     type: integer
+                  isPaused:
+                    type: boolean
                   matchLabels:
                     additionalProperties:
                       type: string
@@ -248,6 +252,10 @@ spec:
                 - storageClass
                 type: object
               type: array
+            isMaintained:
+              type: boolean
+            isPaused:
+              type: boolean
             mongos:
               description: just for sharding cluster
               properties:
@@ -272,13 +280,9 @@ spec:
               - imagePullPolicy
               - replicas
               type: object
-            nodeSelector:
-              additionalProperties:
-                type: string
-              description: 数据库集群内，各 k8s workNode 无差异，各个数据库可运行于任一个 node 上 如需要满足更复杂的场景，需在
-                mrs 上额外附加的 node selector 或配置 node 亲和性
-              type: object
             runMode:
+              type: string
+            serviceIp:
               type: string
           required:
           - components

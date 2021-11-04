@@ -11,7 +11,7 @@ global:
 tag: latest
 
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   operator:
     tag: dev
 

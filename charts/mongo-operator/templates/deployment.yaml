@@ -25,10 +25,12 @@ spec:
           image: "{{ .Values.global.registry }}/{{.Values.global.repository}}/mongo-operator:{{ .Values.image.operator.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
-            - /manager
+            - /mongo-operator
           env:
             - name: NOT_REGISTER_CRDS
               value: "true"
+            - name: MONGO_POD_SA
+              value: "mongo-pod"
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime

@@ -1,9 +1,10 @@
+
 ---
 apiVersion: apiextensions.k8s.io/v1beta1
 kind: CustomResourceDefinition
 metadata:
   annotations:
-    controller-gen.kubebuilder.io/version: v0.2.5
+    controller-gen.kubebuilder.io/version: (devel)
   creationTimestamp: null
   name: mongoreplicasets.mongo.woqutech.com
 spec:
@@ -40,14 +41,16 @@ spec:
                 version:
                   type: string
               required:
-                - name
-                - version
+              - name
+              - version
               type: object
             index:
               description: 同一个角色的 mrs 可能不止一个，如 shardsvr 就不止一个，所以加一个索引加以区分 各角色不用加以区分，默认0。在
                 mongo cluster 内定义时，由0递增即可 用途就是能与 cluster ComponentsStatus 内对应起来
               format: int32
               type: integer
+            isPaused:
+              type: boolean
             matchLabels:
               additionalProperties:
                 type: string
@@ -71,8 +74,8 @@ spec:
                 limits:
                   additionalProperties:
                     anyOf:
-                      - type: integer
-                      - type: string
+                    - type: integer
+                    - type: string
                     pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                     x-kubernetes-int-or-string: true
                   description: 'Limits describes the maximum amount of compute resources
@@ -81,8 +84,8 @@ spec:
                 requests:
                   additionalProperties:
                     anyOf:
-                      - type: integer
-                      - type: string
+                    - type: integer
+                    - type: string
                     pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
                     x-kubernetes-int-or-string: true
                   description: 'Requests describes the minimum amount of compute resources
@@ -139,7 +142,7 @@ spec:
                                   key must be defined
                                 type: boolean
                             required:
-                              - key
+                            - key
                             type: object
                           fieldRef:
                             description: 'Selects a field of the pod: supports metadata.name,
@@ -156,7 +159,7 @@ spec:
                                   API version.
                                 type: string
                             required:
-                              - fieldPath
+                            - fieldPath
                             type: object
                           resourceFieldRef:
                             description: 'Selects a resource of the container: only
@@ -170,8 +173,8 @@ spec:
                                 type: string
                               divisor:
                                 anyOf:
-                                  - type: integer
-                                  - type: string
+                                - type: integer
+                                - type: string
                                 description: Specifies the output format of the exposed
                                   resources, defaults to "1"
                                 pattern: ^(\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))(([KMGTPE]i)|[numkMGTPE]|([eE](\+|-)?(([0-9]+(\.[0-9]*)?)|(\.[0-9]+))))?$
@@ -180,7 +183,7 @@ spec:
                                 description: 'Required: resource to select'
                                 type: string
                             required:
-                              - resource
+                            - resource
                             type: object
                           secretKeyRef:
                             description: Selects a key of a secret in the pod's namespace
@@ -199,11 +202,11 @@ spec:
                                   must be defined
                                 type: boolean
                             required:
-                              - key
+                            - key
                             type: object
                         type: object
                     required:
-                      - name
+                    - name
                     type: object
                   type: array
                 onTheFlyBackupServiceName:
@@ -215,22 +218,22 @@ spec:
                 restoreMethod:
                   type: string
               required:
-                - clusterName
-                - fullBackupSetId
-                - incrementalBackupSetId
-                - initContainerEnvs
-                - onTheFlyBackupServiceName
-                - restoreMethod
+              - clusterName
+              - fullBackupSetId
+              - incrementalBackupSetId
+              - initContainerEnvs
+              - onTheFlyBackupServiceName
+              - restoreMethod
               type: object
             storageClass:
               type: string
           required:
-            - databaseBranch
-            - index
-            - nonVotingReplicas
-            - replicaSetReplicas
-            - replicaSetRole
-            - storageClass
+          - databaseBranch
+          - index
+          - nonVotingReplicas
+          - replicaSetReplicas
+          - replicaSetRole
+          - storageClass
           type: object
         status:
           description: MongoReplicaSetStatus defines the observed state of MongoReplicaSet
@@ -242,17 +245,17 @@ spec:
               format: int32
               type: integer
           required:
-            - stsReady
+          - stsReady
           type: object
       type: object
   version: v1
   versions:
-    - name: v1
-      served: true
-      storage: true
+  - name: v1
+    served: true
+    storage: true
 status:
   acceptedNames:
     kind: ""
     plural: ""
-  conditions: [ ]
-  storedVersions: [ ]
+  conditions: []
+  storedVersions: []
