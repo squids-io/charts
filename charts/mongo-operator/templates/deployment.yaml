@@ -26,6 +26,8 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /mongo-operator
+          args:
+            - --appconfigNamespace=squids
           env:
             - name: NOT_REGISTER_CRDS
               value: "true"
