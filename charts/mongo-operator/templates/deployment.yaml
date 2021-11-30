@@ -28,11 +28,14 @@ spec:
             - /mongo-operator
           args:
             - --appconfigNamespace=squids
+            - --leader-election-id=mongo-operator-001
           env:
             - name: NOT_REGISTER_CRDS
               value: "true"
             - name: MONGO_POD_SA
               value: "mongo-pod"
+            - name: NAMESPACE
+              value: "squids"
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime

@@ -621,12 +621,18 @@ spec:
                 mongo cluster 内定义时，由0递增即可 用途就是能与 cluster ComponentsStatus 内对应起来
               format: int32
               type: integer
+            iopsQuota:
+              format: int64
+              type: integer
             isPaused:
               type: boolean
             matchLabels:
               additionalProperties:
                 type: string
               type: object
+            maxConnections:
+              format: int32
+              type: integer
             nonVotingReplicas:
               format: int32
               type: integer
@@ -797,6 +803,8 @@ spec:
           required:
           - databaseBranch
           - index
+          - iopsQuota
+          - maxConnections
           - nonVotingReplicas
           - replicaSetReplicas
           - replicaSetRole
