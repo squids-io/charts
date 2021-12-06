@@ -254,7 +254,7 @@ data:
             replacement: $1:9216
           - source_labels: [__meta_kubernetes_pod_label_db_type]
             separator: ;
-            regex: (mongo)
+            regex: (mongodb)
             replacement: $1
             action: keep
           - source_labels: [__meta_kubernetes_pod_name]
