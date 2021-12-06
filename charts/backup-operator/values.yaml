@@ -8,6 +8,7 @@ global:
   repository: squids
 
 tag: latest
+# current operator version
 image:
   pullPolicy: Always
   operator:
@@ -46,3 +47,10 @@ resources:
 serviceAccount: backup-operator
 clusterRole: backup-operator
 clusterRoleBinding: backup-operator
+
+# dev | test | prod
+currentRuntimeEnv: "dev"
+# prod 环境版本号
+imageVersion: "v0.0.1"
+
+backupJobImageName: "squids/qfb-backup-job"
