@@ -144,3 +144,11 @@ rules:
   - get
   - list
   - watch
+- apiGroups:
+    - mongo.woqutech.com
+  resources:
+    - mongoclusters
+  verbs:
+    - get
+    - list
+    - watch
