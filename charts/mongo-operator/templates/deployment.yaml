@@ -28,6 +28,7 @@ spec:
             - /mongo-operator
           args:
             - --appconfigNamespace=squids
+            - --appconfigName=mongo-app-config
             - --leader-election-id=mongo-operator-001
           env:
             - name: NOT_REGISTER_CRDS
