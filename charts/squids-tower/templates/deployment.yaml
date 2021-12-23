@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squids-tower
+  labels:
+    app.kubernetes.io/name: squids-tower
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: squids-tower
+      vendor: squids
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      name: squids-tower
+      labels:
+        app.kubernetes.io/name: squids-tower
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        vendor: squids
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: squids-tower
+      containers:
+        - name: squids-tower
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/squids-tower:{{ .Values.image.squidstower.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          command:
+            - /squids-tower
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: DEBUG
+              value: "true"
+            - name: DISABLE_TLS
+              value: "{{ .Values.disableTls }}"
+            - name: CURRENT_RUNTIME_ENV
+              value: "{{ .Values.currentRuntimeEnv }}"
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+        - name: logdir
+          hostPath:
+            path: /apps/logs/squids/operator/
+            type: DirectoryOrCreate
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+      {{- toYaml . | nindent 8 }}
+  {{- end }}
