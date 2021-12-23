@@ -70,8 +70,11 @@ spec:
                 description: ErrorMsg
                 type: string
               fullBackupSetId:
-                description: FullBackupSetId
+                description: FullBackupSetId in squids backup/restore business
                 type: string
+              mongoInfo:
+                description: MongoInfo
+                type: object
               mssqlInfo:
                 description: MSSQLInfo
                 properties:

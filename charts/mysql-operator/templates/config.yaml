@@ -79,6 +79,18 @@ data:
           - name: pmm
             image: {{ .Values.global.registry }}/{{ .Values.global.repository }}/pmm-client:{{.Values.image.mysql57.pmmClient}}
           {{- end }}
+      - name: mongo
+        version: 4.4
+        storageClass: csi-qcfs
+        images:
+          - name: mongo
+            image: mongo:4.4-rc
+          - name: mrs-manager
+            image: squids/mrs-manager:dev
+          - name: restore
+            image: squids/mongo4.4-qfb:dev
+          - name: exporter
+            image: squids/mongo-exporter:v1.0.0
 kind: ConfigMap
 metadata:
   name: app-config
