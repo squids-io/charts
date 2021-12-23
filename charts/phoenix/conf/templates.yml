@@ -1,0 +1,48 @@
+- name: MySQLCluster
+  type: MySQLCluster
+  repeatIntervalMinute: 20
+  groupIntervalMinute: 5
+  metrics:
+    - name: my-db-hang
+    - name: my-execute-count
+    - name: my-dml-count
+    - name: my-slave-delay
+    - name: os-cpu-usage
+    - name: os-disk-usage
+
+- name: RedisCluster
+  type: RedisCluster
+  repeatIntervalMinute: 20
+  groupIntervalMinute: 5
+  metrics:
+    - name: rd-db-hang
+    - name: rd-execute-count
+    - name: rd-memory-usage
+    - name: rd-slave-delay
+    - name: os-cpu-usage
+    - name: os-disk-usage
+
+- name: SQLServerCluster
+  type: SQLServerCluster
+  repeatIntervalMinute: 20
+  groupIntervalMinute: 5
+  metrics:
+    - name: ms-db-hang
+    - name: ms-execute-count
+    - name: ms-dml-count
+    - name: ms-slave-delay
+    - name: os-cpu-usage
+    - name: os-disk-usage
+
+
+- name: MongoCluster
+  type: MongoCluster
+  repeatIntervalMinute: 20
+  groupIntervalMinute: 5
+  metrics:
+    - name: mg-db-hang
+    - name: mg-execute-count
+    - name: mg-dml-count
+    - name: os-cpu-usage
+    - name: os-disk-usage
+    - name: mg-slave-delay

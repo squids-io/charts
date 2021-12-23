@@ -1,0 +1,1008 @@
+# OS
+- name: os-cpu-usage
+  aliasName: os-cpu-usage
+  labels:
+    alertingTypeName: OS
+  supportedTargetTypes:
+    - MySQLCluster
+    - RedisCluster
+    - SQLServerCluster
+    - MongoCluster
+  description: check database cpu usage
+  spec:
+    unitOptional: false
+    rules:
+      - name: os-cpu-usage
+        expr: (100 - (avg by (instance,target) (irate(node_cpu_seconds_total{job="node",mode="idle"}[5m])) * 100))
+        advanced:
+          last: 1
+          status: false
+        description: check database cpu usage
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        match:
+          labelName: ""
+          values: [ ]
+          prompt: ""
+          desc: ""
+          status: false
+          op: ""
+        warn:
+          errorcode: os-cpu-usage-warning
+          message: OS {{ $labels.instance }} CPU usage {{ $value | printf "%.1f" }}% is above Warning Threshold.
+          suggest: check the host cpu usage.
+          operator: '>='
+          value: 70
+          status: true
+        critical:
+          errorcode: os-cpu-usage-critical
+          message: OS {{ $labels.instance }} CPU usage {{ $value | printf "%.1f" }}% is above Critical Threshold.
+          suggest: check the host cpu usage.
+          operator: '>='
+          value: 90
+          status: true
+        severity:
+          value: ""
+          status: false
+        unit:
+          desc: "%"
+          value: percent
+
+- name: os-disk-usage
+  aliasName: os-disk-usage
+  labels:
+    alertingTypeName: OS
+  supportedTargetTypes:
+    - MySQLCluster
+    - RedisCluster
+    - SQLServerCluster
+    - MongoCluster
+  description: check database storage space usage
+  spec:
+    unitOptional: false
+    rules:
+      - name: os-disk-usage
+        expr: (node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} - node_filesystem_free_bytes{device="/dev/mapper/squids--group-squids--data"}) / node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} * 100
+        advanced:
+          last: 1
+          status: false
+        description: check database storage space usage
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 1800
+        match:
+          labelName: ""
+          values: [ ]
+          prompt: ""
+          desc: ""
+          status: false
+          op: ""
+        warn:
+          errorcode: os-disk-usage-warning
+          message: OS {{ $labels.instance }} SSD Filesystem usage {{ $value | printf "%.1f" }}% is above warning threshold.
+          suggest: check the host SSD Filesystem usage.
+          operator: '>='
+          value: 80
+          status: true
+        critical:
+          errorcode: os-disk-usage-critical
+          message: OS {{ $labels.instance }} SSD Filesystem usage {{ $value | printf "%.1f" }}% is above critical threshold.
+          suggest: check the host SSD Filesystem usage.
+          operator: '>='
+          value: 90
+          status: true
+        severity:
+          value: ""
+          status: false
+        unit:
+          desc: "%"
+          value: percent
+
+# mysql
+- name: my-db-hang
+  aliasName: my-db-hang
+  labels:
+    alertingTypeName: MySQLCluster
+  supportedTargetTypes:
+    - MySQLCluster
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: my-db-hang
+        expr: mysql_up
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 30
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: mysql-up-warning
+          message: MySQL instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: mysql-up-critical
+          message: MySQL instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""
+
+- name: my-execute-count
+  aliasName: my-execute-count
+  labels:
+    alertingTypeName: MySQLCluster
+  supportedTargetTypes:
+    - MySQLCluster
+  description: check database QPS
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: my-execute-count
+        expr: irate(mysql_global_status_queries[5m])
+        description: check database QPS
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: my-execute-count-warning
+          message: MySQL instance {{ $labels.instance }} execute count {{ $value | printf "%.1f" }} is above warning threshold.
+          suggest: check your MySQL instance execute count.
+          operator: '>='
+          value: 100
+          status: true
+        critical:
+          errorcode: my-execute-count-critical
+          message: MySQL instance {{ $labels.instance }} execute count {{ $value | printf "%.1f" }} is above critical threshold.
+          suggest: check your MySQL instance execute count.
+          operator: '>='
+          value: 200
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+- name: my-dml-count
+  aliasName: my-dml-count
+  labels:
+    alertingTypeName: MySQLCluster
+  supportedTargetTypes:
+    - MySQLCluster
+  description: check database dml
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: my-dml-count
+        expr: (irate(mysql_global_status_commands_dml[5m]))
+        description: check database dml
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: my-dml-count-warning
+          message: MySQL instance {{ $labels.instance }} dml count {{ $value | printf "%.1f" }} is above warning threshold.
+          suggest: please check database dml.
+          operator: '>='
+          value: 70
+          status: true
+        critical:
+          errorcode: my-dml-count-critical
+          message: MySQL instance {{ $labels.instance }} dml count {{ $value | printf "%.1f" }} is above critical threshold.
+          suggest: please check database dml.
+          operator: '>='
+          value: 140
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+- name: my-slave-delay
+  aliasName: my-slave-delay
+  labels:
+    alertingTypeName: MySQLCluster
+  supportedTargetTypes:
+    - MySQLCluster
+  description: check slave delay seconds
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: my-slave-delay
+        expr: mysql_slave_status_seconds_behind_master
+        description: check slave delay seconds
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: my-slave-delay-warning
+          message: MySQL cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: check slave delay seconds.
+          operator: '>='
+          value: 30
+          status: true
+        critical:
+          errorcode: my-slave-delay-critical
+          message: MySQL cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
+          suggest: check slave delay seconds.
+          operator: '>='
+          value: 60
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: second
+
+
+# redis
+- name: rd-db-hang
+  aliasName: rd-db-hang
+  labels:
+    alertingTypeName: RedisCluster
+  supportedTargetTypes:
+    - RedisCluster
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: rd-db-hang
+        expr: redis_up
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 2
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 30
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: redis-up-warning
+          message: Redis instance {{ $labels.instance }} has been down.
+          suggest: check if the database is available
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: redis-up-critical
+          message: Redis instance {{ $labels.instance }} has been down.
+          suggest: check if the database is available
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""
+
+- name: rd-execute-count
+  aliasName: rd-execute-count
+  labels:
+    alertingTypeName: RedisCluster
+  supportedTargetTypes:
+    - RedisCluster
+  description: check database QPS
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: rd-execute-count
+        expr: redis_instantaneous_ops_per_sec
+        description: check database QPS
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: rd-execute-count-warning
+          message: Redis instance {{ $labels.instance }} execute count {{ $value }} is above warning threshold.
+          suggest: check your Redis instance execute count.
+          operator: '>='
+          value: 100
+          status: true
+        critical:
+          errorcode: rd-execute-count-critical
+          message: Redis instance {{ $labels.instance }} execute count {{ $value }} is above critical threshold.
+          suggest: redis_connected_clients_critical
+          operator: '>='
+          value: 200
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+- name: rd-memory-usage
+  aliasName: rd-memory-usage
+  labels:
+    alertingTypeName: RedisCluster
+  supportedTargetTypes:
+    - RedisCluster
+  description: check database memory usage
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: rd-memory-usage
+        expr: (redis_memory_used_bytes/redis_memory_max_bytes)*100
+        description: check database memory usage
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: rd_memory_usage_warning
+          message: Redis instance {{ $labels.instance }} memory usage {{ $value | printf "%.1f"  }} is above warning threshold.
+          suggest: check database memory usage
+          operator: '>='
+          value: 70
+          status: true
+        critical:
+          errorcode: rd_memory_usage_critical
+          message: Redis instance {{ $labels.instance }} memory usage {{ $value | printf "%.1f"  }} is above critical threshold.
+          suggest: rd_memory_usage_critical
+          operator: '>='
+          value: 80
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: "%"
+          value: percent
+
+- name: rd-slave-delay
+  aliasName: rd-slave-delay
+  labels:
+    alertingTypeName: RedisCluster
+  supportedTargetTypes:
+    - RedisCluster
+  description: check slave delay seconds
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: rd-slave-delay
+        expr: redis_connected_slave_lag_seconds
+        description: check slave delay seconds
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: rd-slave-delay-warning
+          message: Redis cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: check slave delay seconds
+          operator: '>='
+          value: 30
+          status: true
+        critical:
+          errorcode: rd-slave-delay-critical
+          message: Redis cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
+          suggest: check slave delay seconds
+          operator: '>='
+          value: 60
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: second
+
+
+# mssql
+- name: ms-db-hang
+  aliasName: ms-db-hang
+  labels:
+    alertingTypeName: SQLServerCluster
+  supportedTargetTypes:
+    - SQLServerCluster
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: ms-db-hang
+        expr: mssql_up
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 30
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: mssql-up-warning
+          message: SQLServer instance {{ $labels.instance }} has been down.
+          suggest: check if the database is available
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: mssql-up-critical
+          message: SQLServer instance {{ $labels.instance }} has been down.
+          suggest: mssql-up-critical
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""
+
+- name: ms-execute-count
+  aliasName: ms-execute-count
+  labels:
+    alertingTypeName: SQLServerCluster
+  supportedTargetTypes:
+    - SQLServerCluster
+  description: check database QPS
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: ms-execute-count
+        expr: mssql_execute_count
+        description: check database QPS
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: ms-execute-count-warning
+          message: SQLServer instance {{ $labels.instance }} execute count {{ $value }} is above warning threshold.
+          suggest: check database QPS
+          operator: '>='
+          value: 100
+          status: true
+        critical:
+          errorcode: ms-execute-count-critical
+          message: SQLServer instance {{ $labels.instance }} execute count {{ $value }} is above critical threshold.
+          suggest: check database QPS
+          operator: '>='
+          value: 200
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+## mssql dml count指标现在没采集
+- name: ms-dml-count
+  aliasName: ms-dml-count
+  labels:
+    alertingTypeName: SQLServerCluster
+  supportedTargetTypes:
+    - SQLServerCluster
+  description: check database dml
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: ms-dml-count
+        # 这个指标现在不对
+        expr: mssql_dml_count
+        description: check database dml
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: ms-dml-count-warning
+          message: SQLServer instance {{ $labels.instance }} dml count {{ $value }} is above warning threshold.
+          suggest: check database dml
+          operator: '>='
+          value: 70
+          status: true
+        critical:
+          errorcode: ms-dml-count-critical
+          message: SQLServer instance {{ $labels.instance }} dml count {{ $value }} is above critical threshold.
+          suggest: check database dml
+          operator: '>='
+          value: 140
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+## mssql slave delay指标现在没采集
+- name: ms-slave-delay
+  aliasName: ms-slave-delay
+  labels:
+    alertingTypeName: SQLServerCluster
+  supportedTargetTypes:
+    - SQLServerCluster
+  description: check slave delay seconds
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: ms-slave-delay
+        # 这个表达式不对，有这个指标后修改
+        expr: mssql_slave_status_seconds_behind_master
+        description: check slave delay seconds
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: ms-slave-delay-warning
+          message: SQLServer cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: check slave delay seconds
+          operator: '>='
+          value: 30
+          status: true
+        critical:
+          errorcode: ms-slave-delay-critical
+          message: SQLServer cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
+          suggest: check slave delay seconds
+          operator: '>='
+          value: 60
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: second
+
+# mongo
+- name: mg-db-hang
+  aliasName: mg-db-hang
+  labels:
+    alertingTypeName: MongoCluster
+  supportedTargetTypes:
+    - MongoCluster
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: mg-db-hang
+        expr: mongodb_up
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 30
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: mg-up-warning
+          message: MongoDB instance {{ $labels.instance }} has been down.
+          suggest: check if the database is available
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: mg-up-critical
+          message: MongoDB instance {{ $labels.instance }} has been down.
+          suggest: check if the database is available
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""
+
+- name: mg-execute-count
+  aliasName: mg-execute-count
+  labels:
+    alertingTypeName: MongoCluster
+  supportedTargetTypes:
+    - MongoCluster
+  description: check database QPS
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: mg-execute-count
+        expr: sum by(instance,target)(irate(mongodb_ss_opcounters{legacy_op_type=~"query|getmore"}[5m]))
+        description: check database QPS
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: mg-execute-count-warning
+          message: MongoDB instance {{ $labels.instance }} execute count {{ $value | printf "%.1f" }} is above warning threshold.
+          suggest: check database QPS
+          operator: '>='
+          value: 100
+          status: true
+        critical:
+          errorcode: mg-execute-count-critical
+          message: MongoDB instance {{ $labels.instance }} execute count {{ $value | printf "%.1f" }} is above critical threshold.
+          suggest: check database QPS
+          operator: '>='
+          value: 200
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+- name: mg-dml-count
+  aliasName: mg-dml-count
+  labels:
+    alertingTypeName: MongoCluster
+  supportedTargetTypes:
+    - MongoCluster
+  description: check database dml
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: mg-dml-count
+        expr: sum by(instance,target)(irate(mongodb_ss_opcounters{legacy_op_type=~"insert|update|delete"}[5m]))
+        description: check database dml
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: false
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: mg-dml-count-warning
+          message: MongoDB instance {{ $labels.instance }} dml count {{ $value | printf "%.1f" }} is above warning threshold.
+          suggest: check database dml
+          operator: '>='
+          value: 70
+          status: true
+        critical:
+          errorcode: mg-dml-count-critical
+          message: MongoDB instance {{ $labels.instance }} dml count {{ $value | printf "%.1f" }} is above critical threshold.
+          suggest: check database dml
+          operator: '>='
+          value: 140
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: "times/second"
+
+- name: mg-slave-delay
+  aliasName: mg-slave-delay
+  labels:
+    alertingTypeName: MongoCluster
+  supportedTargetTypes:
+    - MongoCluster
+  description: check slave delay seconds
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: mg-slave-delay
+        expr: mongodb_mongod_replset_member_ping_ms{state="SECONDARY"}
+        description: check slave delay seconds
+        # 是否开启高级功能
+        advanced:
+          last: 1
+          status: true
+        time:
+          status: true
+          groupInterval: 2
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: mg-slave-delay-warning
+          message: MongoDB cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: mg-slave-delay_warning
+          operator: '>='
+          value: 30
+          status: true
+        critical:
+          errorcode: mg-slave-delay-critical
+          message: MongoDB cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: mg-slave-delay-critical
+          operator: '>='
+          value: 60
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: second
