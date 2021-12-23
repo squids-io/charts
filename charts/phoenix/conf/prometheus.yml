@@ -1,0 +1,327 @@
+# prometheus 初始化配置
+# 全局配置， 通常可以被job单独的配置覆盖
+global:
+  # target 定时任务周期
+  scrape_interval: 1m
+  # 拉取指标超时
+  scrape_timeout: 50s
+  # 执行 rules 规则的时间
+  evaluation_interval: 1m
+  external_labels:
+    cluster: prometheus-ha
+    prometheus_replica: $(POD_NAME)
+
+# 规则文件列表
+rule_files:
+  - /etc/prometheus/rules.yml
+
+# 告警组件
+alerting:
+  alert_relabel_configs:
+    - source_labels: [ tid, exporter, ip ]
+      separator: ;
+      regex: (.*);(.*);(.*)
+      target_label: routing_key
+      replacement: ${1}__${2}__${3}
+      action: replace
+  # 告警配置文件
+  alertmanagers:
+    - api_version: v1
+      static_configs:
+        - targets: [ "alertmanager:9093" ]
+      timeout: 10s
+      path_prefix: /
+
+# 监控任务
+scrape_configs:
+  - job_name: kubernetes-apiservers
+    scrape_interval: 1m
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: https
+    kubernetes_sd_configs:
+      - role: endpoints
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    tls_config:
+      ca_file: /var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+      insecure_skip_verify: true
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_namespace, __meta_kubernetes_service_name, __meta_kubernetes_endpoint_port_name ]
+        separator: ;
+        regex: default;kubernetes;https
+        replacement: $1
+        action: keep
+  - job_name: cadvisor
+    metrics_path: /metrics/cadvisor
+    scrape_interval: 10s
+    scrape_timeout: 10s
+    scheme: https
+    tls_config:
+      insecure_skip_verify: true
+    bearer_token_file: /var/run/secrets/kubernetes.io/serviceaccount/token
+    kubernetes_sd_configs:
+      - role: node
+    relabel_configs:
+      - action: labelmap
+        regex: __meta_kubernetes_node_label_(.+)
+      - source_labels: [ __meta_kubernetes_node_address_InternalIP ]
+        action: replace
+        target_label: __address__
+        replacement: $1:10250
+  - job_name: 'node'
+    kubernetes_sd_configs:
+      - role: node
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_node_address_InternalIP ]
+        action: replace
+        target_label: __address__
+        replacement: $1:9100
+      - source_labels: [ __meta_kubernetes_node_name ]
+        action: replace
+        target_label: node_name
+      - source_labels: [ ]
+        action: replace
+        target_label: name
+        replacement: node_exporter
+      - source_labels: [ __meta_kubernetes_node_label_squids_cluster ]
+        action: replace
+        target_label: target
+  - job_name: mysqld-exporter
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_label_db_type, __meta_kubernetes_pod_label_type ]
+        separator: ;
+        regex: mysql;database
+        replacement: $1
+        action: keep
+      - source_labels: [ __address__ ]
+        separator: ;
+        regex: (.*)
+        target_label: __address__
+        replacement: mysqld-exporter:9104
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - separator: ;
+        regex: __meta_kubernetes_pod_label_((app_name)|(db_role)|(db_type)|(type))
+        replacement: $1
+        action: labelmap
+      - source_labels: [ __meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_name ]
+        separator: /
+        regex: (.*)
+        target_label: __param_secret
+        replacement: ${1}-component-user-suffix
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        separator: ;
+        regex: (.*)
+        target_label: __param_ip
+        replacement: ${1}
+        action: replace
+      - source_labels: [ db_type ]
+        separator: ;
+        regex: (mysql)
+        target_label: alertingTargetType
+        replacement: MySQLCluster
+        action: replace
+      - source_labels: [ app_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
+  - job_name: 'backup-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __address__ ]
+        separator: ;
+        regex: (.*)
+        target_label: __address__
+        replacement: backup-exporter:9100
+        action: replace
+  - job_name: 'redis-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        action: replace
+        target_label: __address__
+        replacement: $1:9121
+      - source_labels: [ __meta_kubernetes_pod_label_db_type ]
+        separator: ;
+        regex: (redis)
+        replacement: $1
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [ db_type ]
+        separator: ;
+        regex: (redis)
+        target_label: alertingTargetType
+        replacement: RedisCluster
+        action: replace
+      - source_labels: [ app_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
+  - job_name: 'mssql-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        action: replace
+        target_label: __address__
+        replacement: $1:4000
+      - source_labels: [ __meta_kubernetes_pod_label_db_type ]
+        separator: ;
+        regex: (mssql)
+        replacement: $1
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [ db_type ]
+        separator: ;
+        regex: (mssql)
+        target_label: alertingTargetType
+        replacement: SQLServerCluster
+        action: replace
+      - source_labels: [ app_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
+  - job_name: 'mongo-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        action: replace
+        target_label: __address__
+        replacement: $1:9216
+      - source_labels: [ __meta_kubernetes_pod_label_db_type ]
+        separator: ;
+        regex: (mongodb)
+        replacement: $1
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [ db_type ]
+        separator: ;
+        regex: (mongodb)
+        target_label: alertingTargetType
+        replacement: MongoCluster
+        action: replace
+      - source_labels: [ app_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
+  - job_name: 'volume-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        action: replace
+        target_label: __address__
+        replacement: $1:9100
+      - source_labels: [ __meta_kubernetes_pod_label_app_kubernetes_io_name ]
+        regex: volume-exporter
+        action: keep
+    metric_relabel_configs:
+      - source_labels: [ pod_name ]
+        target_label: instance
+  - job_name: etcd-exporter
+    scrape_interval: 20s
+    scrape_timeout: 5s
+    metrics_path: /metrics
+    scheme: https
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_label_component ]
+        separator: ;
+        regex: etcd
+        replacement: $1
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_host_ip ]
+        separator: ;
+        regex: (.*)
+        target_label: __address__
+        replacement: $1:2379
+        action: replace
+    tls_config:
+      ca_file: /etc/kubernetes/pki/etcd/ca.crt
+      cert_file: /etc/kubernetes/pki/etcd/server.crt
+      key_file: /etc/kubernetes/pki/etcd/server.key
