@@ -437,13 +437,13 @@
         {
           "expr": "sum(mongodb_connections{state=\"current\",instance=\"$ins\"})",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "total session",
           "refId": "A"
         },
         {
           "expr": "sum(mongodb_connections{state=~\"available|current\",instance=\"$ins\"})",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "available session",
           "refId": "B"
         }
       ],
@@ -538,19 +538,19 @@
         {
           "expr": "mongodb_op_counters_total{type=\"insert\",instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "insert",
           "refId": "A"
         },
         {
           "expr": "mongodb_op_counters_total{type=\"update\",instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "update",
           "refId": "B"
         },
         {
           "expr": "mongodb_op_counters_total{type=\"delete\",instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "delete",
           "refId": "C"
         }
       ],
@@ -645,19 +645,19 @@
         {
           "expr": "mongodb_op_counters_total{type=\"query\",instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "query",
           "refId": "A"
         },
         {
           "expr": "mongodb_op_counters_total{type=\"getmore\",instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "getmore",
           "refId": "B"
         },
         {
           "expr": "mongodb_op_counters_total{type=\"command\",instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "command",
           "refId": "C"
         }
       ],
