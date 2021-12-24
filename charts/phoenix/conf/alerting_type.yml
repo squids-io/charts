@@ -1,0 +1,28 @@
+- name: MySQLCluster
+  aliasName: MySQLCluster
+  supportedTargetTypes:
+    - MySQLCluster
+
+- name: RedisCluster
+  aliasName: RedisCluster
+  supportedTargetTypes:
+    - RedisCluster
+
+- name: SQLServerCluster
+  aliasName: SQLServerCluster
+  supportedTargetTypes:
+    - SQLServerCluster
+
+- name: MongoCluster
+  aliasName: MongoCluster
+  supportedTargetTypes:
+    - MongoCluster
+
+- name: OS
+  aliasName: OS
+  supportedTargetTypes:
+    - MySQLCluster
+    - RedisCluster
+    - SQLServerCluster
+    - MongoCluster
+

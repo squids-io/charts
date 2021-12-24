@@ -42,15 +42,19 @@ spec:
                   jfs:
                     description: JFS storage interface
                     properties:
-                      awsAccessKey:
-                        type: string
-                      awsSecretKey:
+                      accessKey:
                         type: string
                       bucket:
                         type: string
+                      env:
+                        type: string
+                      extraParams:
+                        type: string
+                      jfsVendor:
+                        type: string
+                      secretKey:
+                        type: string
                     required:
-                    - awsAccessKey
-                    - awsSecretKey
                     - bucket
                     type: object
                   nas:

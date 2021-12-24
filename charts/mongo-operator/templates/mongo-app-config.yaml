@@ -1,0 +1,23 @@
+apiVersion: v1
+data:
+  config: |
+    qfusionFlag: false
+    clusterConfigs:
+      - name: mongo
+        version: 4.4
+        storageClass: csi-qcfs
+        images:
+          - name: mongo
+            image: mongo:4.4
+          - name: mrs-manager
+            image: squids/mrs-manager:dev
+          - name: restore
+            image: squids/mongo4.4-qfb:dev
+          - name: exporter
+            image: squids/mongo-exporter:v1.0.0
+          - name: backup
+            image: squids/mongo4.4-qfb:dev
+kind: ConfigMap
+metadata:
+  name: mongo-app-config
+  namespace: {{.Release.Namespace}}

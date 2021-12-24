@@ -233,6 +233,43 @@ data:
             replacement: $1
             action: replace
             {{- end }}
+        - job_name: 'mongo-exporter'
+          scrape_interval: 1m
+          scrape_timeout: 50s
+          kubernetes_sd_configs:
+          - role: pod
+          relabel_configs:
+          - source_labels: [__meta_kubernetes_pod_annotation_organization]
+            action: replace
+            target_label: organization
+          - source_labels: [__meta_kubernetes_pod_annotation_project]
+            action: replace
+            target_label: project
+          - source_labels: [__meta_kubernetes_pod_annotation_cluster]
+            action: replace
+            target_label: cluster
+          - source_labels: [__meta_kubernetes_pod_ip]
+            action: replace
+            target_label: __address__
+            replacement: $1:9216
+          - source_labels: [__meta_kubernetes_pod_label_db_type]
+            separator: ;
+            regex: (mongodb)
+            replacement: $1
+            action: keep
+          - source_labels: [__meta_kubernetes_pod_name]
+            separator: ;
+            regex: (.*)
+            target_label: instance
+            replacement: $1
+            action: replace
+          - source_labels: [__meta_kubernetes_namespace]
+            separator: ;
+            regex: (.*)
+            target_label: namespace
+            replacement: $1
+            action: replace
+            {{- end }}
         - job_name: 'volume-exporter'
           scrape_interval: 1m
           scrape_timeout: 50s
@@ -340,6 +377,13 @@ data:
             annotations:
               summary: "sqlServer cluster {{"{{"}}$labels.cluster {{"}}"}} down"
               description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}, sqlServer cluster: {{"{{"}}$labels.cluster {{"}}"}} has been down for more than 60 seconds."
+           {{- end }}
+          - alert: mongo up
+            expr: mongo_up{job="mongo-exporter"} == 0
+            for: 60s
+            annotations:
+              summary: "mongo cluster {{"{{"}}$labels.cluster {{"}}"}} down"
+              description: "Organization: {{"{{"}}$labels.organization {{"}}"}}, project: {{"{{"}}$labels.project {{"}}"}}, instance: {{"{{"}}$labels.instance {{"}}"}}, mongo cluster: {{"{{"}}$labels.cluster {{"}}"}} has been down for more than 60 seconds."
            {{- end }}
           - alert: Root Filesystem Usage
             expr: (node_filesystem_size_bytes{device="/dev/root"} - node_filesystem_free_bytes{device="/dev/root"}) / node_filesystem_size_bytes{device="/dev/root"} * 100 > 75
