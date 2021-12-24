@@ -622,7 +622,7 @@
     unitOptional: false
     rules:
       - name: ms-execute-count
-        expr: mssql_execute_count
+        expr: (irate(mssql_dm_os_performance_counters{counter_name="batch_requests_per_sec"}[5m]))
         description: check database QPS
         # 是否开启高级功能
         advanced:
@@ -646,14 +646,14 @@
           op: '!~'
         warn:
           errorcode: ms-execute-count-warning
-          message: SQLServer instance {{ $labels.instance }} execute count {{ $value }} is above warning threshold.
+          message: SQLServer instance {{ $labels.instance }} execute count {{ $value | printf "%.1f" }} is above warning threshold.
           suggest: check database QPS
           operator: '>='
           value: 100
           status: true
         critical:
           errorcode: ms-execute-count-critical
-          message: SQLServer instance {{ $labels.instance }} execute count {{ $value }} is above critical threshold.
+          message: SQLServer instance {{ $labels.instance }} execute count {{ $value | printf "%.1f" }} is above critical threshold.
           suggest: check database QPS
           operator: '>='
           value: 200
@@ -666,7 +666,6 @@
           desc: ""
           value: "times/second"
 
-## mssql dml count指标现在没采集
 - name: ms-dml-count
   aliasName: ms-dml-count
   labels:
@@ -679,8 +678,7 @@
     unitOptional: false
     rules:
       - name: ms-dml-count
-        # 这个指标现在不对
-        expr: mssql_dml_count
+        expr: (irate(mssql_dm_os_performance_counters{counter_name="transactions_per_sec"}[5m]))
         description: check database dml
         # 是否开启高级功能
         advanced:
@@ -704,14 +702,14 @@
           op: '!~'
         warn:
           errorcode: ms-dml-count-warning
-          message: SQLServer instance {{ $labels.instance }} dml count {{ $value }} is above warning threshold.
+          message: SQLServer instance {{ $labels.instance }} dml count {{ $value | printf "%.1f" }} is above warning threshold.
           suggest: check database dml
           operator: '>='
           value: 70
           status: true
         critical:
           errorcode: ms-dml-count-critical
-          message: SQLServer instance {{ $labels.instance }} dml count {{ $value }} is above critical threshold.
+          message: SQLServer instance {{ $labels.instance }} dml count {{ $value | printf "%.1f" }} is above critical threshold.
           suggest: check database dml
           operator: '>='
           value: 140
