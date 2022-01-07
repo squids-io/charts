@@ -4,7 +4,7 @@ metadata:
   name: hubble-relay
   labels:
     k8s-app: hubble-relay
-  namespace: kube-system
+  namespace: {{.Release.Namespace}}
 spec:
   replicas: 1
   selector:

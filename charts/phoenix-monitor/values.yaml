@@ -19,12 +19,16 @@ nodeExporter:
 phoenix:
   image:
     name: phoenix
-    pullPolicy: Always
+    pullPolicy: IfNotPresent
     tag: v1.4.0-squids
   args:
     endpoint:
-      receiver:
-      target:
+#      receiver: http://squidshub-headless.squids.svc.cluster.local:29527/api/v1/alerts/phoenix/receivers
+#      target: http://squidshub-headless.squids.svc.cluster.local:29527/api/v1/alerts/phoenix/targets
+#      receiver: https://www.myrds.io/api/v1/alerts/phoenix/receivers
+#      target: https://www.myrds.io/api/v1/alerts/phoenix/targets
+      receiver: https://squids.io/api/v1/alerts/phoenix/receivers
+      target: https://squids.io/api/v1/alerts/phoenix/targets
 
 database:
   image:
@@ -57,10 +61,13 @@ alertmanager:
 
 objectStorage:
   type: S3
-  endpoint:
-  bucket:
-  accessKeyId:
-  accessKeySecret:
+#  endpoint: s3-ap-east-1.amazonaws.com
+  endpoint: s3-us-west-1.amazonaws.com
+#  bucket: squids-dev-bucket
+#  bucket: squids-test-bucket
+  bucket: squids-pro-monitor
+  accessKeyId: AKIAVKPOGNP7SRIYUE6E
+  accessKeySecret: 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
 
 thanos:
   image:
@@ -117,8 +124,15 @@ tolerations:
 
 affinity:
   nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: vpc.id
+              operator: In
+              values:
+                - 0
     preferredDuringSchedulingIgnoredDuringExecution:
-    - weight: 5
+    - weight: 80
       preference:
         matchExpressions:
         - key: squids/cluster

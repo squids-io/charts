@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: squidshub
-  namespace: squids
+  namespace: {{ .Release.Name }}
 data:
   application-prod.yaml: |
     spring:

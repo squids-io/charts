@@ -3,7 +3,7 @@ global:
   registry: docker.io
   repository: squids
 
-replicaCount: 3
+replicaCount: 1
 
 image:
   pullPolicy: IfNotPresent
@@ -25,6 +25,14 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
         - matchExpressions:
+            - key: vpc.id
+              operator: In
+              values:
+                - 0
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 80
+        preference:
+          matchExpressions:
             - key: squids/cluster
               operator: In
               values:
@@ -42,20 +50,27 @@ cronjob:
       requiredDuringSchedulingIgnoredDuringExecution:
         nodeSelectorTerms:
           - matchExpressions:
+              - key: vpc.id
+                operator: In
+                values:
+                  - 0
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
               - key: squids/cluster
                 operator: In
                 values:
                   - squids-monitor
 
-#tolerations:
-#- effect: NoSchedule
-#  key: squids/master
-#  operator: Exists
-#- effect: NoSchedule
-#  key: node-role.kubernetes.io/master
-#  operator: Exists
-#nodeSelector:
-#  node-role.kubernetes.io/master: ""
+nodeSelector: {}
+tolerations:
+- effect: NoSchedule
+  key: squids/master
+  operator: Exists
+- effect: NoSchedule
+  key: node-role.kubernetes.io/master
+  operator: Exists
 
 # host path
 dataDirectory: /squids-data

@@ -22,7 +22,7 @@ spec:
       serviceAccountName: squids-dbpool
       containers:
         - name: squids-dbpool
-          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/squids-dbpool:{{ .Values.image.squidstower.tag }}
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/squids-dbpool:{{ .Values.image.squidsdbpool.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           command:
             - /squids-dbpool
