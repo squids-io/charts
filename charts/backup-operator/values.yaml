@@ -10,7 +10,7 @@ global:
 tag: latest
 # current operator version
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   operator:
     operator: v1.0.0
 

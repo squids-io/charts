@@ -10,7 +10,7 @@ env: dev
 image:
   registry: docker.io
   repository: squids
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   console:
     name: squids-console-release

@@ -9,7 +9,7 @@ global:
   repository: squids
 
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   squidstower:
     tag: v1.0.0
   qfbbackupjob:

@@ -8,5 +8,5 @@ roleRef:
   name: hubble-relay
 subjects:
   - kind: ServiceAccount
-    namespace: kube-system
+    namespace: {{.Release.Namespace}}
     name: hubble-relay

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webapp-trade
-  namespace: squids
+  namespace:  {{ .Release.Name }}
   labels:
     app: squids-trade
 spec:

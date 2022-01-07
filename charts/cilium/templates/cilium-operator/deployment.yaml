@@ -5,7 +5,7 @@ metadata:
     io.cilium/app: operator
     name: cilium-operator
   name: cilium-operator
-  namespace: kube-system
+  namespace: {{.Release.Namespace}}
 spec:
   # We support HA mode only for Kubernetes version > 1.14
   # See docs on ServerCapabilities.LeasesResourceLock in file pkg/k8s/version/version.go

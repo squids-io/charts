@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: squids-web-config
-  namespace: squids
+  namespace: {{ .Release.Name }}
 data:
   base-url.json: |
     {

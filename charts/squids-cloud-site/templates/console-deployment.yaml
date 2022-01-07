@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: squids-console
-  namespace: squids
+  namespace: {{ .Release.Name }}
   labels:
     app-name: squids-console
 spec:

@@ -4,7 +4,7 @@ metadata:
   labels:
     k8s-app: cilium
   name: cilium
-  namespace: kube-system
+  namespace: {{.Release.Namespace}}
 spec:
   selector:
     matchLabels:

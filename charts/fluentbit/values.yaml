@@ -26,7 +26,6 @@ tolerations:
 - effect: NoSchedule
   key: node-role.kubernetes.io/master
   operator: Exists
-affinty: {}
 esHost: elasticsearch-logging
 esPort: 9200
 kubeletPodsDir: /var/lib/kubelet/pods
