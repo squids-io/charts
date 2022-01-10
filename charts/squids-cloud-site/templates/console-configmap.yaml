@@ -149,7 +149,7 @@ data:
             proxy_pass http://squids-web:3000;
           }
 
-          location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources) {
+          location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources|alerts) {
             auth_basic off;
             add_header Access-Control-Allow-Origin  '$allow_origin';
             add_header Access-Control-Allow-Credentials 'true';
@@ -159,7 +159,7 @@ data:
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_pass http://squidshub-headless:29527;
+            proxy_pass http://squids-hub:29527;
           }
 
           location ~* ^/api/v1/(organizations|permissions|resources|roles|userDataPermissions|users|sso|oauth2|login|redeems|rewards) {
@@ -172,7 +172,7 @@ data:
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_pass http://squidsuser-headless:29529;
+            proxy_pass http://squids-user:29529;
           }
 
           location ~* ^/api/v1/(activitys|accounts|tradeBills|chargingRules|tradeOrders|receiveAddresss|rechargeBills|rechargeOrders|regions) {
@@ -185,7 +185,7 @@ data:
             proxy_set_header X-Real-IP $remote_addr;
             proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
             proxy_set_header X-Forwarded-Proto $scheme;
-            proxy_pass http://squidstrade-headless:29528;
+            proxy_pass http://squids-trade:29528;
           }
       }
 
@@ -255,7 +255,7 @@ data:
         access_log off;
       }
 
-      location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources) {
+      location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources|alerts) {
         auth_basic off;
         add_header Access-Control-Allow-Origin  '$allow_origin';
         add_header Access-Control-Allow-Credentials 'true';
@@ -265,7 +265,7 @@ data:
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_pass http://squidshub-headless:29527;
+        proxy_pass http://squids-hub:29527;
       }
 
       location ~* ^/api/v1/(organizations|permissions|resources|roles|userDataPermissions|users|sso|oauth2|login|redeems|rewards) {
@@ -278,7 +278,7 @@ data:
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_pass http://squidsuser-headless:29529;
+        proxy_pass http://squids-user:29529;
       }
 
       location ~* ^/api/v1/(activitys|accounts|tradeBills|chargingRules|tradeOrders|receiveAddresss|rechargeBills|rechargeOrders|regions) {
@@ -291,7 +291,7 @@ data:
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
-        proxy_pass http://squidstrade-headless:29528;
+        proxy_pass http://squids-trade:29528;
       }
 
       #error_page  404              /404.html;
@@ -402,6 +402,6 @@ metadata:
 data:
   root.config.json: |
     {
-      "grafanaBaseurl": "https://chartlog.squids.io:30001",
-      "webUrl": "https://squids.io"
+      "grafanaBaseurl": "https://chartlog.squids.cn:30001",
+      "webUrl": "https://squids.cn"
     }

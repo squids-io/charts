@@ -4,28 +4,28 @@ metadata:
   name: webapp-hub
   namespace: {{ .Release.Name }}
   labels:
-    app-name: squidshub
+    app-name: squids-hub
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app-name: squidshub
+      app-name: squids-hub
   template:
     metadata:
       labels:
-        app-name: squidshub
+        app-name: squids-hub
     spec:
       nodeSelector:
         node-role.kubernetes.io/master: ""
       containers:
-        - name: squidshub
+        - name: hub
           imagePullPolicy: {{ .Values.image.pullPolicy}}
-          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/squidshub:{{ .Values.image.tag }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
           env:
             - name: TERRAFORM_FILE_PATH
               value: "/terraform_file"
             - name: APISERVER_CERT_ROOT_PATH
-              value: "/apiserver_tls"
+              value: "/grpcserver_tls"
           ports:
             - containerPort: {{ .Values.image.containerPort }}
           volumeMounts:
@@ -36,7 +36,7 @@ spec:
             - name: config-volume
               mountPath: /config
             - name: tls
-              mountPath: /apiserver_tls
+              mountPath: /grpcserver_tls
       volumes:
         - name: localtime
           hostPath:
@@ -49,7 +49,7 @@ spec:
             path: /squids-data/terraform_file
         - name: tls
           secret:
-            secretName: apiserver.tls
+            secretName: grpcserver.tls
             items:
             - key: ca.crt
               path: ca.pem
