@@ -4,4 +4,4 @@ metadata:
   name: hubble-ui-envoy
   namespace: {{ .Release.Namespace }}
 data:
-  {{ (.Files.Glob "files/envoy/*").AsConfig | indent 2 }}
+{{ (.Files.Glob "files/envoy/*").AsConfig | indent 2 }}
