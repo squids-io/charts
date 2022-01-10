@@ -27,7 +27,7 @@ spec:
           operator: Exists
       containers:
         - name: frontend
-          image: {{ .Values.hubble.ui.frontend.image.repository }}: {{.Values.hubble.ui.frontend.image.tag }}
+          image: {{ .Values.hubble.ui.frontend.image.repository }}:{{.Values.hubble.ui.frontend.image.tag }}
           imagePullPolicy: {{.Values.hubble.ui.frontend.image.pullPolicy}}
           ports:
             - containerPort: 8080
