@@ -7,17 +7,28 @@ data:
   application-prod.yaml: |
     spring:
       datasource:
-        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/squids?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8
+        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/squids?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
         driver-class-name: com.mysql.cj.jdbc.Driver
 
       redis:
-        host: squids-redis-headless # Redis服务器地址
+        host: squids-redis # Redis服务器地址
         database: 0 # Redis数据库索引（默认为0）
         port: 6379 # Redis服务器连接端口
         password: # Redis服务器连接密码（默认为空）
         timeout: 300ms # 连接超时时间（毫秒）
+
     moduleService:
-      UserModuleGatewayUrl: http://squidsuser-headless:29529/api/v1/
-      TradeModuleGatewayUrl: http://squidstrade-headless:29528/api/v1/
+      UserModuleGatewayUrl: http://squids-user:29529/api/v1/
+      TradeModuleGatewayUrl: http://squids-trade:29528/api/v1/
+      phoenixEndpoint: http://squids-phoenix:9001/api/v1/
+
+    credential:
+      provider:
+        aws:
+          keyId: ""
+          keySecret: ""
+        aliYun:
+          keyId: ""
+          keySecret: ""

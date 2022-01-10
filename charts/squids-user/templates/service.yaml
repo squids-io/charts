@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: squidsuser-headless
+  name: squids-user
   namespace:  {{ .Release.Name }}
   labels:
     app: squids-user

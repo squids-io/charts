@@ -7,9 +7,10 @@ replicaCount: 1
 image:
   registry: docker.io
   repository: squids
+  name: user
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1
+  tag: v1.0.0
   containerPort: 29529 
 service:
   type: ClusterIP
@@ -29,8 +30,15 @@ oauth2:
   google:
     id: abc
     secret: abc
+  wechat:
+    id: abc
+    secret: abc
+  alipay:
+    id: abc
+    secret: abc
+
 mail:
-  mailbox: abc@squids.com
+  mailbox: abc@squids.cn
   host: abc
   password: abc
 

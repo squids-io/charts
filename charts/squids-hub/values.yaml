@@ -7,9 +7,10 @@ replicaCount: 1
 image:
   registry: docker.io
   repository: squids
+  name: hub
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1
+  tag: v1.0.0
   containerPort: 29527
 
 service:
