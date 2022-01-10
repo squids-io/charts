@@ -108,9 +108,9 @@ spec:
                   name: cilium-config
                   optional: true
             - name: KUBERNETES_SERVICE_HOST
-              value: {{ .Values.k8sServiceHost }}
+              value: {{ .Values.k8sServiceHost | quote }}
             - name: KUBERNETES_SERVICE_PORT
-              value: {{ .Values.k8sServicePort }}
+              value: {{ .Values.k8sServicePort | quote }}
           name: cilium-agent
           image: {{ .Values.agent.image.repository }}:{{ .Values.agent.image.tag }}
           imagePullPolicy: {{ .Values.agent.image.pullPolicy }}
@@ -181,9 +181,9 @@ spec:
                   name: cilium-config
                   optional: true
             - name: KUBERNETES_SERVICE_HOST
-              value: {{ .Values.k8sServiceHost }}
+              value: {{ .Values.k8sServiceHost | quote }}
             - name: KUBERNETES_SERVICE_PORT
-              value: {{ .Values.k8sServicePort }}
+              value: {{ .Values.k8sServicePort | quote }}
           securityContext:
             capabilities:
               add:
