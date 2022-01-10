@@ -43,13 +43,13 @@ spec:
             path: /etc/localtime
         - name: config-volume
           configMap:
-            name: squidshub
+            name: squids-hub
         - name: tmpterra
           hostPath:
             path: /squids-data/terraform_file
         - name: tls
           secret:
-            secretName: squids.tls
+            secretName: apiserver.tls
             items:
             - key: ca.crt
               path: ca.pem
