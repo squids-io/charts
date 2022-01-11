@@ -78,10 +78,10 @@ spec:
           secret:
             secretName: sslca
             items:
-              - key: 1_squids.io_bundle.crt
-                path: 1_squids.io_bundle.crt
-              - key: 2_squids.io.key
-                path: 2_squids.io.key
+              - key: squids.crt
+                path: squids.crt
+              - key: squids.key
+                path: squids.key
         {{ end }}
       {{- with .Values.affinity }}
       affinity:
