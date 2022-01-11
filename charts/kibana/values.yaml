@@ -31,10 +31,10 @@ affinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
         - matchExpressions:
-            - key: vpc.id
+            - key: "vpc.id"
               operator: In
               values:
-                - 0
+                - "0"
     preferredDuringSchedulingIgnoredDuringExecution:
       - weight: 80
         preference:
