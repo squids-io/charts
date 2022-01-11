@@ -220,10 +220,12 @@ spec:
       affinity:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.tolerations }}
-      tolerations:
-      {{- toYaml . | nindent 8 }}
-       {{- end }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
   volumeClaimTemplates:
     - metadata:
         name: prometheus-storage

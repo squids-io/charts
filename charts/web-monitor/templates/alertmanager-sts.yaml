@@ -32,7 +32,8 @@ spec:
                   apiVersion: v1
                   fieldPath: status.podIP
           name: alertmanager
-          image: quay.io/prometheus/alertmanager:{{ .Values.image.alertmanagerTag }}
+          image:
+            quay.io/prometheus/alertmanager:{{ .Values.image.alertmanagerTag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             failureThreshold: 3
@@ -56,7 +57,7 @@ spec:
             periodSeconds: 10
             successThreshold: 1
             timeoutSeconds: 1
-          resources: {}
+          resources: { }
           securityContext:
             runAsGroup: 65534
             runAsNonRoot: true
@@ -84,9 +85,11 @@ spec:
       affinity:
       {{- toYaml . | nindent 8 }}
       {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.tolerations }}
-      tolerations:
-      {{- toYaml . | nindent 8 }}
+      tolerations: {{ toYaml . | nindent 8 }}
       {{- end }}
   updateStrategy:
     rollingUpdate:
