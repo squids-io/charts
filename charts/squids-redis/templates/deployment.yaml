@@ -23,13 +23,9 @@ spec:
           image: redis:{{ .Values.image.tag }}
           ports:
             - containerPort: {{ .Values.image.containerPort }}
-          resources:
-            limits:
-              cpu: 1000m
-              memory: 1024Mi
-            requests:
-              cpu: 1000m
-              memory: 1024Mi
+          {{- with .Values.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end}}
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
