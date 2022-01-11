@@ -2,7 +2,7 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: squids-trade
-  namespace:  {{ .Release.Name }}
+  namespace: {{.Release.Namespace}}
 data:
   application-prod.yml: |
     server:
