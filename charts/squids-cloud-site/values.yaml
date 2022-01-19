@@ -8,16 +8,16 @@ replicaCount: 1
 env: dev
 
 image:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   console:
-    name: squids-console-release
-    tag: 1.1.0
+    name: squids-console
+    tag: 1.4.1
   web:
-    name: squids-web-release
-    tag: 1.1.0
+    name: squids-web
+    tag: 1.6.2
 
 console:
   domain: www.google.com
