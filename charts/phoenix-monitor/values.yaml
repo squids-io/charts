@@ -3,8 +3,6 @@
 # Declare variables to be passed into your templates.
 
 global:
-  registry: swr.cn-east-2.myhuaweicloud.com
-  repository: squids
   dataDir: /squids-data
 
 replicaCount: 1
@@ -18,6 +16,8 @@ nodeExporter:
 
 phoenix:
   image:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
     name: phoenix
     pullPolicy: IfNotPresent
     tag: v1.4.0-squids

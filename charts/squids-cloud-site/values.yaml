@@ -4,8 +4,8 @@
 
 replicaCount: 1
 
-#env: pro test dev
-env: dev
+#env: pro test
+env: test
 
 image:
   registry: swr.cn-east-2.myhuaweicloud.com
@@ -20,9 +20,11 @@ image:
     tag: 1.6.2
 
 console:
-  domain: www.google.com
+  domain: squids.cn
 web:
-  domain: www.google.com
+  domain: squids.cn
+grafana:
+  domain: ""
 
 nginx:
   auth: false

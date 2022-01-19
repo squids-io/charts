@@ -14,7 +14,7 @@ data:
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
       redis:
-        host: squids-redis # Redis服务器地址
+        host: squids-redis-headless # Redis服务器地址
         database: 0 # Redis数据库索引（默认为0）
         port: 6379 # Redis服务器连接端口
         password: # Redis服务器连接密码（默认为空）
@@ -64,9 +64,9 @@ data:
       activeurl: https://squids.cn/api/v1/sso/active/
       {{ end }}
 
-      {{ if eq .Values.env "test" }}
-      reseturl: {{.Values.server.host}}/reset_password/
-      activeurl: {{.Values.server.host}}/api/v1/sso/active/
+      {{ if ne .Values.env "pro" }}
+      reseturl: http://{{.Values.server.host}}/reset_password/
+      activeurl: http://{{.Values.server.host}}/api/v1/sso/active/
       {{ end }}
 
     user-config:
@@ -77,7 +77,7 @@ data:
       register_url: https://squids.cn/login?action=join
       cookie-domain: squids.cn
       {{ end }}
-      {{ if eq .Values.env "test" }}
-      register_url: {{.Values.server.host}}/login?action=join
+      {{ if ne .Values.env "pro" }}
+      register_url: http://{{.Values.server.host}}/login?action=join
       cookie-domain: {{.Values.server.host}}
       {{ end }}

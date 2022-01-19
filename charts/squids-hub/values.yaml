@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
   name: hub
   pullPolicy: IfNotPresent
@@ -18,12 +18,16 @@ service:
   port: 29527
 
 #squids config
-env: pro
+
+# env: test pro
+env: test
 server:
   host: localhost
 mysql: 
-  username: squids
+  username: squidsRoot9527
   password: squids123456
+phoenix:
+  domain: localhost
 
 imagePullSecrets: []
 nameOverride: ""

@@ -6,5 +6,5 @@ metadata:
 data:
   base-url.json: |
     {
-      "console": "https://console.squids.io"
+      "console": "http://{{.Values.web.domain}}:8080"
     }
