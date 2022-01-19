@@ -8,7 +8,7 @@ replicaCount: 1
 env: test
 
 image:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
