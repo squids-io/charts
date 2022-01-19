@@ -13,7 +13,7 @@ data:
         driver-class-name: com.mysql.cj.jdbc.Driver
 
       redis:
-        host: squids-redis # Redis服务器地址
+        host: squids-redis-headless # Redis服务器地址
         database: 0 # Redis数据库索引（默认为0）
         port: 6379 # Redis服务器连接端口
         password: # Redis服务器连接密码（默认为空）
@@ -22,7 +22,7 @@ data:
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
       TradeModuleGatewayUrl: http://squids-trade:29528/api/v1/
-      phoenixEndpoint: http://squids-phoenix:9001/api/v1/
+      phoenixEndpoint: http://{{ .Values.phoenix.domain}}:9091/phoenix/api/v2/
 
     credential:
       provider:
