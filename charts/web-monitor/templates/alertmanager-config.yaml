@@ -11,7 +11,7 @@ data:
     global:
       resolve_timeout: 5m
       smtp_from: {{ .Values.alertmanagerSts.smtp_from }}
-      smtp_smarthost: smtp.exmail.qq.com:465
+      smtp_smarthost: smtpdm.aliyun.com:465
       smtp_hello: "qq.com"
       smtp_auth_username: {{ .Values.alertmanagerSts.smtp_auth_username }}
       smtp_auth_password: {{ .Values.alertmanagerSts.smtp_auth_password }}

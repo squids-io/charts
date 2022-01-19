@@ -4,8 +4,8 @@
 
 replicaCount: 1
 
-#env: pro test dev
-env: dev
+#env: pro test
+env: test
 
 image:
   registry: docker.io
@@ -13,16 +13,18 @@ image:
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   console:
-    name: squids-console-release
-    tag: 1.1.0
+    name: squids-console
+    tag: 1.4.1
   web:
-    name: squids-web-release
-    tag: 1.1.0
+    name: squids-web
+    tag: 1.6.2
 
 console:
-  domain: www.google.com
+  domain: squids.cn
 web:
-  domain: www.google.com
+  domain: squids.cn
+grafana:
+  domain: ""
 
 nginx:
   auth: false

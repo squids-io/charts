@@ -1,11 +1,12 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: squids-redis
   namespace: {{.Release.Namespace}}
   labels:
     app: squids-redis
 spec:
+  serviceName: squids-redis-headless
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
@@ -29,7 +30,7 @@ spec:
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
-            - name: data
+            - name: redis-storage
               mountPath: /data
             - name: redis-conf
               mountPath: /etc/redis/
@@ -37,9 +38,6 @@ spec:
         - name: localtime
           hostPath:
             path: /etc/localtime
-        - name: data
-          persistentVolumeClaim:
-            claimName: squids-redis-pvc
         - name: redis-conf
           configMap:
             name: redis-conf
@@ -50,16 +48,17 @@ spec:
       {{- with .Values.tolerations }}
       tolerations: {{ toYaml . | nindent 8 }}
       {{- end }}
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: squids-redis-pvc
-  namespace: squids
-spec:
-  storageClassName: local-path
-  accessModes:
-    - ReadWriteOnce
-  resources:
-    requests:
-      storage: 4Gi
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: redis-storage
+        labels:
+          app: squids-redis
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 4Gi
+        volumeMode: Filesystem
