@@ -11,7 +11,7 @@ replicaCount: 1
 namespace: squids
 
 image:
-  repository: squids/mssql-operator
+  repository: swr.cn-east-2.myhuaweicloud.com/squids/mssql-operator
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   tag: "v1.0.0"

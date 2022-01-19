@@ -37,6 +37,10 @@ spec:
               value: "{{ .Values.disableTls }}"
             - name: CURRENT_RUNTIME_ENV
               value: "{{ .Values.currentRuntimeEnv }}"
+            - name: IMAGE_REPO_HOST
+              value: {{ .Values.global.registry }}
+            - name: IMAGE_REPO_ORGANIZATION
+              value: {{.Values.global.repository}}
       volumes:
         - name: localtime
           hostPath:
