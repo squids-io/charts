@@ -1,0 +1,215 @@
+
+objectStorage:
+  type: "input these please"
+  endpoint: "input these please"
+  bucket: "input these please"
+  accessKeyId: "input these please"
+  accessKeySecret: "input these please"
+
+image:
+  pullPolicy: IfNotPresent
+  prometheusTag: v2.19.2
+  thanosTag: v0.16.0-rc.1
+  alertmanagerTag: v0.21.0
+
+alertmanagerSts:
+  replicaCount: 1
+
+  smtp_from: "input these please"
+  smtp_auth_username: "input these please"
+  smtp_auth_password: "input these please"
+  smtp_receiver: "input these please"
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "vpc.id"
+                operator: In
+                values:
+                  - "0"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - alertmanager
+          topologyKey: kubernetes.io/hostname
+
+prometheusSts:
+  replicaCount: 1
+
+  pvcSize: 200Gi
+
+  kubePKIPath: /etc/kubernetes/pki
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "vpc.id"
+                operator: In
+                values:
+                  - "0"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - prometheus
+          topologyKey: kubernetes.io/hostname
+
+  prometheus:
+    resources: {}
+    storage:
+      retentionTime: 10d
+      minBlockDuration: 2h
+      maxBlockDuration: 2h
+
+  thanos:
+    resources: {}
+
+thanosQuery:
+  httpPort: 9090
+  grpcPort: 10901
+  replicaCount: 1
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "vpc.id"
+                operator: In
+                values:
+                  - "0"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - podAffinityTerm:
+            labelSelector:
+              matchExpressions:
+                - key: app.kubernetes.io/name
+                  operator: In
+                  values:
+                    - thanos-query
+            topologyKey: kubernetes.io/hostname
+          weight: 100
+
+  resources: {}
+
+thanosStore:
+  replicaCount: 1
+  pvcSize: 10Gi
+
+  affinity:
+
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: thanos-store
+          topologyKey: kubernetes.io/hostname
+
+  resources: {}
+
+thanosRule:
+  replicaCount: 1
+  pvcSize: 100Gi
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "vpc.id"
+                operator: In
+                values:
+                  - "0"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchLabels:
+              app.kubernetes.io/name: thanos-rule
+          topologyKey: kubernetes.io/hostname
+
+  resources: {}
+
+thanosCompact:
+  retention:
+    resolutionRaw: 90d
+    resolution5m: 180d
+    resolution1h: 360d
+  pvcSize: 100Gi
+
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+          - matchExpressions:
+              - key: "vpc.id"
+                operator: In
+                values:
+                  - "0"
+      preferredDuringSchedulingIgnoredDuringExecution:
+        - weight: 80
+          preference:
+            matchExpressions:
+              - key: squids/cluster
+                operator: In
+                values:
+                  - squids-monitor
+    podAntiAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        - labelSelector:
+            matchExpressions:
+              - key: app.kubernetes.io/name
+                operator: In
+                values:
+                  - thanos-compact
+          topologyKey: kubernetes.io/hostname
+
+  resources: {}
+
+nodeSelector: {}
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists

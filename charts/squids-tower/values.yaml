@@ -5,11 +5,11 @@
 replicaCount: 1
 
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   squidstower:
     tag: v1.0.0
   qfbbackupjob:

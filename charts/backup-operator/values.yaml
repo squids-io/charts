@@ -4,13 +4,13 @@
 
 replicaCount: 1
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 tag: latest
 # current operator version
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   operator:
     operator: v1.0.0
 
@@ -49,7 +49,7 @@ clusterRole: backup-operator
 clusterRoleBinding: backup-operator
 
 # dev | test | prod
-currentRuntimeEnv: "dev"
+currentRuntimeEnv: "prod"
 # prod 环境版本号
 imageVersion: "v0.0.1"
 

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: squids-redis
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: squids-redis
+spec:
+  serviceName: squids-redis-headless
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: squids-redis
+  template:
+    metadata:
+      labels:
+        app: squids-redis
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: squids-redis
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: redis:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          {{- with .Values.resources }}
+          resources: {{ toYaml . | nindent 12 }}
+          {{- end}}
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: redis-storage
+              mountPath: /data
+            - name: redis-conf
+              mountPath: /etc/redis/
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: redis-conf
+          configMap:
+            name: redis-conf
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: redis-storage
+        labels:
+          app: squids-redis
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 4Gi
+        volumeMode: Filesystem

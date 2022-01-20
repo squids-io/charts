@@ -1,0 +1,140 @@
+# Default values for monitor.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+global:
+  dataDir: /squids-data
+
+replicaCount: 1
+
+nodeExporter:
+  nodePort: true
+  phoenix: 30067
+  prometheus: 30002
+  alertmanager: 30003
+  database: 30068
+
+phoenix:
+  image:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: phoenix
+    pullPolicy: IfNotPresent
+    tag: v1.4.0-squids
+  args:
+    endpoint:
+      receiver: ""
+      target: ""
+
+database:
+  image:
+    name: mysql
+    pullPolicy: IfNotPresent
+    tag: 5.7
+  env:
+    passwd: letsg0
+
+prometheus:
+  image:
+    registry: quay.io
+    repository: prometheus
+    name: prometheus
+    pullPolicy: IfNotPresent
+    tag: v2.30.3
+  storage:
+    retentionTime: 10d
+    minBlockDuration: 2h
+    maxBlockDuration: 2h
+  pvcSize: 200Gi
+
+alertmanager:
+  image:
+    registry: quay.io
+    repository: prometheus
+    name: alertmanager
+    pullPolicy: IfNotPresent
+    tag: v0.23.0
+
+objectStorage:
+  type: "input these please"
+  endpoint: "input these please"
+  bucket: "input these please"
+  accessKeyId: "input these please"
+  accessKeySecret: "input these please"
+
+thanos:
+  image:
+    registry: quay.io
+    repository: thanos
+    name: thanos
+    pullPolicy: IfNotPresent
+    tag: v0.23.1
+  resources: {}
+
+thanosQuery:
+  httpPort: 9090
+  grpcPort: 10901
+  replicaCount: 1
+  resources: {}
+
+
+thanosStore:
+  replicaCount: 1
+  pvcSize: 10Gi
+
+thanosRule:
+  replicaCount: 1
+  pvcSize: 100Gi
+  resources: {}
+
+
+thanosCompact:
+  retention:
+    resolutionRaw: 90d
+    resolution5m: 180d
+    resolution1h: 360d
+  pvcSize: 100Gi
+  resources: {}
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+nodeSelector: {}
+
+tolerations:
+- effect: NoSchedule
+  key: node-role.kubernetes.io/master
+  operator: Exists
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"
+    preferredDuringSchedulingIgnoredDuringExecution:
+    - weight: 80
+      preference:
+        matchExpressions:
+        - key: squids/cluster
+          operator: In
+          values:
+            - squids-monitor
+ 
+
+kubePKIPath: /etc/kubernetes/pki
+
+dataPath: ""
+dataPathBasename: monitor

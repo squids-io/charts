@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: webapp-trade
-  namespace: squids
+  namespace: {{.Release.Namespace}}
   labels:
     app: squids-trade
 spec:
@@ -18,9 +18,9 @@ spec:
       nodeSelector:
         node-role.kubernetes.io/master: ""
       containers:
-        - name: squids-trade
+        - name: trade
           imagePullPolicy: {{ .Values.image.pullPolicy}}
-          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/squids-trade:{{ .Values.image.tag }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
           ports:
             - containerPort: {{ .Values.image.containerPort }}
           volumeMounts:
@@ -35,3 +35,10 @@ spec:
         - name: config-volume
           configMap:
             name: squids-trade
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}

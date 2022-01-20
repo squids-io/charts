@@ -1,0 +1,285 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: monitor
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/name: monitor
+spec:
+  serviceName: prometheus-headless
+  podManagementPolicy: Parallel
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: monitor
+  template:
+    metadata:
+      name: monitor
+      labels:
+        app.kubernetes.io/name: monitor
+    spec:
+      serviceAccountName: prometheus
+      securityContext:
+        runAsUser: 0
+        fsGroup: 0
+      terminationGracePeriodSeconds: 30
+      initContainers:
+        - name: install-phoenix-config
+          image: alpine:3.6
+          command: [ 'sh', '-c', 'cd /init-conf && cp -fv
+              alertmanager.yml
+              inhibit.yml
+              prometheus.yml
+          /conf &&touch /conf/rules.yml' ]
+          volumeMounts:
+            - name: monitor
+              mountPath: /conf
+              subPath: conf
+            - name: monitor-conf
+              mountPath: /init-conf
+      containers:
+        - name: phoenix-db
+          image: {{.Values.database.image.name}}:{{ .Values.database.image.tag }}
+          imagePullPolicy: {{ .Values.database.image.pullPolicy }}
+          args: [ "--character-set-server", "utf8mb4" ]
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: {{ .Values.database.env.passwd }}
+            - name: MYSQL_DATABASE
+              value: phoenix
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+              name: phoenix-db
+          volumeMounts:
+            - name: phoenix-db-storage
+              mountPath: /var/lib/mysql
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: my-cnf
+              mountPath: /etc/mysql/my.cnf
+              subPath: my.cnf
+        - name: phoenix
+          image: {{.Values.phoenix.image.registry}}/{{.Values.phoenix.image.repository}}/{{.Values.phoenix.image.name}}:{{ .Values.phoenix.image.tag }}
+          imagePullPolicy: {{ .Values.phoenix.image.pullPolicy }}
+          args:
+            - --database-address=localhost
+            - --database-port=3306
+            - --database-username=root
+            - --database-password={{.Values.database.env.passwd}}
+            - --database-database=phoenix
+            - --data-dir=/etc/phoenix/monitor
+            - --rule-config=/rules.yml
+            - --prom-url=http://prometheus:9090
+            - --alert-url=http://alertmanager:9093
+            - --tmpl-dir=/etc/alert/tmpl
+            - --alerting-target-type-file-path=/etc/phoenix/conf/target_type.yml
+            - --alerting-type-file-path=/etc/phoenix/conf/alerting_type.yml
+            - --alerting-model-file-paths=/etc/phoenix/conf/squids_model.yml
+            - --default-templates-file-path=/etc/phoenix/conf/templates.yml
+            - --notify-base-url=http://phoenix:9091
+            - --http-receivers-discovery-endpoint={{.Values.phoenix.args.endpoint.receiver}}
+            - --http-targets-discovery-endpoints={{.Values.phoenix.args.endpoint.target}}
+            - --http-discovery-interval=60
+            - --enable-multi-tenant=false
+            - --tailor-port=15100
+          ports:
+            - containerPort: 9091
+              protocol: TCP
+              name: phoenix
+          volumeMounts:
+            - name: phoenix-conf
+              mountPath: /etc/phoenix/conf
+            - name: alert-tmpl
+              mountPath: /etc/alert/tmpl
+            - name: monitor
+              mountPath: /etc/phoenix/monitor
+              subPath: conf
+            - name: localtime
+              mountPath: /etc/localtime
+        - name: prometheus
+          image: {{.Values.prometheus.image.registry}}/{{.Values.prometheus.image.repository}}/{{.Values.prometheus.image.name}}:{{ .Values.prometheus.image.tag }}
+          imagePullPolicy: {{ .Values.prometheus.image.pullPolicy }}
+          args:
+            - --config.file=/etc/prometheus/prometheus.yml
+            - --web.enable-lifecycle
+            - --storage.tsdb.retention=180d
+            - --storage.tsdb.path=/prometheus/data
+            - --storage.tsdb.retention.time={{ .Values.prometheus.storage.retentionTime }}
+            - --web.route-prefix=/
+            - --storage.tsdb.no-lockfile
+            - --storage.tsdb.min-block-duration={{ .Values.prometheus.storage.minBlockDuration }}
+            - --storage.tsdb.max-block-duration={{ .Values.prometheus.storage.maxBlockDuration }}
+            - --log.level=debug
+          ports:
+            - name: web
+              containerPort: 9090
+              protocol: TCP
+          livenessProbe:
+            failureThreshold: 6
+            httpGet:
+              path: /-/healthy
+              port: web
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          readinessProbe:
+            failureThreshold: 120
+            httpGet:
+              path: /-/ready
+              port: web
+              scheme: HTTP
+            periodSeconds: 5
+            successThreshold: 1
+            timeoutSeconds: 3
+          volumeMounts:
+            - mountPath: /etc/kubernetes/pki
+              name: k8skeys
+            - name: monitor
+              mountPath: /etc/prometheus
+              subPath: conf
+            - name: prometheus-storage
+              mountPath: /prometheus/data
+            - name: localtime
+              mountPath: /etc/localtime
+        - name: alertmanager
+          image: {{.Values.alertmanager.image.registry}}/{{.Values.alertmanager.image.repository}}/{{.Values.alertmanager.image.name}}:{{ .Values.alertmanager.image.tag }}
+          imagePullPolicy: {{ .Values.alertmanager.image.pullPolicy }}
+          args:
+            - --storage.path=/alertmanager/data
+            - --config.file=/etc/alertmanager/alertmanager.yml
+          ports:
+            - containerPort: 9093
+              protocol: TCP
+              name: alertmanager
+          volumeMounts:
+            - name: monitor
+              mountPath: /etc/alertmanager
+              subPath: conf
+            - name: alert-tmpl
+              mountPath: /etc/alert/tmpl
+            - name: alertmanager-storage
+              mountPath: /alertmanager/data
+            - name: localtime
+              mountPath: /etc/localtime
+        - name: thanos
+          image: {{.Values.thanos.image.registry}}/{{.Values.thanos.image.repository}}/{{.Values.thanos.image.name}}:{{ .Values.thanos.image.tag }}
+          imagePullPolicy: {{ .Values.thanos.image.pullPolicy }}
+          args:
+            - sidecar
+            - --log.level=debug
+            - --tsdb.path=/prometheus/data
+            - --prometheus.url=http://127.0.0.1:9090
+            - --objstore.config-file=/etc/thanos/objectstorage.yaml
+            - --reloader.config-file=/etc/prometheus/prometheus.yml
+            - --reloader.config-envsubst-file=/etc/prometheus/prometheus.yml
+            - --reloader.rule-dir=/etc/prometheus/
+          env:
+            - name: POD_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+          ports:
+            - name: http-sidecar
+              containerPort: 10902
+            - name: grpc
+              containerPort: 10901
+          livenessProbe:
+            httpGet:
+              port: 10902
+              path: /-/healthy
+          readinessProbe:
+            httpGet:
+              port: 10902
+              path: /-/ready
+          volumeMounts:
+            - name: k8skeys
+              mountPath: /etc/kubernetes/pki
+            - name: prometheus-storage
+              mountPath: /prometheus/data
+            - name: monitor
+              mountPath: /etc/prometheus
+              subPath: conf
+            - name: thanos-objectstorage
+              subPath: objectstorage.yaml
+              mountPath: /etc/thanos/objectstorage.yaml
+          {{- with .Values.thanos.resources }}
+          resources:
+            { { - toYaml . | nindent 12 } }
+          {{- end }}
+      volumes:
+        - name: monitor
+          hostPath:
+            path: {{ if .Values.dataPath }}{{ .Values.dataPath }}{{ else }}{{.Values.global.dataDir}}/{{ .Values.dataPathBasename }}{{ end }}
+            type: DirectoryOrCreate
+        - name: monitor-conf
+          configMap:
+            name: monitor-conf
+        - name: phoenix-conf
+          configMap:
+            name: phoenix-conf
+        - name: alert-tmpl
+          configMap:
+            name: alert-tmpl
+        - name: my-cnf
+          configMap:
+            name: mysql-conf
+        - name: k8skeys
+          hostPath:
+            path: {{.Values.kubePKIPath}}
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: thanos-objectstorage
+          secret:
+            secretName: thanos-objectstorage
+      {{- with .Values.affinity }}
+      affinity: {{toYaml .| nindent 8}}
+      {{ end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: { { toYaml . | nindent 8 } }
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: prometheus-storage
+        labels:
+          app.kubernetes.io/name: monitor
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.prometheus.pvcSize }}
+        volumeMode: Filesystem
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: alertmanager-storage
+        labels:
+          app.kubernetes.io/name: monitor
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Mi
+        volumeMode: Filesystem
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: phoenix-db-storage
+        labels:
+          app.kubernetes.io/name: monitor
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 4Gi
+        volumeMode: Filesystem

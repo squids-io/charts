@@ -13,19 +13,25 @@ adminPassword: admin
 
 enableHttps: true
 
-#nodeSelector:
-#  node-role.kubernetes.io/master: ""
-#
-#tolerations:
-#  - effect: NoSchedule
-#    key: node-role.kubernetes.io/master
-#    operator: Exists
+nodeSelector: {}
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
 
 affinity:
   nodeAffinity:
     requiredDuringSchedulingIgnoredDuringExecution:
       nodeSelectorTerms:
         - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 80
+        preference:
+          matchExpressions:
             - key: squids/cluster
               operator: In
               values:

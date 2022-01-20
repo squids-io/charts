@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: squids-web
-  namespace: squids
+  namespace: {{.Release.Namespace}}
   labels:
     app-name: squids-web
 spec:
@@ -24,7 +24,7 @@ spec:
         node-role.kubernetes.io/master: ""
       containers:
         - name: squids-web
-          imagePullPolicy: Always
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
           image:  {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.web.name }}:{{ .Values.image.web.tag }}
           ports:
             - containerPort: {{ .Values.containers.web.containerPort}}
@@ -40,3 +40,10 @@ spec:
         - name: squids-web-config
           configMap:
             name: squids-web-config
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
