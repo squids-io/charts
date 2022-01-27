@@ -69,6 +69,8 @@ spec:
             - name: localdir
               mountPath: /squids-data/local-path-provisioner
               readOnly: true
+            - name: podlogpath
+              mountPath: /var/log/pods
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
@@ -78,6 +80,9 @@ spec:
         - name: localdir
           hostPath:
             path: /squids-data/local-path-provisioner
+        - name: podlogpath
+          hostPath:
+            path: /var/log/pods
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}
