@@ -10,8 +10,13 @@ image:
   name: hub
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.0.0
   containerPort: 29527
+  hub:
+    name: hub
+    tag: v1.0.0
+  terraformProvider:
+    name: terraform-provider
+    tag: v1.0.0
 
 service:
   type: ClusterIP
@@ -27,7 +32,7 @@ mysql:
   username: squidsRoot9527
   password: squids123456
 phoenix:
-  domain: localhost
+  domain: phoenix.squids-monitor.svc.cluster.local
 
 imagePullSecrets: []
 nameOverride: ""
