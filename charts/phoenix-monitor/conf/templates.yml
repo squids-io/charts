@@ -46,3 +46,12 @@
     - name: os-cpu-usage
     - name: os-disk-usage
     - name: mg-slave-delay
+
+- name: ClickhouseCluster
+  type: ClickhouseCluster
+  repeatIntervalMinute: 20
+  groupIntervalMinute: 5
+  metrics:
+    - name: ch-db-hang
+    - name: os-cpu-usage
+    - name: os-disk-usage
