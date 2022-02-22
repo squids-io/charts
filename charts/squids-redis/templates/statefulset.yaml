@@ -28,6 +28,8 @@ spec:
           resources: {{ toYaml . | nindent 12 }}
           {{- end}}
           volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: redis-storage
@@ -35,6 +37,9 @@ spec:
             - name: redis-conf
               mountPath: /etc/redis/
       volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime

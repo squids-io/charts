@@ -38,6 +38,8 @@ spec:
               hostPort: 8080
             {{ end }}
           volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: config-volume
@@ -56,6 +58,9 @@ spec:
               mountPath: /etc/nginx/cert
             {{ end }}
       volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime
