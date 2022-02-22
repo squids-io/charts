@@ -18,6 +18,11 @@
   supportedTargetTypes:
     - MongoCluster
 
+- name: ClickhouseCluster
+  aliasName: ClickhouseCluster
+  supportedTargetTypes:
+    - ClickhouseCluster
+
 - name: OS
   aliasName: OS
   supportedTargetTypes:
@@ -25,4 +30,5 @@
     - RedisCluster
     - SQLServerCluster
     - MongoCluster
+    - ClickhouseCluster
 
