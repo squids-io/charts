@@ -40,6 +40,8 @@ spec:
               mountPath: /root/.terraform.d/plugins/local-registry
             - name: tmpterra
               mountPath: /terraform_file
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: config-volume
@@ -49,6 +51,9 @@ spec:
       volumes:
         - name: terraform-provider
           emptyDir: { }
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime
