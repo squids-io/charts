@@ -55,6 +55,8 @@ spec:
               containerPort: 9100
               hostPort: 9100
           volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
             - mountPath: /host
               name: host
               readOnly: true
@@ -63,6 +65,9 @@ spec:
       hostNetwork: true
       hostPID: true
       volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
         - name: host
           hostPath:
             path: /
