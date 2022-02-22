@@ -61,7 +61,7 @@ spec:
       volumes:
         - name: localtime
           hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
+            path: /etc/localtime
         - name: logdir
           hostPath:
             path: /apps/logs/squids/operator/

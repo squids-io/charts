@@ -69,15 +69,25 @@ spec:
             - name: localdir
               mountPath: /squids-data/local-path-provisioner
               readOnly: true
+            - name: podlogpath
+              mountPath: /var/log/pods
+            - name: localtime
+              mountPath: /etc/localtime
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
         - name: varlibkubeletpods
           hostPath:
             path: /var/lib/kubelet/pods
         - name: localdir
           hostPath:
             path: /squids-data/local-path-provisioner
+        - name: podlogpath
+          hostPath:
+            path: /var/log/pods
       {{- with .Values.tolerations }}
       tolerations:
         {{- toYaml . | nindent 8 }}

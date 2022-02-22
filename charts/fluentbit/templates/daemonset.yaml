@@ -80,7 +80,7 @@ spec:
               - key: limits.conf
                 path: limits
         - hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
+            path: /etc/localtime
           name: localtime
       serviceAccountName: fluent-bit
 ---

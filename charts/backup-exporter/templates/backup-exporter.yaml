@@ -74,9 +74,16 @@ spec:
           args:
             - "--collector.Backup"
             - --log.level=debug
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
       {{- with .Values.nodeSelector }}
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}

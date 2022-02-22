@@ -81,7 +81,12 @@ spec:
             - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
               name: config
               subPath: elasticsearch.yml
+            - name: localtime
+              mountPath: /etc/localtime
       volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
         - name: storage
           hostPath:
             path: {{ .Values.dataDirectory }}/{{ template "elasticsearch.name" . }}
