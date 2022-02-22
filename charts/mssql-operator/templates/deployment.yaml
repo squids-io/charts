@@ -49,6 +49,8 @@ spec:
               value: "{{ .Values.currentRuntimeEnv }}"
             - name: CLUSTER_FORCE_ANTI_AFFINITY
               value: "true"
+            - name: IMAGE_REPO_HOST
+              value: swr.cn-east-2.myhuaweicloud.com
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
