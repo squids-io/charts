@@ -1,0 +1,9 @@
+dependencies:
+- name: "loki"
+  condition: loki.enabled
+  repository: "https://squids-io.github.io/charts/"
+  version: "^2.3.0"
+- name: "promtail"
+  condition: promtail.enabled
+  repository: "https://squids-io.github.io/charts/"
+  version: "^2.2.0"
