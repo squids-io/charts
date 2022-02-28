@@ -100,17 +100,17 @@ data:
         ssl_prefer_server_ciphers on;
 
     set $allow_origin "";
-        if ( $http_origin ~ '^https?://(blog.|console.|)squids.io' ) {
+        if ( $http_origin ~ '^https?://(blog.|console.|)squids.cn' ) {
                 set $allow_origin $http_origin;
         }
     {{ end }}
 
     {{ if eq .Values.env "test" }}
         listen       80;
-        server_name  {{.Values.web.domain}};
+        server_name  {{.Values.web.ip}};
 
         set $allow_origin "";
-        if ( $http_origin ~ '^http?://{{.Values.web.domain}}:(80|8080)' ) {
+        if ( $http_origin ~ '^http?://{{.Values.web.ip}}:(80|8080)' ) {
                 set $allow_origin $http_origin;
         }
     {{ end }}
@@ -192,10 +192,10 @@ data:
 
      {{ if eq .Values.env "test" }}
           listen       8080;
-          server_name  {{.Values.console.domain}};
+          server_name  {{.Values.console.ip}};
 
           set $allow_origin "";
-          if ( $http_origin ~ '^http?://{{.Values.console.domain}}:(80|8080)' ) {
+          if ( $http_origin ~ '^http?://{{.Values.console.ip}}:(80|8080)' ) {
                   set $allow_origin $http_origin;
           }
      {{ end }}
@@ -353,6 +353,6 @@ metadata:
 data:
   root.config.json: |
     {
-      "grafanaBaseurl": "http://{{.Values.grafana.domain}}:30001",
-      "webUrl": "http://{{.Values.web.domain}}"
+      "grafanaBaseurl": "{{.Values.grafana.url}}",
+      "webUrl": "{{.Values.web.url}}"
     }
