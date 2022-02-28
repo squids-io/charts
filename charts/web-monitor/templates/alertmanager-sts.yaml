@@ -32,8 +32,7 @@ spec:
                   apiVersion: v1
                   fieldPath: status.podIP
           name: alertmanager
-          image:
-            quay.io/prometheus/alertmanager:{{ .Values.image.alertmanagerTag }}
+          image: quay.io/prometheus/alertmanager:{{ .Values.image.alertmanagerTag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           livenessProbe:
             failureThreshold: 3

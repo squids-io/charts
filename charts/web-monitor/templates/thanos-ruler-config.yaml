@@ -6,4 +6,60 @@ metadata:
     name: thanos-rules
   namespace: {{.Release.Namespace}}
 data:
-{{ (.Files.Glob "conf/alert-rules.yaml").AsConfig | indent 2 }}
+  record.rules.yaml: |-
+    groups:
+    - name: k8s.rules
+      rules:
+      - expr: |
+          sum(rate(container_cpu_usage_seconds_total{job="cadvisor", image!="", container!=""}[5m])) by (namespace)
+        record: namespace:container_cpu_usage_seconds_total:sum_rate
+      - expr: |
+          sum(container_memory_usage_bytes{job="cadvisor", image!="", container!=""}) by (namespace)
+        record: namespace:container_memory_usage_bytes:sum
+      - expr: |
+          sum by (namespace, pod, container) (
+            rate(container_cpu_usage_seconds_total{job="cadvisor", image!="", container!=""}[5m])
+          )
+        record: namespace_pod_container:container_cpu_usage_seconds_total:sum_rate
+      - alert: node up
+        expr: up{job="node"} == 0
+        for: 150s
+        annotations:
+          summary: "Instance {{"{{"}}$labels.instance {{"}}"}} down"
+          description: "instance: {{"{{"}}$labels.instance {{"}}"}} has been down for more than 150 seconds."
+      - alert: kubernetes apiservers  up
+        expr: up{job="kubernetes-apiservers"} == 0
+        for: 15s
+        annotations:
+          summary: "kubernetes apiserver down"
+          description: "{{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+      - alert: etcd up
+        expr: up{job="etcd-exporter"} == 0
+        for: 15s
+        annotations:
+          summary: "etcd down"
+          description: " {{"{{"}}$labels.instance {{"}}"}} of job {{"{{"}} $labels.job {{"}}"}} has been down for more than 15 seconds."
+      - alert: Root Filesystem Usage
+        expr: (node_filesystem_size_bytes{device="/dev/root"} - node_filesystem_free_bytes{device="/dev/root"}) / node_filesystem_size_bytes{device="/dev/root"} * 100 > 75
+        for: 2m
+        annotations:
+          summary: "{{"{{"}}$labels.instance{{"}}"}}: High Filesystem usage detected"
+          description: "instance: {{"{{"}}$labels.instance {{"}}"}}: root Filesystem usage is above 75% (current value is: {{"{{"}}$value {{"}}"}}"
+      - alert: SSD Filesystem Usage
+        expr: (node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} - node_filesystem_free_bytes{device="/dev/mapper/squids--group-squids--data"}) / node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} * 100 > 80
+        for: 2m
+        annotations:
+          summary: "{{"{{"}}$labels.instance{{"}}"}}: High Filesystem usage detected"
+          description: "instance: {{"{{"}}$labels.instance {{"}}"}}: SSD Filesystem usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
+      - alert: Node Memory Usage
+        expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 75
+        for: 2m
+        annotations:
+          summary: "{{"{{"}}$labels.instance{{"}}"}}: High Memory usage detected"
+          description: "instance: {{"{{"}}$labels.instance {{"}}"}}: Memory usage is above 75% (current value is: {{"{{"}}$value {{"}}"}}"
+      - alert: Node CPU Load
+        expr: (100 - (avg by (instance) (irate(node_cpu_seconds_total{job="node",mode="idle"}[5m])) * 100)) > 80
+        for: 5m
+        annotations:
+          summary: "{{"{{"}}$labels.instance{{"}}"}}: High CPU usage detected"
+          description: "instance: {{"{{"}}$labels.instance {{"}}"}}: CPU usage is above 80% (current value is: {{"{{"}}$value {{"}}"}}"
