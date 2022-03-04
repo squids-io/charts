@@ -12,7 +12,7 @@ tag: latest
 image:
   pullPolicy: IfNotPresent
   operator:
-    operator: v1.0.0
+    operator: dev
 
 nodeSelector:
   node-role.kubernetes.io/master: ""
@@ -49,8 +49,6 @@ clusterRole: backup-operator
 clusterRoleBinding: backup-operator
 
 # dev | test | prod
-currentRuntimeEnv: "prod"
+currentRuntimeEnv: "dev"
 # prod 环境版本号
 imageVersion: "v0.0.1"
-
-backupJobImageName: "squids/qfb-backup-job"
