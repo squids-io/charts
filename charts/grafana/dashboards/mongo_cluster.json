@@ -87,7 +87,7 @@
         {
           "expr": "mongodb_up{instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "instance_health",
           "refId": "A"
         }
       ],
@@ -146,7 +146,7 @@
         {
           "expr": "sum((rate(container_cpu_usage_seconds_total{container=\"mongod\",pod=\"$ins\"}[5m]) / ignoring(cpu) (container_spec_cpu_quota / 100000)) * 100)",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "CPU_usage_ratio",
           "refId": "A"
         }
       ],
@@ -241,7 +241,7 @@
         {
           "expr": "sum((container_memory_rss{container=\"mongod\", pod=\"$ins\"}/container_spec_memory_limit_bytes)*100)",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "memory_usage_ratio",
           "refId": "A"
         }
       ],
@@ -336,13 +336,13 @@
         {
           "expr": "mongodb_dbstats_dataSize{instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "data",
           "refId": "A"
         },
         {
           "expr": "mongodb_dbstats_storageSize{instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "storage",
           "refId": "B"
         }
       ],
@@ -437,13 +437,13 @@
         {
           "expr": "sum(mongodb_connections{state=\"current\",instance=\"$ins\"})",
           "interval": "",
-          "legendFormat": "total session",
+          "legendFormat": "total_session",
           "refId": "A"
         },
         {
           "expr": "sum(mongodb_connections{state=~\"available|current\",instance=\"$ins\"})",
           "interval": "",
-          "legendFormat": "available session",
+          "legendFormat": "available_session",
           "refId": "B"
         }
       ],
