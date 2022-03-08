@@ -23,20 +23,6 @@ spec:
           image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
           ports:
             - containerPort: {{ .Values.image.containerPort }}
-          livenessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /api/v1/actuator/health/liveness
-              port: {{ .Values.image.containerPort }}
-            initialDelaySeconds: 20
-            periodSeconds: 10
-          readinessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /api/v1/actuator/health/readiness
-              port: {{ .Values.image.containerPort }}
-            initialDelaySeconds: 20
-            periodSeconds: 5
           volumeMounts:
             - name: timezone
               mountPath: /etc/timezone
