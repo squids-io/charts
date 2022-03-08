@@ -4,11 +4,11 @@
   labels:
     alertingTypeName: OS
   supportedTargetTypes:
-    - MySQLCluster
-    - RedisCluster
-    - SQLServerCluster
-    - MongoCluster
-    - ClickhouseCluster
+    - MySQL
+    - Redis
+    - SQLServer
+    - MongoDB
+    - ClickHouse
   description: check database cpu usage
   spec:
     unitOptional: false
@@ -56,11 +56,11 @@
   labels:
     alertingTypeName: OS
   supportedTargetTypes:
-    - MySQLCluster
-    - RedisCluster
-    - SQLServerCluster
-    - MongoCluster
-    - ClickhouseCluster
+    - MySQL
+    - Redis
+    - SQLServer
+    - MongoDB
+    - ClickHouse
   description: check database storage space usage
   spec:
     unitOptional: false
@@ -109,14 +109,14 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: my-db-hang
-        expr: mysql_up
+        expr: (mysql_up or (absent(mysql_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
@@ -165,7 +165,7 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -221,7 +221,7 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -277,7 +277,7 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -335,14 +335,14 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: rd-db-hang
-        expr: redis_up
+        expr: (redis_up or (absent(redis_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
@@ -391,7 +391,7 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -447,7 +447,7 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check database memory usage
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -503,7 +503,7 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -561,14 +561,14 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: ms-db-hang
-        expr: mssql_up
+        expr: (mssql_up or (absent(mssql_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
@@ -617,7 +617,7 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -673,7 +673,7 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -730,7 +730,7 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -788,14 +788,14 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: mg-db-hang
-        expr: mongodb_up
+        expr: (mongodb_up or (absent(mongodb_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
@@ -844,7 +844,7 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -900,7 +900,7 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -956,7 +956,7 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -1013,14 +1013,14 @@
   labels:
     alertingTypeName: ClickhouseCluster
   supportedTargetTypes:
-    - ClickhouseCluster
+    - ClickHouse
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: ch-db-hang
-        expr: clickhouse-up
+        expr: (clickhouse-up or (absent(clickhouse-up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:

@@ -1,5 +1,5 @@
 - name: MySQLCluster
-  type: MySQLCluster
+  type: MySQL
   repeatIntervalMinute: 20
   groupIntervalMinute: 5
   metrics:
@@ -11,7 +11,7 @@
     - name: os-disk-usage
 
 - name: RedisCluster
-  type: RedisCluster
+  type: Redis
   repeatIntervalMinute: 20
   groupIntervalMinute: 5
   metrics:
@@ -23,7 +23,7 @@
     - name: os-disk-usage
 
 - name: SQLServerCluster
-  type: SQLServerCluster
+  type: SQLServer
   repeatIntervalMinute: 20
   groupIntervalMinute: 5
   metrics:
@@ -36,7 +36,7 @@
 
 
 - name: MongoCluster
-  type: MongoCluster
+  type: MongoDB
   repeatIntervalMinute: 20
   groupIntervalMinute: 5
   metrics:
@@ -48,7 +48,7 @@
     - name: mg-slave-delay
 
 - name: ClickhouseCluster
-  type: ClickhouseCluster
+  type: ClickHouse
   repeatIntervalMinute: 20
   groupIntervalMinute: 5
   metrics:
