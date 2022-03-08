@@ -89,7 +89,7 @@
           "format": "time_series",
           "instant": true,
           "interval": "1m",
-          "legendFormat": "",
+          "legendFormat": "instance_health",
           "refId": "A"
         }
       ],
@@ -148,7 +148,7 @@
         {
           "expr": "sum((rate(container_cpu_usage_seconds_total{container=\"redis\",pod=\"$ins\"}[5m]) / ignoring(cpu) (container_spec_cpu_quota / 100000)) * 100)",
           "interval": "5m",
-          "legendFormat": "",
+          "legendFormat": "CPU_usage_ratio",
           "refId": "A"
         }
       ],
@@ -243,7 +243,7 @@
         {
           "expr": "sum((container_memory_rss{container=\"redis\", pod=\"$ins\"}/container_spec_memory_limit_bytes)*100)",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "Memory_usage_ratio",
           "refId": "A"
         }
       ],
@@ -337,7 +337,7 @@
           "expr": "irate(redis_keyspace_hits_total{instance=\"$ins\"}[5m])/ (irate(redis_keyspace_hits_total{instance=\"$ins\"}[5m]) + irate(redis_keyspace_misses_total{instance=\"$ins\"}[5m])) * 100",
           "instant": true,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "Cache_ratio",
           "refId": "A"
         }
       ],
