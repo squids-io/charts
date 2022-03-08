@@ -35,20 +35,6 @@ spec:
               value: "/grpcserver_tls"
           ports:
             - containerPort: {{ .Values.image.containerPort }}
-          livenessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /api/v1/actuator/health/liveness
-              port: {{ .Values.image.containerPort }}
-            initialDelaySeconds: 30
-            periodSeconds: 10
-          readinessProbe:
-            failureThreshold: 10
-            httpGet:
-              path: /api/v1/actuator/health/readiness
-              port: {{ .Values.image.containerPort }}
-            initialDelaySeconds: 30
-            periodSeconds: 5
           volumeMounts:
             - name: terraform-provider
               mountPath: /root/.terraform.d/plugins/local-registry
