@@ -97,7 +97,7 @@
   defaultValue: 4194304
   type: int
   needRestart: false
-  range: 128-18446744073709547520
+  range: 1024-18446744073709547520
   description: 用于存放join查询中间结果的缓存大小。对于无法通过索引进行联结操作的查询，可以通过适当增大join_buffer_size的值来改善联结查询性能(但最好是想办法让join使用到索引来提高性能)。join_buffer_size都是每线程独占分配，数值不要设置过大应当为1024倍数。
   engine: mysql
   version: 5.6
@@ -344,7 +344,7 @@
   defaultValue: 4194304
   type: int
   needRestart: false
-  range: 128-18446744073709547520
+  range: 1024-18446744073709547520
   description: 用于存放join查询中间结果的缓存大小。对于无法通过索引进行联结操作的查询，可以通过适当增大join_buffer_size的值来改善联结查询性能(但最好是想办法让join使用到索引来提高性能)。join_buffer_size都是每线程独占分配，数值不要设置过大应当为1024倍数。
   engine: mysql
   version: 5.7
@@ -600,7 +600,7 @@
   defaultValue: 4194304
   type: int
   needRestart: false
-  range: 128-18446744073709547520
+  range: 1024-18446744073709547520
   description: 用于存放join查询中间结果的缓存大小。对于无法通过索引进行联结操作的查询，可以通过适当增大join_buffer_size的值来改善联结查询性能(但最好是想办法让join使用到索引来提高性能)。join_buffer_size都是每线程独占分配，数值不要设置过大应当为1024倍数。
   engine: mysql
   version: 8.0
