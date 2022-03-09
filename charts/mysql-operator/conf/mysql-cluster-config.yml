@@ -239,7 +239,7 @@
 - uuid: 841cf39a7b4611ebad9676798682834e
   name: innodb_flush_log_at_trx_commit
   defaultValue: 1
-  type: int
+  type: string
   needRestart: true
   range: 0|1|2
   description: 控制MySQL将事务日志同步到磁盘的频率。参数innodb_flush_log_at_trx_commit=[N]，如果N为1，表示事务提交时，把事务日志从缓存区写到日志文件中，并且立刻写入到磁盘上。如果N为0，表示每秒写入一次日志并将其刷新到磁盘，未刷新日志的事务可能会在崩溃中丢失。如果N为2，表示事务提交时，把事务日志从缓存区写到日志文件中，但不是立刻写入到磁盘上，而是大约每秒一次磁盘IO缓存刷新操作，如果写入前系统崩溃，就会导致最后1秒的日志丢失。如果不设置1，有数据丢失风险。
@@ -486,7 +486,7 @@
 - uuid: 8425a4be7b4611ebad9676798682834e
   name: innodb_flush_log_at_trx_commit
   defaultValue: 1
-  type: int
+  type: string
   needRestart: true
   range: 0|1|2
   description: 控制MySQL将事务日志同步到磁盘的频率。参数innodb_flush_log_at_trx_commit=[N]，如果N为1，表示事务提交时，把事务日志从缓存区写到日志文件中，并且立刻写入到磁盘上。如果N为0，表示每秒写入一次日志并将其刷新到磁盘，未刷新日志的事务可能会在崩溃中丢失。如果N为2，表示事务提交时，把事务日志从缓存区写到日志文件中，但不是立刻写入到磁盘上，而是大约每秒一次磁盘IO缓存刷新操作，如果写入前系统崩溃，就会导致最后1秒的日志丢失。如果不设置1，有数据丢失风险。
@@ -742,7 +742,7 @@
 - uuid: 843101c27b4611ebad9676798682834e
   name: innodb_flush_log_at_trx_commit
   defaultValue: 1
-  type: int
+  type: string
   needRestart: true
   range: 0|1|2
   description: 控制MySQL将事务日志同步到磁盘的频率。参数innodb_flush_log_at_trx_commit=[N]，如果N为1，表示事务提交时，把事务日志从缓存区写到日志文件中，并且立刻写入到磁盘上。如果N为0，表示每秒写入一次日志并将其刷新到磁盘，未刷新日志的事务可能会在崩溃中丢失。如果N为2，表示事务提交时，把事务日志从缓存区写到日志文件中，但不是立刻写入到磁盘上，而是大约每秒一次磁盘IO缓存刷新操作，如果写入前系统崩溃，就会导致最后1秒的日志丢失。如果不设置1，有数据丢失风险。
