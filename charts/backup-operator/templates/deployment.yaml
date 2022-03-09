@@ -38,9 +38,9 @@ spec:
           {{ else if eq .Values.currentRuntimeEnv "test" }}
             value: {{ .Values.global.registry }}/{{.Values.global.repository}}/qfb-backup-job:test
           {{ else }}
-            value: {{ .Values.global.registry }}/{{.Values.global.repository}}/qfb-backup-job:{{ .Values.imageVersion }}
+            value: {{ .Values.global.registry }}/{{.Values.global.repository}}/qfb-backup-job:{{ .Values.jobImageVersion }}
           {{ end }}
-#            value: "{{ .Values.backupJobImageName }}:{{ .Values.imageVersion }}"
+#            value: "{{ .Values.backupJobImageName }}:{{ .Values.jobImageVersion }}"
         name: operator
         securityContext:
           allowPrivilegeEscalation: false
