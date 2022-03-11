@@ -334,15 +334,15 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "mongodb_dbstats_dataSize{instance=\"$ins\"}",
+          "expr": "mongodb_filesystem_used_bytes{instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "data",
+          "legendFormat": "used",
           "refId": "A"
         },
         {
-          "expr": "mongodb_dbstats_storageSize{instance=\"$ins\"}",
+          "expr": "mongodb_filesystem_size_bytes{instance=\"$ins\"}",
           "interval": "",
-          "legendFormat": "storage",
+          "legendFormat": "size",
           "refId": "B"
         }
       ],
