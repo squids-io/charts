@@ -12,7 +12,7 @@ tag: latest
 image:
   pullPolicy: IfNotPresent
   operator:
-    operator: dev
+    operator: v1.0.0
 
 nodeSelector:
   node-role.kubernetes.io/master: ""
@@ -51,4 +51,4 @@ clusterRoleBinding: backup-operator
 # dev | test | prod
 currentRuntimeEnv: "dev"
 # prod 环境版本号
-imageVersion: "v0.0.1"
+jobImageVersion: "v1.0.0"
