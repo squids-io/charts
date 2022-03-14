@@ -9,9 +9,9 @@ global:
   repository: squids
 
 image:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   squidstower:
-    tag: v1.0.0
+    tag: dev
   qfbbackupjob:
     tag: v1.0.0
 
@@ -42,4 +42,4 @@ affinity:
         topologyKey: kubernetes.io/hostname
 
 disableTls: "false"
-currentRuntimeEnv: "prod"
+currentRuntimeEnv: "dev"
