@@ -20,8 +20,8 @@
           status: false
         description: check database cpu usage
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         match:
           labelName: ""
@@ -68,13 +68,13 @@
       - name: os-disk-usage
         expr: (node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} - node_filesystem_free_bytes{device="/dev/mapper/squids--group-squids--data"}) / node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} * 100
         advanced:
-          last: 1
-          status: false
+          last: 2
+          status: true
         description: check database storage space usage
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 1800
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         match:
           labelName: ""
           values: [ ]
@@ -120,12 +120,12 @@
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -176,11 +176,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -232,11 +232,11 @@
         description: check database dml
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -288,11 +288,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -349,9 +349,9 @@
           last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -402,11 +402,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -458,11 +458,11 @@
         description: check database memory usage
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -514,11 +514,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -572,12 +572,12 @@
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -628,11 +628,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -684,11 +684,11 @@
         description: check database dml
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -742,11 +742,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 3
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -799,12 +799,12 @@
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
-          repeatInterval: 30
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -855,11 +855,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -911,11 +911,11 @@
         description: check database dml
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -967,11 +967,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -1020,16 +1020,16 @@
     unitOptional: false
     rules:
       - name: ch-db-hang
-        expr: (clickhouse-up or (absent(clickhouse-up)-1))
+        expr: (chi_clickhouse_clickhouse_up or (absent(chi_clickhouse_clickhouse_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开

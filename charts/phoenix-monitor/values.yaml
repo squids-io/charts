@@ -28,6 +28,8 @@ phoenix:
 
 database:
   image:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
     name: mysql
     pullPolicy: IfNotPresent
     tag: 5.7
@@ -36,9 +38,9 @@ database:
 
 prometheus:
   image:
-    registry: quay.io
-    repository: prometheus
-    name: prometheus
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: prometheus/prometheus
     pullPolicy: IfNotPresent
     tag: v2.30.3
   storage:
@@ -49,9 +51,9 @@ prometheus:
 
 alertmanager:
   image:
-    registry: quay.io
-    repository: prometheus
-    name: alertmanager
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: prometheus/alertmanager
     pullPolicy: IfNotPresent
     tag: v0.23.0
 
@@ -64,9 +66,9 @@ objectStorage:
 
 thanos:
   image:
-    registry: quay.io
-    repository: thanos
-    name: thanos
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: thanos/thanos
     pullPolicy: IfNotPresent
     tag: v0.23.1
   resources: {}

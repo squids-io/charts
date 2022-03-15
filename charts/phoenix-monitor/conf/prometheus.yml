@@ -325,7 +325,6 @@ scrape_configs:
       ca_file: /etc/kubernetes/pki/etcd/ca.crt
       cert_file: /etc/kubernetes/pki/etcd/server.crt
       key_file: /etc/kubernetes/pki/etcd/server.key
-
   - job_name: clickhouse-exporter
     kubernetes_sd_configs:
       - role: pod
