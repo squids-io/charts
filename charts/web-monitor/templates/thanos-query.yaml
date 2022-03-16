@@ -47,8 +47,8 @@ spec:
             - --store=dnssrv+_grpc._tcp.prometheus-headless.{{.Release.Namespace}}.svc.cluster.local
             - --store=dnssrv+_grpc._tcp.thanos-rule.{{.Release.Namespace}}.svc.cluster.local
             - --store=dnssrv+_grpc._tcp.thanos-store.{{.Release.Namespace}}.svc.cluster.local
-          image: quay.io/thanos/thanos:{{ .Values.image.thanosTag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{.Values.thanos.image.registry}}/{{.Values.thanos.image.repository}}/{{.Values.thanos.image.name}}:{{ .Values.thanos.image.tag }}
+          imagePullPolicy: {{.Values.thanos.image.pullPolicy}}
           livenessProbe:
             failureThreshold: 4
             httpGet:

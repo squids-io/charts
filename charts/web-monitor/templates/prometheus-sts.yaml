@@ -104,8 +104,8 @@ spec:
         runAsUser: 0
       containers:
         - name: prometheus
-          image: quay.io/prometheus/prometheus:{{ .Values.image.prometheusTag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{.Values.prometheusSts.image.registry}}/{{.Values.prometheusSts.image.repository}}/{{.Values.prometheusSts.image.name}}:{{ .Values.prometheusSts.image.tag }}
+          imagePullPolicy: {{.Values.prometheusSts.image.pullPolicy}}
           args:
             - --config.file=/etc/prometheus/config_out/prometheus.yaml
             - --storage.tsdb.path=/prometheus
@@ -153,8 +153,8 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
         - name: thanos
-          image: quay.io/thanos/thanos:{{ .Values.image.thanosTag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{.Values.thanos.image.registry}}/{{.Values.thanos.image.repository}}/{{.Values.thanos.image.name}}:{{ .Values.thanos.image.tag }}
+          imagePullPolicy: {{.Values.thanos.image.pullPolicy}}
           args:
             - sidecar
             - --log.level=debug
