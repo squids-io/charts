@@ -21,7 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "iteration": 1643340568816,
+  "iteration": 1647499294274,
   "links": [],
   "panels": [
     {
@@ -89,7 +89,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "chi_clickhouse_clickhouse_up{exported_namespace=~\"$exported_namespace\",chi=~\"$chi\"}",
+          "expr": "chi_clickhouse_clickhouse_up{exported_namespace=~\"$exported_namespace\",chi=~\"$chi\", hostname=~\"$hostname\"}",
           "format": "time_series",
           "instant": true,
           "interval": "1m",
@@ -112,7 +112,7 @@
       },
       "datasource": "Prometheus",
       "description": "The time which CPU spent on various types of activity total for the selected period",
-      "fontSize": "80%",
+      "fontSize": "50%",
       "format": "µs",
       "gridPos": {
         "h": 8,
@@ -125,11 +125,12 @@
       "legend": {
         "header": "",
         "percentage": true,
+        "percentageDecimals": null,
         "show": true,
         "sideWidth": null,
-        "sort": "total",
-        "sortDesc": true,
-        "values": true
+        "sort": null,
+        "sortDesc": null,
+        "values": false
       },
       "legendType": "Right side",
       "links": [],
@@ -162,7 +163,7 @@
       "timeShift": null,
       "title": "CPU Time total",
       "type": "grafana-piechart-panel",
-      "valueName": "total"
+      "valueName": "max"
     },
     {
       "aliasColors": {},
@@ -1498,8 +1499,12 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
         },
         "datasource": "Prometheus",
         "definition": "label_values({__name__ =~ \"chi_clickhouse_metric_Uptime\"}, exported_namespace)",
@@ -1529,8 +1534,12 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "clickhouse-9l67g2x30y3fvcus"
+          ],
+          "value": [
+            "clickhouse-9l67g2x30y3fvcus"
+          ]
         },
         "datasource": "Prometheus",
         "definition": "label_values({__name__ =~ \"chi_clickhouse_metric_Uptime\", exported_namespace=~\"$exported_namespace\"}, chi)",
@@ -1560,8 +1569,12 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "All",
-          "value": "$__all"
+          "text": [
+            "chi-clickhouse-9l67g2x30y3fvcus-ck-cluster-1-0.squids-user.svc.cluster.local"
+          ],
+          "value": [
+            "chi-clickhouse-9l67g2x30y3fvcus-ck-cluster-1-0.squids-user.svc.cluster.local"
+          ]
         },
         "datasource": "Prometheus",
         "definition": "label_values({__name__ =~ \"chi_clickhouse_metric_Uptime\",exported_namespace=~\"$exported_namespace\",chi=~\"$chi\"}, hostname)",
