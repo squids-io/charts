@@ -10,7 +10,7 @@ data:
     tcp-backlog 511
     timeout 0
     daemonize yes
-    dir /data/
+    dir /data
     pidfile .pid
     appendonly yes
     pidfile /data/log/redis-6379.pid
