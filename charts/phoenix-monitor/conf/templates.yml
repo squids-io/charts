@@ -55,3 +55,11 @@
     - name: ch-db-hang
     - name: os-cpu-usage
     - name: os-disk-usage
+
+- name: ElasticSearchCluster
+  type: ElasticSearch
+  groupIntervalMinute: 5
+  repeatIntervalMinute: 30
+  metrics:
+    - name: os-cpu-usage
+    - name: os-disk-usage
