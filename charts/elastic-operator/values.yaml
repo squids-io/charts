@@ -6,7 +6,7 @@ replicaCount: 1
 
 image:
   repository: swr.cn-east-2.myhuaweicloud.com/squids/elastic-operator
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # Overrides the image tag whose default is the chart appVersion.
   tag: "dev"
 
@@ -79,7 +79,13 @@ autoscaling:
 nodeSelector:
   node-role.kubernetes.io/master: ""
 
-tolerations: []
+tolerations:
+  - effect: NoSchedule
+    key: squids/node
+    operator: Exists
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
 
 affinity:
   podAntiAffinity:
