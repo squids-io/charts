@@ -40,6 +40,10 @@ spec:
             - --enable-leader-election=false
             - --development=true
             - --validate-storage-class=false
+            - --container-registry=swr.cn-east-2.myhuaweicloud.com
+            - --filebeat-image=squids/filebeat
+            - --metricbeat-image=squids/metricbeat
+            - --kibana-image=squids/kibana
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
