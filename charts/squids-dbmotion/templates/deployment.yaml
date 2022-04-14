@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squids-dbmotion-saas-server
+  namespace: {{.Release.Namespace}}
+  labels:
+    app-name: squids-dbmotion-saas-server
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app-name: squids-dbmotion-saas-server
+  template:
+    metadata:
+      labels:
+        app-name: squids-dbmotion-saas-server
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: dbmotion-saas
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.image.dbmotionSassServer.registry }}/{{ .Values.image.dbmotionSassServer.repository }}/{{ .Values.image.dbmotionSassServer.name }}:{{ .Values.image.dbmotionSassServer.tag }}
+          env:
+            - name: SERVER_MODE
+              value: "SAAS"
+            - name: K8S_NAMESPACE
+              value: "squids"
+            - name: NODE_SELECTOR_KEY
+              value: "node-role.kubernetes.io/master"
+            - name: NODE_SELECTOR_VALUE
+            - name: IMAGE_NAME
+              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}:{{ .Values.image.dbmotion.tag }}
+            - name: WEB_MYSQL_URI
+              value: "mysql://{{ .Values.mysql.username }}:{{ .Values.mysql.password }}@{{ .Values.mysql.host }}:{{ .Values.mysql.port }}/dbmotion_web"
+            - name: DBMOTION_MYSQL_URI
+              value: "{{ .Values.mysql.username }}/{{ .Values.mysql.password }}@{{ .Values.mysql.host }}:{{ .Values.mysql.port }}:dbmotion"
+            - name: JWT_SECRET
+              value: squids_secret_xz98fj9r1wq
+            - name: ELASTICSEARCH_URI
+              value: {{ .Values.es.url }}
+          ports:
+            - name: dbmotion-saas
+              containerPort: {{ .Values.image.dbmotionSassServer.containerPort }}
+          volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
+            - name: localtime
+              mountPath: /etc/localtime
+      volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
