@@ -30,11 +30,15 @@ spec:
               value: "node-role.kubernetes.io/master"
             - name: NODE_SELECTOR_VALUE
             - name: IMAGE_NAME
-              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}:{{ .Values.image.dbmotion.tag }}
-            - name: WEB_MYSQL_URI
-              value: "mysql://{{ .Values.mysql.username }}:{{ .Values.mysql.password }}@{{ .Values.mysql.host }}:{{ .Values.mysql.port }}/dbmotion_web"
-            - name: DBMOTION_MYSQL_URI
-              value: "{{ .Values.mysql.username }}/{{ .Values.mysql.password }}@{{ .Values.mysql.host }}:{{ .Values.mysql.port }}:dbmotion"
+              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}
+            - name: MYSQL_HOST
+              value: {{ .Values.mysql.host }}
+            - name: MYSQL_PORT
+              value: "3306"
+            - name: MYSQL_USER_NAME
+              value: {{ .Values.mysql.username }}
+            - name: MYSQL_PASSWORD
+              value: {{ .Values.mysql.password }}
             - name: JWT_SECRET
               value: squids_secret_xz98fj9r1wq
             - name: ELASTICSEARCH_URI

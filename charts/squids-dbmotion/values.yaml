@@ -16,7 +16,6 @@ image:
     registry: docker.io
     repository: squids
     name: squids-dbmotion-tool
-    tag: dev
 
 service:
   type: ClusterIP
@@ -28,7 +27,7 @@ env: test
 
 mysql:
   host: squids-web-mysql-primary-headless
-  port: 3306
+  port: "3306"
   username: squidsRoot9527
   # !!!!!!! helm upgrade 的时候再填写真实密码，不要提交真实密码到 git 仓库 !!!!!!!!
   # !!!!!!! helm upgrade 的时候再填写真实密码，不要提交真实密码到 git 仓库 !!!!!!!!
