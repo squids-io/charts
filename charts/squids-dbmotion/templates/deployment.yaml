@@ -15,6 +15,7 @@ spec:
       labels:
         app-name: squids-dbmotion-saas-server
     spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
       nodeSelector:
         node-role.kubernetes.io/master: ""
       containers:
@@ -25,7 +26,7 @@ spec:
             - name: SERVER_MODE
               value: "SAAS"
             - name: K8S_NAMESPACE
-              value: "squids"
+              value: "squids-user"
             - name: NODE_SELECTOR_KEY
               value: "node-role.kubernetes.io/master"
             - name: NODE_SELECTOR_VALUE
