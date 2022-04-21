@@ -25,3 +25,9 @@ rules:
       - get
       - patch
       - update
+  - apiGroups:
+      - ""
+    resources:
+      - pods/log
+    verbs:
+      - get
