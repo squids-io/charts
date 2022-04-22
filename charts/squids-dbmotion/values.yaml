@@ -7,13 +7,13 @@ replicaCount: 1
 image:
   pullPolicy: Always
   dbmotionSassServer:
-    registry: docker.io
+    registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: squids-dbmotion-saas-server
     tag: dev
     containerPort: 3000
   dbmotion:
-    registry: docker.io
+    registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: squids-dbmotion-tool
 
