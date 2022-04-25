@@ -170,6 +170,19 @@ data:
             proxy_set_header X-Forwarded-Proto $scheme;
             proxy_pass http://squids-trade:29528;
           }
+
+          location ~* ^/api/v1/(apps|virtual_machines|launcher_vendors) {
+            auth_basic off;
+            add_header Access-Control-Allow-Origin  '$allow_origin';
+            add_header Access-Control-Allow-Credentials 'true';
+            add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+            add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control';
+            proxy_set_header Host $http_host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_pass http://squids-launcher:29530;
+          }
       }
 
     server {
@@ -258,6 +271,19 @@ data:
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $scheme;
         proxy_pass http://squids-trade:29528;
+      }
+
+      location ~* ^/api/v1/(apps|virtual_machines|launcher_vendors) {
+        auth_basic off;
+        add_header Access-Control-Allow-Origin  '$allow_origin';
+        add_header Access-Control-Allow-Credentials 'true';
+        add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+        add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control';
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://squids-launcher:29530;
       }
 
       #error_page  404              /404.html;

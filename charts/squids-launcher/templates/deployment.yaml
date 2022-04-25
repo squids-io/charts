@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp-launcher
+  namespace: {{.Release.Namespace}}
+  labels:
+    app-name: squids-launcher
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app-name: squids-launcher
+  template:
+    metadata:
+      labels:
+        app-name: squids-launcher
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      initContainers:
+        - name: terraform-provider
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.terraformProvider.name }}:{{ .Values.image.terraformProvider.tag }}
+          command: [ 'sh', '-c', 'cp -r /terraform-provider/. /local-registry' ]
+          volumeMounts:
+            - name: terraform-provider
+              mountPath: /local-registry
+      containers:
+        - name: launcher
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.launcher.name }}:{{ .Values.image.launcher.tag }}
+          env:
+            - name: TERRAFORM_FILE_PATH
+              value: "/terraform_file"
+            - name: APISERVER_CERT_ROOT_PATH
+              value: "/grpcserver_tls"
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          volumeMounts:
+            - name: terraform-provider
+              mountPath: /root/.terraform.d/plugins/local-registry
+            - name: tmpterra
+              mountPath: /terraform_file
+            - name: timezone
+              mountPath: /etc/timezone
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: terraform-provider
+          emptyDir: { }
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: config-volume
+          configMap:
+            name: squids-launcher
+        - name: tmpterra
+          hostPath:
+            path: /squids-data/terraform_file
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
