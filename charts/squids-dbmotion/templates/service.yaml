@@ -6,6 +6,7 @@ metadata:
   labels:
     app-name: squids-dbmotion-saas-server
 spec:
+  type: NodePort
   ports:
     - port: {{ .Values.service.port }}
       targetPort: 3000
