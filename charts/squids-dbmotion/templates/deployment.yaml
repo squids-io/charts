@@ -44,6 +44,8 @@ spec:
               value: squids_secret_xz98fj9r1wq
             - name: ELASTICSEARCH_URI
               value: {{ .Values.es.url }}
+            - name: PVC_CLAIM_NAME
+              value: dbmotion-saas
           ports:
             - name: dbmotion-saas
               containerPort: {{ .Values.image.dbmotionSassServer.containerPort }}
