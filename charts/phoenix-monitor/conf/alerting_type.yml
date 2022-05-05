@@ -23,6 +23,11 @@
   supportedTargetTypes:
     - ClickHouse
 
+- name: ElasticSearchCluster
+  aliasName: ElasticSearchCluster
+  supportedTargetTypes:
+    - ElasticSearch
+
 - name: OS
   aliasName: OS
   supportedTargetTypes:
@@ -31,4 +36,5 @@
     - SQLServer
     - MongoDB
     - ClickHouse
+    - ElasticSearch
 
