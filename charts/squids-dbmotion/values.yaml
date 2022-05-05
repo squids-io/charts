@@ -10,7 +10,7 @@ image:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: squids-dbmotion-saas-server
-    tag: dev
+    tag: 1.0.0
     containerPort: 3000
   dbmotion:
     registry: swr.cn-east-2.myhuaweicloud.com
@@ -21,9 +21,6 @@ service:
   type: ClusterIP
   port: 3000
 
-
-# env: test pro
-env: test
 
 mysql:
   host: squids-web-mysql-primary-headless.squids.svc.cluster.local

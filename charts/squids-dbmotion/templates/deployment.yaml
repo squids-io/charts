@@ -28,8 +28,9 @@ spec:
             - name: K8S_NAMESPACE
               value: "squids-user"
             - name: NODE_SELECTOR_KEY
-              value: "node-role.kubernetes.io/master"
+              value: "squids/cluster"
             - name: NODE_SELECTOR_VALUE
+              value: "squids-dbmotion"
             - name: IMAGE_NAME
               value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}
             - name: MYSQL_HOST
