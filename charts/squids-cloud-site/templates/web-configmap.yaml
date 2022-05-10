@@ -6,5 +6,5 @@ metadata:
 data:
   base-url.json: |
     {
-      "console": "http://{{.Values.web.domain}}:8080"
+      "console": "{{.Values.console.url}}"
     }

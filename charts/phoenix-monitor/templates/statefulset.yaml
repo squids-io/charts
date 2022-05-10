@@ -25,7 +25,7 @@ spec:
       terminationGracePeriodSeconds: 30
       initContainers:
         - name: install-phoenix-config
-          image: alpine:3.6
+          image: swr.cn-east-2.myhuaweicloud.com/squids/alpine:3.6
           command: [ 'sh', '-c', 'cd /init-conf && cp -fv
               alertmanager.yml
               inhibit.yml
@@ -39,7 +39,7 @@ spec:
               mountPath: /init-conf
       containers:
         - name: phoenix-db
-          image: {{.Values.database.image.name}}:{{ .Values.database.image.tag }}
+          image: {{.Values.database.image.registry}}/{{.Values.database.image.repository}}/{{.Values.database.image.name}}:{{ .Values.database.image.tag }}
           imagePullPolicy: {{ .Values.database.image.pullPolicy }}
           args: [ "--character-set-server", "utf8mb4" ]
           env:
@@ -54,6 +54,8 @@ spec:
           volumeMounts:
             - name: phoenix-db-storage
               mountPath: /var/lib/mysql
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: my-cnf
@@ -95,6 +97,8 @@ spec:
             - name: monitor
               mountPath: /etc/phoenix/monitor
               subPath: conf
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
         - name: prometheus
@@ -141,6 +145,8 @@ spec:
               subPath: conf
             - name: prometheus-storage
               mountPath: /prometheus/data
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
         - name: alertmanager
@@ -161,6 +167,8 @@ spec:
               mountPath: /etc/alert/tmpl
             - name: alertmanager-storage
               mountPath: /alertmanager/data
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
         - name: thanos
@@ -194,6 +202,10 @@ spec:
               port: 10902
               path: /-/ready
           volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
+            - name: localtime
+              mountPath: /etc/localtime
             - name: k8skeys
               mountPath: /etc/kubernetes/pki
             - name: prometheus-storage
@@ -228,6 +240,9 @@ spec:
         - name: k8skeys
           hostPath:
             path: {{.Values.kubePKIPath}}
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime

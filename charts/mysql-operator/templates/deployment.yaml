@@ -38,6 +38,8 @@ spec:
               value: "{{ .Values.currentRuntimeEnv }}"
             - name: CLUSTER_FORCE_ANTI_AFFINITY
               value: "true"
+            - name: IMAGE_REPO_HOST
+              value: {{ .Values.global.registry }}
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
@@ -46,7 +48,7 @@ spec:
       volumes:
         - name: localtime
           hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
+            path: /etc/localtime
         - name: logdir
           hostPath:
             path: /apps/logs/squids/operator/

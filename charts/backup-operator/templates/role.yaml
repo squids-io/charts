@@ -55,6 +55,13 @@ rules:
 - apiGroups:
   - ""
   resources:
+  - secrets
+  verbs:
+  - list
+  - watch
+- apiGroups:
+  - ""
+  resources:
   - pods/status
   verbs:
   - get

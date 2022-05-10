@@ -17,10 +17,17 @@ spec:
     spec:
       nodeSelector:
         node-role.kubernetes.io/master: ""
+      initContainers:
+        - name: terraform-provider
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.terraformProvider.name }}:{{ .Values.image.terraformProvider.tag }}
+          command: [ 'sh', '-c', 'cp -r /terraform-provider/. /local-registry' ]
+          volumeMounts:
+            - name: terraform-provider
+              mountPath: /local-registry
       containers:
         - name: hub
           imagePullPolicy: {{ .Values.image.pullPolicy}}
-          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.hub.name }}:{{ .Values.image.hub.tag }}
           env:
             - name: TERRAFORM_FILE_PATH
               value: "/terraform_file"
@@ -29,8 +36,12 @@ spec:
           ports:
             - containerPort: {{ .Values.image.containerPort }}
           volumeMounts:
+            - name: terraform-provider
+              mountPath: /root/.terraform.d/plugins/local-registry
             - name: tmpterra
               mountPath: /terraform_file
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: config-volume
@@ -38,6 +49,11 @@ spec:
             - name: tls
               mountPath: /grpcserver_tls
       volumes:
+        - name: terraform-provider
+          emptyDir: { }
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime
@@ -51,12 +67,12 @@ spec:
           secret:
             secretName: grpc-client.tls
             items:
-            - key: ca.crt
-              path: ca.pem
-            - key: tls.crt
-              path: client-cert.pem
-            - key: tls.key
-              path: client-key.pem
+              - key: ca.crt
+                path: ca.pem
+              - key: tls.crt
+                path: client-cert.pem
+              - key: tls.key
+                path: client-key.pem
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}

@@ -44,8 +44,8 @@ spec:
             - --retention.resolution-raw={{ .Values.thanosCompact.retention.resolutionRaw }}
             - --retention.resolution-5m={{ .Values.thanosCompact.retention.resolution5m }}
             - --retention.resolution-1h={{ .Values.thanosCompact.retention.resolution1h }}
-          image: quay.io/thanos/thanos:{{ .Values.image.thanosTag }}
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{.Values.thanos.image.registry}}/{{.Values.thanos.image.repository}}/{{.Values.thanos.image.name}}:{{ .Values.thanos.image.tag }}
+          imagePullPolicy: {{.Values.thanos.image.pullPolicy}}
           livenessProbe:
             failureThreshold: 4
             httpGet:

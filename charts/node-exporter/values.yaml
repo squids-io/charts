@@ -1,8 +1,6 @@
-global:
-  registry: docker.io
-  repository: squids
 
 image:
+  repository: swr.cn-east-2.myhuaweicloud.com/squids/prom/node-exporter
   pullPolicy: IfNotPresent
   tag: v1.0.0
 

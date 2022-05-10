@@ -10,13 +10,13 @@ data:
           - name: mongo
             image: mongo:4.4
           - name: mrs-manager
-            image: squids/mrs-manager:v1.0.0
+            image: swr.cn-east-2.myhuaweicloud.com/squids/mrs-manager:v1.0.0
           - name: restore
-            image: squids/mongo4.4-qfb:v1.0.0
+            image: swr.cn-east-2.myhuaweicloud.com/squids/mongo4.4-qfb:v1.0.0
           - name: exporter
-            image: squids/mongo-exporter:v1.0.0
+            image: swr.cn-east-2.myhuaweicloud.com/squids/mongo-exporter:v1.0.0
           - name: backup
-            image: squids/mongo4.4-qfb:v1.0.0
+            image: swr.cn-east-2.myhuaweicloud.com/squids/mongo4.4-qfb:v1.0.0
 kind: ConfigMap
 metadata:
   name: mongo-app-config

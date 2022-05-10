@@ -209,7 +209,7 @@
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "MySQL_uptime",
           "metric": "",
           "refId": "A",
           "step": 300
@@ -307,7 +307,7 @@
           "format": "time_series",
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "current_QPS",
           "metric": "",
           "refId": "A",
           "step": 20
@@ -405,7 +405,7 @@
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "innoDB_buffer_pool_size",
           "metric": "",
           "refId": "A",
           "step": 300
@@ -506,7 +506,7 @@
           "format": "time_series",
           "interval": "5m",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "buffer_pool_size_of_total_RAM",
           "metric": "",
           "refId": "A",
           "step": 300

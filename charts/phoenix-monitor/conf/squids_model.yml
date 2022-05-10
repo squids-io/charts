@@ -4,10 +4,11 @@
   labels:
     alertingTypeName: OS
   supportedTargetTypes:
-    - MySQLCluster
-    - RedisCluster
-    - SQLServerCluster
-    - MongoCluster
+    - MySQL
+    - Redis
+    - SQLServer
+    - MongoDB
+    - ClickHouse
   description: check database cpu usage
   spec:
     unitOptional: false
@@ -19,8 +20,8 @@
           status: false
         description: check database cpu usage
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         match:
           labelName: ""
@@ -55,10 +56,11 @@
   labels:
     alertingTypeName: OS
   supportedTargetTypes:
-    - MySQLCluster
-    - RedisCluster
-    - SQLServerCluster
-    - MongoCluster
+    - MySQL
+    - Redis
+    - SQLServer
+    - MongoDB
+    - ClickHouse
   description: check database storage space usage
   spec:
     unitOptional: false
@@ -66,13 +68,13 @@
       - name: os-disk-usage
         expr: (node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} - node_filesystem_free_bytes{device="/dev/mapper/squids--group-squids--data"}) / node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} * 100
         advanced:
-          last: 1
-          status: false
+          last: 2
+          status: true
         description: check database storage space usage
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 1800
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         match:
           labelName: ""
           values: [ ]
@@ -107,23 +109,23 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: my-db-hang
-        expr: mysql_up
+        expr: (mysql_up or (absent(mysql_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -163,7 +165,7 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -174,11 +176,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -219,7 +221,7 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -230,11 +232,11 @@
         description: check database dml
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -275,7 +277,7 @@
   labels:
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -286,11 +288,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -333,23 +335,23 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: rd-db-hang
-        expr: redis_up
+        expr: (redis_up or (absent(redis_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
           last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -389,7 +391,7 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -400,11 +402,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -445,7 +447,7 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check database memory usage
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -456,11 +458,11 @@
         description: check database memory usage
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -501,7 +503,7 @@
   labels:
     alertingTypeName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -512,11 +514,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -559,23 +561,23 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: ms-db-hang
-        expr: mssql_up
+        expr: (mssql_up or (absent(mssql_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
-          repeatInterval: 30
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -615,7 +617,7 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -626,11 +628,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -671,7 +673,7 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -682,11 +684,11 @@
         description: check database dml
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -728,7 +730,7 @@
   labels:
     alertingTypeName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -740,11 +742,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 3
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -786,23 +788,23 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: mg-db-hang
-        expr: mongodb_up
+        expr: (mongodb_up or (absent(mongodb_up)-1))
         description: check if the database is available
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
-          repeatInterval: 30
+          groupInterval: 5
+          repeatInterval: 60
         # 过滤规则
         match:
           # 需要过滤的指标标签，2个的组合使用英文逗号隔开
@@ -842,7 +844,7 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -853,11 +855,11 @@
         description: check database QPS
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -898,7 +900,7 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -909,11 +911,11 @@
         description: check database dml
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
-          status: false
-          groupInterval: 2
+          status: true
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -954,7 +956,7 @@
   labels:
     alertingTypeName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -965,11 +967,11 @@
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
-          last: 1
+          last: 2
           status: true
         time:
           status: true
-          groupInterval: 2
+          groupInterval: 5
           repeatInterval: 60
         # 过滤规则
         match:
@@ -1004,3 +1006,60 @@
         unit:
           desc: ""
           value: second
+
+# clickhouse
+- name: ch-db-hang
+  aliasName: ch-db-hang
+  labels:
+    alertingTypeName: ClickhouseCluster
+  supportedTargetTypes:
+    - ClickHouse
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: ch-db-hang
+        expr: (chi_clickhouse_clickhouse_up or (absent(chi_clickhouse_clickhouse_up)-1))
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 2
+          status: true
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 60
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: clickhouse-up-warning
+          message: Clickhouse instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: clickhouse-up-critical
+          message: Clickhouse instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""

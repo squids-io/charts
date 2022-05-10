@@ -1,28 +1,40 @@
 - name: MySQLCluster
   aliasName: MySQLCluster
   supportedTargetTypes:
-    - MySQLCluster
+    - MySQL
 
 - name: RedisCluster
   aliasName: RedisCluster
   supportedTargetTypes:
-    - RedisCluster
+    - Redis
 
 - name: SQLServerCluster
   aliasName: SQLServerCluster
   supportedTargetTypes:
-    - SQLServerCluster
+    - SQLServer
 
 - name: MongoCluster
   aliasName: MongoCluster
   supportedTargetTypes:
-    - MongoCluster
+    - MongoDB
+
+- name: ClickhouseCluster
+  aliasName: ClickhouseCluster
+  supportedTargetTypes:
+    - ClickHouse
+
+- name: ElasticSearchCluster
+  aliasName: ElasticSearchCluster
+  supportedTargetTypes:
+    - ElasticSearch
 
 - name: OS
   aliasName: OS
   supportedTargetTypes:
-    - MySQLCluster
-    - RedisCluster
-    - SQLServerCluster
-    - MongoCluster
+    - MySQL
+    - Redis
+    - SQLServer
+    - MongoDB
+    - ClickHouse
+    - ElasticSearch
 

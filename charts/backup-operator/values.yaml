@@ -51,6 +51,4 @@ clusterRoleBinding: backup-operator
 # dev | test | prod
 currentRuntimeEnv: "prod"
 # prod 环境版本号
-imageVersion: "v0.0.1"
-
-backupJobImageName: "squids/qfb-backup-job"
+jobImageVersion: "v1.0.0"

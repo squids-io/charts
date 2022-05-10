@@ -75,10 +75,17 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           resources:
             {{- toYaml .Values.resources | nindent 12 }}
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
           ports:
             - containerPort: 9104
               protocol: TCP
       {{- with .Values.nodeSelector }}
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
       nodeSelector:
         {{- toYaml . | nindent 8 }}
       {{- end }}

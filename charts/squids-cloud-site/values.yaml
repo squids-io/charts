@@ -20,11 +20,13 @@ image:
     tag: 1.6.2
 
 console:
-  domain: squids.cn
+  url: https://console.squids.cn
+  ip: 127.0.0.1
 web:
-  domain: squids.cn
+  url: https://squids.cn
+  ip: 127.0.0.1
 grafana:
-  domain: ""
+  url: https://chartlog.squids.cn:30001
 
 nginx:
   auth: false

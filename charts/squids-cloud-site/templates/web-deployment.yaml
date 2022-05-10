@@ -29,11 +29,16 @@ spec:
           ports:
             - containerPort: {{ .Values.containers.web.containerPort}}
           volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: squids-web-config
               mountPath: /app/public/config
       volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime

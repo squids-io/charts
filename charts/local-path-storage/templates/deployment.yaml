@@ -34,12 +34,17 @@ spec:
           volumeMounts:
             - name: config-volume
               mountPath: /etc/config/
+            - name: localtime
+              mountPath: /etc/localtime
           env:
             - name: POD_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
       volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
         - name: config-volume
           configMap:
             name: local-path-config

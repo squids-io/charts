@@ -24,11 +24,16 @@ spec:
           ports:
             - containerPort: {{ .Values.image.containerPort }}
           volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: config-volume
               mountPath: /config
       volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime

@@ -91,7 +91,7 @@
           "format": "time_series",
           "instant": true,
           "interval": "1m",
-          "legendFormat": "",
+          "legendFormat": "instance_health",
           "refId": "A"
         }
       ],
@@ -152,7 +152,7 @@
         {
           "expr": "sum((rate(container_cpu_usage_seconds_total{container=\"mysql\",pod=\"$ins\"}[5m]) / ignoring(cpu) (container_spec_cpu_quota / 100000)) * 100)",
           "interval": "5m",
-          "legendFormat": "",
+          "legendFormat": "CPU_usage_ratio",
           "refId": "A"
         }
       ],
@@ -251,7 +251,7 @@
         {
           "expr": "sum((container_memory_rss{container=\"mysql\", pod=\"$ins\"}/container_spec_memory_limit_bytes)*100)",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "memory_usage_ratio",
           "refId": "A"
         }
       ],
@@ -348,7 +348,7 @@
           "expr": "mysql_filesystem_used_bytes{instance=\"$ins\"}/mysql_filesystem_size_bytes * 100",
           "instant": true,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "db_usage_ratio",
           "refId": "A"
         }
       ],
@@ -511,7 +511,7 @@
           "expr": "sum(backup_set_size_bytes{cluster_name=\"$cluster_name\"})",
           "instant": false,
           "interval": "1m",
-          "legendFormat": "",
+          "legendFormat": "backup_space_usage",
           "refId": "A"
         }
       ],
@@ -707,7 +707,7 @@
         {
           "expr": "sum(rate(container_fs_writes_total{container=\"mysql\", pod=\"$ins\"}[5m])) + sum(rate(container_fs_reads_total{container=\"mysql\", pod=\"$ins\"}[5m]))",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "IO/Second",
           "refId": "A"
         }
       ],
@@ -802,7 +802,7 @@
         {
           "expr": "sum(rate(mysql_global_status_commands_total{command=~\"(commit|rollback)\",instance=\"$ins\"}[5m]))",
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "Trans/Second",
           "refId": "A"
         }
       ],
@@ -897,7 +897,7 @@
         {
           "expr": "sum(rate(mysql_global_status_commands_total{instance=\"$ins\"}[5m]))",
           "interval": "5m",
-          "legendFormat": "",
+          "legendFormat": "SQL/Second",
           "refId": "A"
         }
       ],
@@ -1093,7 +1093,7 @@
         {
           "expr": "sum(rate(mysql_global_status_commands_total{command=~\"select\", instance=\"$ins\"}[5m]))",
           "interval": "1m",
-          "legendFormat": "",
+          "legendFormat": "innoDB_query_rows",
           "refId": "A"
         }
       ],

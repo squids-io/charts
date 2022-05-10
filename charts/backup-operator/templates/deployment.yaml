@@ -34,13 +34,13 @@ spec:
             value: {{ .Values.currentRuntimeEnv }}
           - name: BACKUP_JOB_IMAGE
           {{ if eq .Values.currentRuntimeEnv "dev" }}
-            value: {{ .Values.backupJobImageName }}:dev
+            value: {{ .Values.global.registry }}/{{.Values.global.repository}}/qfb-backup-job:dev
           {{ else if eq .Values.currentRuntimeEnv "test" }}
-            value: {{ .Values.backupJobImageName }}:test
+            value: {{ .Values.global.registry }}/{{.Values.global.repository}}/qfb-backup-job:test
           {{ else }}
-            value: {{ .Values.backupJobImageName }}:{{ .Values.imageVersion }}
+            value: {{ .Values.global.registry }}/{{.Values.global.repository}}/qfb-backup-job:{{ .Values.jobImageVersion }}
           {{ end }}
-#            value: "{{ .Values.backupJobImageName }}:{{ .Values.imageVersion }}"
+#            value: "{{ .Values.backupJobImageName }}:{{ .Values.jobImageVersion }}"
         name: operator
         securityContext:
           allowPrivilegeEscalation: false

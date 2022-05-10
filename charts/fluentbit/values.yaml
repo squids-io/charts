@@ -5,7 +5,7 @@ global:
 image:
   pullPolicy: IfNotPresent
   name: fluent-bit
-  tag: 1.4.5
+  tag: 1.6.11
 nameOverride: ""
 resources:
   requests:
