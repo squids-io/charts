@@ -2,9 +2,9 @@
 {{ define "userdefine.subject" }}
 {{template "userdefine.username"}}
 {{ if eq .Status "firing" }}
-告警 [告警数:{{ .Alerts.Firing | len }}]
+告警 [告警数: {{ .Alerts.Firing | len }}]
 {{ else }}
-告警已解决 [告警数:{{ .Alerts.Resolved | len }}]
+告警已解决 [告警数: {{ .Alerts.Resolved | len }}]
 {{ end }}
 [{{ .CommonLabels.alertingTargetTypeAliasName }}: {{ .CommonLabels.alertingTargetName }}]
 {{ if eq .Status "firing" }}
