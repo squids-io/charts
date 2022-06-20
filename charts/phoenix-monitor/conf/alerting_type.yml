@@ -28,6 +28,11 @@
   supportedTargetTypes:
     - ElasticSearch
 
+#- name: MariaDBCluster
+#  aliasName: MariaDBCluster
+#  supportedTargetTypes:
+#    - MariaDB
+
 - name: OS
   aliasName: OS
   supportedTargetTypes:
@@ -37,4 +42,5 @@
     - MongoDB
     - ClickHouse
     - ElasticSearch
+    - MariaDB
 

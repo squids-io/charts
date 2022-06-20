@@ -63,3 +63,11 @@
   metrics:
     - name: os-cpu-usage
     - name: os-disk-usage
+
+- name: MariaDBCluster
+  type: MariaDB
+  groupIntervalMinute: 5
+  repeatIntervalMinute: 30
+  metrics:
+    - name: os-cpu-usage
+    - name: os-disk-usage
