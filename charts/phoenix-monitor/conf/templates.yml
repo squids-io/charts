@@ -69,5 +69,9 @@
   groupIntervalMinute: 5
   repeatIntervalMinute: 30
   metrics:
+    - name: my-db-hang
+    - name: my-execute-count
+    - name: my-dml-count
+    - name: my-slave-delay
     - name: os-cpu-usage
     - name: os-disk-usage

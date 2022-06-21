@@ -2,6 +2,7 @@
   aliasName: MySQLCluster
   supportedTargetTypes:
     - MySQL
+    - MariaDB
 
 - name: RedisCluster
   aliasName: RedisCluster
@@ -27,11 +28,6 @@
   aliasName: ElasticSearchCluster
   supportedTargetTypes:
     - ElasticSearch
-
-#- name: MariaDBCluster
-#  aliasName: MariaDBCluster
-#  supportedTargetTypes:
-#    - MariaDB
 
 - name: OS
   aliasName: OS
