@@ -114,6 +114,7 @@
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
     - MySQL
+    - MariaDB
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -170,6 +171,7 @@
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
     - MySQL
+    - MariaDB
   description: check database QPS
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -226,6 +228,7 @@
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
     - MySQL
+    - MariaDB
   description: check database dml
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -282,6 +285,7 @@
     alertingTypeName: MySQLCluster
   supportedTargetTypes:
     - MySQL
+    - MariaDB
   description: check slave delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用

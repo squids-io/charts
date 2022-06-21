@@ -431,7 +431,7 @@ scrape_configs:
         separator: ;
         regex: (mariadb)
         target_label: alertingTargetType
-        replacement: MySQL
+        replacement: MariaDB
         action: replace
       - source_labels: [ app_name ]
         separator: ;
