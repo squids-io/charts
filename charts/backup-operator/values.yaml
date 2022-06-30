@@ -12,7 +12,7 @@ tag: latest
 image:
   pullPolicy: IfNotPresent
   operator:
-    operator: v1.0.0
+    operator: v1.0.1
 
 nodeSelector:
   node-role.kubernetes.io/master: ""
