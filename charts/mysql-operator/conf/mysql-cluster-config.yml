@@ -968,15 +968,6 @@
     description: MySQL在关闭一个交互的连接之前所要等待的秒数。
     engine: mysql
     version: 5.7
-  - uuid: 7ea1a8777b4611ebad9676798682834e
-    name: transaction_isolation
-    defaultValue: READ-COMMITTED
-    type: string
-    needRestart: false
-    range: READ-UNCOMMITTED|READ-COMMITTED|REPEATABLE-READ|SERIALIZABLE
-    description: MySQL隔离级别。
-    engine: mysql
-    version: 5.7
   - uuid: 84214ac77b4611ebad9676798682834e
     name: sync_binlog
     defaultValue: 1
