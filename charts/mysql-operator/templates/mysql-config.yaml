@@ -408,53 +408,386 @@ data:
     loose_default-character-set=utf8
     port=3306
     socket=/var/lib/mysql/data/sock/mysql.sock
-    user=admin
+    user=mysql
+
+    [mysqldump]
+    quick
+    max_allowed_packet = 2G
+    default-character-set=utf8
+
+    [mysql]
+    no-auto-rehash
+    show-warnings
+    prompt="\u@\h:\p \R:\m:\s [\d]> "
+    default-character-set=utf8
+
+    [myisamchk]
+    key_buffer = 512M
+    sort_buffer_size = 512M
+    read_buffer = 8M
+    write_buffer = 8M
+
+    [mysqlhotcopy]
+    interactive-timeout
+
+    [mysqld_safe]
+    user=mysql
+    open-files-limit = 65535
 
     [mysqld]
     datadir=/var/lib/mysql/data/mydata
     socket=/var/lib/mysql/data/sock/mysql.sock
     port=3306
     symbolic-links=0
-    log-error=/var/log/mysql/error.log
-    pid-file=/var/lib/mysql/data/sock/mysql.pid
+    pid-file=/var/lib/mysql/data/sock/mysqld.pid
+    loose-plugin-load=""
+    innodb_flush_method =O_DIRECT
+    innodb_doublewrite = ON
+    innodb_adaptive_hash_index=on
+    innodb_adaptive_hash_index_parts=2
+    character-set-server=utf8
+    collation_server=utf8_bin
+    default_storage_engine=INNODB
+    performance_schema=on
+    user=mysql
+    tmpdir=/var/lib/mysql/data/tmpdir
+
+    skip-name-resolve
+    skip_external_locking
+
+    lower_case_table_names=1
+    event_scheduler=0
+    back_log=512
+    default-time-zone=system
+
+    max_connections = 3000
+    max_connect_errors=99999
+    max_allowed_packet = 64M
+    max_heap_table_size = 8M
+    max_length_for_sort_data = 16k
+
+    wait_timeout=172800
+    interactive_timeout=172800
+
+    net_buffer_length = 8K
+    read_buffer_size = 2M
+    read_rnd_buffer_size = 2M
+    sort_buffer_size = 2M
+    join_buffer_size = 4M
+    binlog_cache_size = 2M
+
+    table_open_cache = 4096
+    table_definition_cache = 4096
+    thread_cache_size = 512
+    tmp_table_size = 8M
+
+    query_cache_size=0
+    query_cache_type=OFF
+    explicit_defaults_for_timestamp=ON
+    metadata_locks_hash_instances=32
+
+    #*******************************  Logs related settings ***************************
+    log-error=/var/lib/mysql/data/log/mysqld.log
     long_query_time = 1
     slow_query_log = 1
-    slow_query_log_file=/var/log/mysql/slow-query.log
+    slow_query_log_file=/var/lib/mysql/data/slowlog/slow-query.log
     log_slow_slave_statements=ON
     log_queries_not_using_indexes=OFF
 
-
-    #enforce_gtid_consistency=1
-    #gtid_mode=1
-
-
-    skip_name_resolve=on
-    server_id={{.ServerId}}
+    #*******************************  Replication related settings **********************
+    #### For Master
+    server-id={{.ServerId}}
     log-bin=/var/lib/mysql/archive/mysql-bin
+    binlog-format=ROW
+    binlog-checksum=CRC32
+    max_binlog_size = 512M
+    expire_logs_days=7
+    sync_binlog=1
+    master-verify-checksum=1
+    auto_increment_increment=1
+    auto_increment_offset=1
+
+    #### For Slave
+    relay-log=/var/lib/mysql/data/relaylog/mysql-relay-bin
+    relay-log-recovery=1
+    #slave-skip-errors=1022,1032,1062,1236
+    slave-sql-verify-checksum=1
+    log_bin_trust_function_creators=1
+    log_slave_updates=1
+    slave-net-timeout=10
+    gtid_strict_mode=on
+    gtid_domain_id=1
+    slave_parallel_mode=conservative
+    slave_parallel_threads=16
+
+    #******************************* MyISAM Specific options ****************************
+    key_buffer_size = 8M
+    bulk_insert_buffer_size = 8M
+    myisam_sort_buffer_size = 64M
+    myisam_max_sort_file_size = 10G
+    myisam_repair_threads = 1
+    myisam_recover_options=force
+
+    #***************************** INNODB Specific options ****************************
+    #### Data options
+    innodb_data_home_dir = /var/lib/mysql/data/innodb_ts
+    innodb_data_file_path = ibdata1:128M:autoextend
+    innodb_file_per_table
+    innodb_file_format = barracuda
+    innodb_strict_mode = 1
+    innodb_flush_method = O_DIRECT
+    innodb_checksum_algorithm=crc32
+    innodb_autoinc_lock_mode=2
+
+    #### Buffer Pool options
+    innodb_buffer_pool_size={{.InnodbBufferPoolSize}}
+    innodb_buffer_pool_instances ={{.InnodbBufferPoolInstances}}
+    innodb_max_dirty_pages_pct = 75
+    innodb_adaptive_flushing = ON
+    innodb_flush_neighbors = 0
+    innodb_lru_scan_depth = 4096
+    #innodb_change_buffering = inserts
+    innodb_old_blocks_time = 1000
+    innodb_doublewrite = ON
+
+    #### Redo options
+    innodb_log_group_home_dir =/var/lib/mysql/data/redo
+    innodb_log_buffer_size = 128M
+    innodb_log_file_size = 2G
+    innodb_log_files_in_group = 2
+    innodb_flush_log_at_trx_commit = 1
+    innodb_fast_shutdown = 1
+
+    #### Transaction options
+    innodb_thread_concurrency = 0
+    innodb_lock_wait_timeout = 120
+    innodb_rollback_on_timeout = 1
+    transaction_isolation = READ-COMMITTED
+
+    #### IO options
+    innodb_read_io_threads = 8
+    innodb_write_io_threads = 16
+    innodb_io_capacity = 20000
+    innodb_use_native_aio = 1
+
+    #### Undo options
+    innodb_undo_directory = /var/lib/mysql/data/undo/
+    innodb_undo_tablespaces=8
+    innodb_purge_threads = 4
+    innodb_undo_log_truncate=ON
+    innodb_purge_batch_size = 512
+    innodb_max_purge_lag = 65536
+
+    #### extra connection
+    extra_max_connections=10
+    extra_port=3309
+
+
+    max_connections = 3000
+    relay_log_recovery=1
+    expire_logs_days=8
+
+    thread_cache_size=128
+    read_buffer_size = 1M
+    read_rnd_buffer_size = 1M
+    sort_buffer_size = 1M
+    join_buffer_size = 2M
+    binlog_cache_size = 1M
+    gtid_strict_mode=on
+    gtid_ignore_duplicates=on
   mariadb-10.3-audit: |2
 
     [client]
     loose_default-character-set=utf8
     port=3306
     socket=/var/lib/mysql/data/sock/mysql.sock
-    user=admin
+    user=mysql
+
+    [mysqldump]
+    quick
+    max_allowed_packet = 2G
+    default-character-set=utf8
+
+    [mysql]
+    no-auto-rehash
+    show-warnings
+    prompt="\u@\h:\p \R:\m:\s [\d]> "
+    default-character-set=utf8
+
+    [myisamchk]
+    key_buffer = 512M
+    sort_buffer_size = 512M
+    read_buffer = 8M
+    write_buffer = 8M
+
+    [mysqlhotcopy]
+    interactive-timeout
+
+    [mysqld_safe]
+    user=mysql
+    open-files-limit = 65535
 
     [mysqld]
     datadir=/var/lib/mysql/data/mydata
     socket=/var/lib/mysql/data/sock/mysql.sock
     port=3306
     symbolic-links=0
-    log-error=/var/log/mysql/error.log
-    pid-file=/var/lib/mysql/data/sock/mysql.pid
+    pid-file=/var/lib/mysql/data/sock/mysqld.pid
+    loose-plugin-load=""
+    innodb_flush_method =O_DIRECT
+    innodb_doublewrite = ON
+    innodb_adaptive_hash_index=on
+    innodb_adaptive_hash_index_parts=2
+    character-set-server=utf8
+    collation_server=utf8_bin
+    default_storage_engine=INNODB
+    performance_schema=on
+    user=mysql
+    tmpdir=/var/lib/mysql/data/tmpdir
 
+    skip-name-resolve
+    skip_external_locking
 
-    #enforce_gtid_consistency=1
-    #gtid_mode=1
+    lower_case_table_names=1
+    event_scheduler=0
+    back_log=512
+    default-time-zone=system
 
+    max_connections = 3000
+    max_connect_errors=99999
+    max_allowed_packet = 64M
+    max_heap_table_size = 8M
+    max_length_for_sort_data = 16k
 
-    skip_name_resolve=on
-    server_id={{.ServerId}}
+    wait_timeout=172800
+    interactive_timeout=172800
+
+    net_buffer_length = 8K
+    read_buffer_size = 2M
+    read_rnd_buffer_size = 2M
+    sort_buffer_size = 2M
+    join_buffer_size = 4M
+    binlog_cache_size = 2M
+
+    table_open_cache = 4096
+    table_definition_cache = 4096
+    thread_cache_size = 512
+    tmp_table_size = 8M
+
+    query_cache_size=0
+    query_cache_type=OFF
+    explicit_defaults_for_timestamp=ON
+    metadata_locks_hash_instances=32
+
+    #*******************************  Logs related settings ***************************
+    log-error=/var/lib/mysql/data/log/mysqld.log
+    long_query_time = 1
+    slow_query_log = 1
+    slow_query_log_file=/var/lib/mysql/data/slowlog/slow-query.log
+    log_slow_slave_statements=ON
+    log_queries_not_using_indexes=OFF
+
+    #*******************************  Replication related settings **********************
+    #### For Master
+    server-id={{.ServerId}}
     log-bin=/var/lib/mysql/archive/mysql-bin
+    binlog-format=ROW
+    binlog-checksum=CRC32
+    max_binlog_size = 512M
+    expire_logs_days=7
+    sync_binlog=1
+    master-verify-checksum=1
+    auto_increment_increment=1
+    auto_increment_offset=1
+
+    #### For Slave
+    relay-log=/var/lib/mysql/data/relaylog/mysql-relay-bin
+    relay-log-recovery=1
+    #slave-skip-errors=1022,1032,1062,1236
+    slave-sql-verify-checksum=1
+    log_bin_trust_function_creators=1
+    log_slave_updates=1
+    slave-net-timeout=10
+    gtid_strict_mode=on
+    gtid_domain_id=1
+    slave_parallel_mode=conservative
+    slave_parallel_threads=16
+
+    #******************************* MyISAM Specific options ****************************
+    key_buffer_size = 8M
+    bulk_insert_buffer_size = 8M
+    myisam_sort_buffer_size = 64M
+    myisam_max_sort_file_size = 10G
+    myisam_repair_threads = 1
+    myisam_recover_options=force
+
+    #***************************** INNODB Specific options ****************************
+    #### Data options
+    innodb_data_home_dir = /var/lib/mysql/data/innodb_ts
+    innodb_data_file_path = ibdata1:128M:autoextend
+    innodb_file_per_table
+    innodb_file_format = barracuda
+    innodb_strict_mode = 1
+    innodb_flush_method = O_DIRECT
+    innodb_checksum_algorithm=crc32
+    innodb_autoinc_lock_mode=2
+
+    #### Buffer Pool options
+    innodb_buffer_pool_size={{.InnodbBufferPoolSize}}
+    innodb_buffer_pool_instances ={{.InnodbBufferPoolInstances}}
+    innodb_max_dirty_pages_pct = 75
+    innodb_adaptive_flushing = ON
+    innodb_flush_neighbors = 0
+    innodb_lru_scan_depth = 4096
+    #innodb_change_buffering = inserts
+    innodb_old_blocks_time = 1000
+    innodb_doublewrite = ON
+
+    #### Redo options
+    innodb_log_group_home_dir =/var/lib/mysql/data/redo
+    innodb_log_buffer_size = 128M
+    innodb_log_file_size = 2G
+    innodb_log_files_in_group = 2
+    innodb_flush_log_at_trx_commit = 1
+    innodb_fast_shutdown = 1
+
+    #### Transaction options
+    innodb_thread_concurrency = 0
+    innodb_lock_wait_timeout = 120
+    innodb_rollback_on_timeout = 1
+    transaction_isolation = READ-COMMITTED
+
+    #### IO options
+    innodb_read_io_threads = 8
+    innodb_write_io_threads = 16
+    innodb_io_capacity = 20000
+    innodb_use_native_aio = 1
+
+    #### Undo options
+    innodb_undo_directory = /var/lib/mysql/data/undo/
+    innodb_undo_tablespaces=8
+    innodb_purge_threads = 4
+    innodb_undo_log_truncate=ON
+    innodb_purge_batch_size = 512
+    innodb_max_purge_lag = 65536
+
+    #### extra connection
+    extra_max_connections=10
+    extra_port=3309
+
+
+    max_connections = 3000
+    relay_log_recovery=1
+    expire_logs_days=8
+
+    thread_cache_size=128
+    read_buffer_size = 1M
+    read_rnd_buffer_size = 1M
+    sort_buffer_size = 1M
+    join_buffer_size = 2M
+    binlog_cache_size = 1M
+    gtid_strict_mode=on
+    gtid_ignore_duplicates=on
   mariadb-10.3-audit-rw: |2+
 
 
