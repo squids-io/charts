@@ -23,7 +23,7 @@ service:
 
 
 mysql:
-  host: squids-web-mysql-primary-headless.squids.svc.cluster.local
+  host: squids-dbmotion-mysql-primary-headless.squids.svc.cluster.local
   port: "3306"
   username: squidsRoot9527
   # !!!!!!! helm upgrade 的时候再填写真实密码，不要提交真实密码到 git 仓库 !!!!!!!!
