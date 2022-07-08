@@ -23,6 +23,7 @@ data:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
       TradeModuleGatewayUrl: http://squids-trade:29528/api/v1/
       phoenixEndpoint: http://{{ .Values.phoenix.domain}}:9091/phoenix/api/v2/
+      DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8899/bbm/dms/v1/
 
     credential:
       provider:

@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  namespace: bb-system
+  name: pv-bb-monitor
+spec:
+  capacity:
+    storage: 40Gi
+  hostPath:
+    path: "/squids-data/local-path-provisioner/pvc-fc858a69-bb66-49d9-a0fb-a5efb67830ef_bb-system_pvc-bb-monitor"
+    type: DirectoryOrCreate
+  accessModes:
+    - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Delete
+  storageClassName: local-path
+  volumeMode: Filesystem

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-bb-monitor
+  namespace: bb-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 40Gi
+  volumeName: pv-bb-monitor
+  storageClassName: local-path
+  volumeMode: Filesystem
