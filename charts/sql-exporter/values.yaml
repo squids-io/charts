@@ -1,59 +1,28 @@
-# Default values for squids-cloud-site.
+# Default values for sql-exporter.
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
 replicaCount: 1
 
-#env: pro test
-env: test
-
 image:
-  registry: swr.cn-east-2.myhuaweicloud.com
-  repository: squids
+  repository: registry.cn-hangzhou.aliyuncs.com/dbsinan/sql-exporter
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  console:
-    name: squids-console
-    tag: 1.14.3
-  web:
-    name: squids-web
-    tag: 1.9.0
+  tag: "v1.0"
 
-dms:
-  ip: 127.0.0.1
-console:
-  url: https://console.squids.cn
-  ip: 127.0.0.1
-web:
-  url: https://squids.cn
-  ip: 127.0.0.1
-grafana:
-  url: https://chartlog.squids.cn:30001
-dbmotion:
-  url: https://dbmotion.squids.cn:3000
+imagePullSecrets:
+  - name: dbsinan-image-puller
+nameOverride: ""
+fullnameOverride: ""
 
-nginx:
-  auth: false
-
-containers:
-  http:
-    containerPort: 80
-    hostport: 80
-  ssl:
-    containerPort: 443
-    hostport: 443
-  web:
-    containerPort: 3000
-
-
-service:
-  type: ClusterIP
-  http:
-    port: 80
-  https:
-    port: 443
-  web:
-    port: 3000
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
 
 podAnnotations: {}
 
@@ -68,18 +37,21 @@ securityContext: {}
   # runAsNonRoot: true
   # runAsUser: 1000
 
+service:
+  type: ClusterIP
+  port: 9117
+
 ingress:
   enabled: false
+  className: ""
   annotations: {}
     # kubernetes.io/ingress.class: nginx
     # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
-      - path: /
-        backend:
-          serviceName: chart-example.local
-          servicePort: 80
+        - path: /
+          pathType: ImplementationSpecific
   tls: []
   #  - secretName: chart-example-tls
   #    hosts:
@@ -106,17 +78,11 @@ autoscaling:
 
 nodeSelector: {}
 
-tolerations:
-  - effect: NoSchedule
-    key: node-role.kubernetes.io/master
-    operator: Exists
+tolerations: []
 
-affinity:
-  nodeAffinity:
-    requiredDuringSchedulingIgnoredDuringExecution:
-      nodeSelectorTerms:
-        - matchExpressions:
-            - key: "vpc.id"
-              operator: In
-              values:
-                - "0"
+affinity: {}
+
+imageCredentials:
+  registry: registry.cn-hangzhou.aliyuncs.com/dbsinan
+  username: xxx
+  password: xxx

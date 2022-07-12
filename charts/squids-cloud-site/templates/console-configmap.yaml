@@ -322,6 +322,31 @@ data:
         proxy_pass http://squids-launcher:29530;
       }
 
+     location ^~/bomberws/v1/ {
+       auth_basic off;
+       add_header Access-Control-Allow-Origin  '$allow_origin';
+       add_header Access-Control-Allow-Credentials 'true';
+       add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+       add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control';
+       proxy_set_header Host $http_host;
+       proxy_set_header X-Real-IP $remote_addr;
+       proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+       proxy_set_header X-Forwarded-Proto $scheme;
+       proxy_pass http://{{ .Values.dms.ip }}:8899;
+     }
+     location ~* ^/(bbm|bomber|workspace|upload){
+        auth_basic off;
+        add_header Access-Control-Allow-Origin  '$allow_origin';
+        add_header Access-Control-Allow-Credentials 'true';
+        add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
+        add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control';
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://{{ .Values.dms.ip }}:8899;
+      }
+
       error_page   500 502 503 504  /50x.html;
       location = /50x.html {
         root   html;

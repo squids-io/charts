@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: pvc-bb-postgres
+  namespace: bb-system
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 500Gi
+  volumeName: pv-bb-postgres
+  storageClassName: local-path
+  volumeMode: Filesystem    
