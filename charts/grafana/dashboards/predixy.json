@@ -8,6 +8,12 @@
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
+        "target": {
+          "limit": 100,
+          "matchAny": false,
+          "tags": [],
+          "type": "dashboard"
+        },
         "type": "dashboard"
       }
     ]
@@ -15,30 +21,24 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": null,
+  "iteration": 1658143431547,
   "links": [],
   "panels": [
     {
       "datasource": null,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [
             {
-              "from": "",
-              "id": 1,
-              "text": "Down",
-              "to": "",
-              "type": 1,
-              "value": "0"
-            },
-            {
-              "from": "",
-              "id": 2,
-              "text": "Up",
-              "to": "",
-              "type": 1,
-              "value": "1"
+              "options": {
+                "0": {
+                  "text": "Down"
+                },
+                "1": {
+                  "text": "Up"
+                }
+              },
+              "type": "value"
             }
           ],
           "thresholds": {
@@ -80,9 +80,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.1.3",
       "targets": [
         {
           "expr": "predixy_up{instance=\"$ins\"}",
@@ -102,12 +103,6 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
@@ -134,7 +129,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -197,120 +192,13 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
-      "fill": 1,
-      "fillGradient": 0,
-      "gridPos": {
-        "h": 8,
-        "w": 24,
-        "x": 0,
-        "y": 9
-      },
-      "hiddenSeries": false,
-      "id": 3,
-      "legend": {
-        "avg": false,
-        "current": false,
-        "max": false,
-        "min": false,
-        "show": true,
-        "total": false,
-        "values": false
-      },
-      "lines": true,
-      "linewidth": 1,
-      "nullPointMode": "null",
-      "options": {
-        "alertThreshold": true
-      },
-      "percentage": false,
-      "pluginVersion": "7.3.6",
-      "pointradius": 2,
-      "points": false,
-      "renderer": "flot",
-      "seriesOverrides": [],
-      "spaceLength": 10,
-      "stack": false,
-      "steppedLine": false,
-      "targets": [
-        {
-          "expr": "predixy_UsedMemory{instance=\"$ins\"}",
-          "interval": "",
-          "legendFormat": "used",
-          "refId": "A"
-        },
-        {
-          "expr": "predixy_MaxMemory{instance=\"$ins\"}",
-          "interval": "",
-          "legendFormat": "max",
-          "refId": "B"
-        }
-      ],
-      "thresholds": [],
-      "timeFrom": null,
-      "timeRegions": [],
-      "timeShift": null,
-      "title": "UsedMemory",
-      "tooltip": {
-        "shared": true,
-        "sort": 0,
-        "value_type": "individual"
-      },
-      "type": "graph",
-      "xaxis": {
-        "buckets": null,
-        "mode": "time",
-        "name": null,
-        "show": true,
-        "values": []
-      },
-      "yaxes": [
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        },
-        {
-          "format": "short",
-          "label": null,
-          "logBase": 1,
-          "max": null,
-          "min": null,
-          "show": true
-        }
-      ],
-      "yaxis": {
-        "align": false,
-        "alignLevel": null
-      }
-    },
-    {
-      "aliasColors": {},
-      "bars": false,
-      "dashLength": 10,
-      "dashes": false,
-      "datasource": null,
-      "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
-        "overrides": []
-      },
       "fill": 1,
       "fillGradient": 0,
       "gridPos": {
         "h": 9,
         "w": 8,
-        "x": 8,
-        "y": 17
+        "x": 16,
+        "y": 0
       },
       "hiddenSeries": false,
       "id": 4,
@@ -330,7 +218,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.6",
+      "pluginVersion": "8.1.3",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -340,19 +228,19 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "predixy_ClientConnections{type=\"insert\",instance=\"$ins\"}",
+          "expr": "predixy_client_connections{instance=\"$ins\"}",
           "interval": "",
           "legendFormat": "client",
           "refId": "A"
         },
         {
-          "expr": "predixy_TotalRequests{type=\"update\",instance=\"$ins\"}",
+          "expr": "predixy_total_requests{instance=\"$ins\"}",
           "interval": "",
           "legendFormat": "totalRequest",
           "refId": "B"
         },
         {
-          "expr": "predixy_TotalResponses{type=\"delete\",instance=\"$ins\"}",
+          "expr": "predixy_total_responses{instance=\"$ins\"}",
           "interval": "",
           "legendFormat": "totalResponse",
           "refId": "C"
@@ -398,9 +286,104 @@
         "align": false,
         "alignLevel": null
       }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
+      "datasource": null,
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 9
+      },
+      "hiddenSeries": false,
+      "id": 3,
+      "legend": {
+        "avg": false,
+        "current": false,
+        "max": false,
+        "min": false,
+        "show": true,
+        "total": false,
+        "values": false
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "8.1.3",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "expr": "predixy_memory_used_bytes{instance=\"$ins\"}",
+          "interval": "",
+          "legendFormat": "used",
+          "refId": "A"
+        },
+        {
+          "expr": "predixy_memory_max_bytes{instance=\"$ins\"}",
+          "interval": "",
+          "legendFormat": "max",
+          "refId": "B"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "UsedMemory",
+      "tooltip": {
+        "shared": true,
+        "sort": 0,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
     }
   ],
-  "schemaVersion": 26,
+  "schemaVersion": 30,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -408,34 +391,29 @@
       {
         "allValue": null,
         "current": {
-          "isNone": true,
           "selected": false,
-          "text": "None",
-          "value": ""
+          "text": "redis-29y2itqfvjy2iv2r-predixy-0",
+          "value": "redis-29y2itqfvjy2iv2r-predixy-0"
         },
         "datasource": "Prometheus",
         "definition": "label_values(predixy_up, instance)",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
         "label": "ins",
         "multi": false,
         "name": "ins",
-        "options": [
-          {
-            "isNone": true,
-            "selected": true,
-            "text": "None",
-            "value": ""
-          }
-        ],
-        "query": "label_values(predixy_up, instance)",
-        "refresh": 0,
+        "options": [],
+        "query": {
+          "query": "label_values(predixy_up, instance)",
+          "refId": "Prometheus-ins-Variable-Query"
+        },
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
         "tagValuesQuery": "",
-        "tags": [],
         "tagsQuery": "",
         "type": "query",
         "useTags": false
@@ -449,6 +427,6 @@
   "timepicker": {},
   "timezone": "",
   "title": "Squids Predixy Overview",
-  "uid": "9ju2_KMuy",
-  "version": 0
+  "uid": "am0wmau7z",
+  "version": 1
 }
