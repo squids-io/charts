@@ -46,7 +46,7 @@ spec:
       priorityClassName: system-node-critical
       containers:
         - name: prometheus-node-exporter
-          image: prom/node-exporter:{{ .Values.image.tag }}
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           args:
             - "--path.rootfs=/host"

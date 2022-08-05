@@ -2,13 +2,13 @@
 {{ define "userdefine.subject" }}
 {{template "userdefine.username"}}
 {{ if eq .Status "firing" }}
-Alert [Alert Count:{{ .Alerts.Firing | len }}]
+告警 [告警数: {{ .Alerts.Firing | len }}]
 {{ else }}
-Alert Resolved [Resolved Count:{{ .Alerts.Resolved | len }}]
+告警已解决 [告警数: {{ .Alerts.Resolved | len }}]
 {{ end }}
 [{{ .CommonLabels.alertingTargetTypeAliasName }}: {{ .CommonLabels.alertingTargetName }}]
 {{ if eq .Status "firing" }}
-is alerting
+有告警发生
 {{ end }}
 {{ end }}
 {{ define "email.html" }}
@@ -17,7 +17,7 @@ is alerting
 <head>
     <meta name="viewport" content="width=device-width"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <title>Alert Template</title>
+    <title>告警模板</title>
     <style>
         /* GLOBAL RESETS */
         body {
@@ -392,7 +392,7 @@ is alerting
                         <tr>
                             <td class="content-block alert alert--bad">
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTMyIDc5LjE1OTI4NCwgMjAxNi8wNC8xOS0xMzoxMzo0MCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUuNSAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTk4RTEyNUUyOEJFMTFFNzk5NzVDQUJBOTg4MTIzOEEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTk4RTEyNUYyOEJFMTFFNzk5NzVDQUJBOTg4MTIzOEEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5OThFMTI1QzI4QkUxMUU3OTk3NUNBQkE5ODgxMjM4QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5OThFMTI1RDI4QkUxMUU3OTk3NUNBQkE5ODgxMjM4QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pmj/NgsAAADvSURBVHjaYvz//z8DNQETA5UB1Q1kAWJhIL4ExFJA/AWISQ0DRiDmAeJnQGzIAAxDUSAWAOLr/8kH14CYH4jFQAZ+AmIXUOQAcS8ZhvVA9boC8WcGJIliqEQgCYYFQvWUwARAnA9ICtZBxQSB+DYeg25D1YDUrkcS/wDzMjK4CcTCUMWrsRi2CioHUnMLTe4TNgNhwA+qMRtJLAsq5o9DD14DQaAFaoAnFDNAxf6TayAI7IcaxABl4wOfGMGmMjDwEki896EJWIGAus8sROYGRVLyMiMVszIj438ql18gL68EYk8qufQA48grYAECDADC/XEs27+V6gAAAABJRU5ErkJggg=="
-                                     width="20" height="20" alt="email"/><span class="text">Alert Notification</span>
+                                     width="20" height="20" alt="email"/><span class="text">告警通知</span>
                             </td>
                         </tr>
                     </table>
@@ -431,7 +431,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title alert-item-title--bad">Alert Item：</td>
+                                                            <td class="alert-item-title alert-item-title--bad">告警项：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Labels.alertingModelAliasName }}
                                                             </td>
@@ -449,7 +449,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Description: </td>
+                                                            <td class="alert-item-title">告警描述：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Annotations.description }}
                                                             </td>
@@ -467,7 +467,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Cluster: </td>
+                                                            <td class="alert-item-title">数据库集群：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Labels.alertingTargetName}}
                                                             </td>
@@ -485,7 +485,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Instance: </td>
+                                                            <td class="alert-item-title">数据库实例：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Labels.instance }}
                                                             </td>
@@ -498,21 +498,6 @@ is alerting
                                                 <td class="alert-item-space">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="left">
-                                                    <table class="alert-item-row" border="0" cellpadding="0"
-                                                           cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td class="alert-item-title">Code: </td>
-                                                            <td class="alert-item-context">
-                                                                {{$alert.Annotations.errorcode }}
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
                                                 <td class="alert-item-space">&nbsp;</td>
                                             </tr>
                                             <tr>
@@ -521,7 +506,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Start Time: </td>
+                                                            <td class="alert-item-title">开始时间：</td>
                                                             <td class="alert-item-context">{{ $alert.StartsAt.Local.Format "2006-01-02 15:04:05" }}</td>
                                                         </tr>
                                                         </tbody>
@@ -537,12 +522,12 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Level: </td>
+                                                            <td class="alert-item-title">告警级别：</td>
                                                             <td class="alert-item-context">
                                                                 {{ if eq $alert.Labels.severity "warn" }}
-                                                                <span class="level level--warnning">Warnning</span>
+                                                                <span class="level level--warnning">警告</span>
                                                                 {{ else }}
-                                                                <span class="level level--critical">Critical</span>
+                                                                <span class="level level--critical">严重</span>
                                                                 {{ end }}
                                                             </td>
                                                         </tr>
@@ -559,7 +544,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Message: </td>
+                                                            <td class="alert-item-title">告警信息：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Annotations.message | safeHtml }}
                                                             </td>
@@ -577,7 +562,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Suggest: </td>
+                                                            <td class="alert-item-title">建议：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Annotations.suggest }}
                                                             </td>
@@ -605,7 +590,7 @@ is alerting
                         <tr>
                             <td class="content-block alert alert--resolved">
                                 <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABQAAAAUCAYAAACNiR0NAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMTMyIDc5LjE1OTI4NCwgMjAxNi8wNC8xOS0xMzoxMzo0MCAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUuNSAoV2luZG93cykiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OTk4RTEyNUUyOEJFMTFFNzk5NzVDQUJBOTg4MTIzOEEiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OTk4RTEyNUYyOEJFMTFFNzk5NzVDQUJBOTg4MTIzOEEiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5OThFMTI1QzI4QkUxMUU3OTk3NUNBQkE5ODgxMjM4QSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5OThFMTI1RDI4QkUxMUU3OTk3NUNBQkE5ODgxMjM4QSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/Pmj/NgsAAADvSURBVHjaYvz//z8DNQETA5UB1Q1kAWJhIL4ExFJA/AWISQ0DRiDmAeJnQGzIAAxDUSAWAOLr/8kH14CYH4jFQAZ+AmIXUOQAcS8ZhvVA9boC8WcGJIliqEQgCYYFQvWUwARAnA9ICtZBxQSB+DYeg25D1YDUrkcS/wDzMjK4CcTCUMWrsRi2CioHUnMLTe4TNgNhwA+qMRtJLAsq5o9DD14DQaAFaoAnFDNAxf6TayAI7IcaxABl4wOfGMGmMjDwEki896EJWIGAus8sROYGRVLyMiMVszIj438ql18gL68EYk8qufQA48grYAECDADC/XEs27+V6gAAAABJRU5ErkJggg=="
-                                     width="20" height="20" alt="email"/><span class="text">Resolved Alert</span>
+                                     width="20" height="20" alt="email"/><span class="text">已解决告警</span>
                             </td>
                         </tr>
                     </table>
@@ -645,7 +630,7 @@ is alerting
                                                         <tbody>
                                                         <tr>
                                                             <td class="alert-item-title alert-item-title--resolved">
-                                                                Alert Item:
+                                                                告警项：
                                                             </td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Labels.alertingModelAliasName }}
@@ -664,7 +649,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Description: </td>
+                                                            <td class="alert-item-title">告警描述：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Annotations.description }}
                                                             </td>
@@ -677,21 +662,6 @@ is alerting
                                                 <td class="alert-item-space">&nbsp;</td>
                                             </tr>
                                             <tr>
-                                                <td align="left">
-                                                    <table class="alert-item-row" border="0" cellpadding="0"
-                                                           cellspacing="0">
-                                                        <tbody>
-                                                        <tr>
-                                                            <td class="alert-item-title">Code: </td>
-                                                            <td class="alert-item-context">
-                                                                {{ $alert.Annotations.errorcode }}
-                                                            </td>
-                                                        </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </td>
-                                            </tr>
-                                            <tr>
                                                 <td class="alert-item-space">&nbsp;</td>
                                             </tr>
                                             <tr>
@@ -700,7 +670,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Cluster: </td>
+                                                            <td class="alert-item-title">数据库集群：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Labels.alertingTargetName }}
                                                             </td>
@@ -718,7 +688,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Instance: </td>
+                                                            <td class="alert-item-title">数据库实例：</td>
                                                             <td class="alert-item-context">
                                                                 {{ $alert.Labels.instance }}
                                                             </td>
@@ -736,7 +706,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Start Time: </td>
+                                                            <td class="alert-item-title">开始时间：</td>
                                                             <td class="alert-item-context">{{ $alert.StartsAt.Local.Format "2006-01-02 15:04:05" }}</td>
                                                         </tr>
                                                         </tbody>
@@ -752,7 +722,7 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">End Time: </td>
+                                                            <td class="alert-item-title">结束时间：</td>
                                                             <td class="alert-item-context">{{ $alert.EndsAt.Local.Format "2006-01-02 15:04:05" }}</td>
                                                         </tr>
                                                         </tbody>
@@ -768,12 +738,12 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Level: </td>
+                                                            <td class="alert-item-title">告警级别：</td>
                                                             <td class="alert-item-context">
                                                                 {{ if eq $alert.Labels.severity "warn" }}
-                                                                <span class="level level--warnning">Warnning</span>
+                                                                <span class="level level--warnning">警告</span>
                                                                 {{ else }}
-                                                                <span class="level level--critical">Critical</span>
+                                                                <span class="level level--critical">严重</span>
                                                                 {{ end }}
                                                             </td>
                                                         </tr>
@@ -790,9 +760,9 @@ is alerting
                                                            cellspacing="0">
                                                         <tbody>
                                                         <tr>
-                                                            <td class="alert-item-title">Message: </td>
+                                                            <td class="alert-item-title">通知信息：</td>
                                                             <td class="alert-item-context">
-                                                                The alert was not triggered continuously in the past 5m, so the alert was judged to have been resolved.
+                                                                在过去5m内没有持续触发该告警，因此告警被判定为已解决。
                                                             </td>
                                                         </tr>
                                                         </tbody>

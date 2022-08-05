@@ -22,6 +22,10 @@ spec:
         - name: squids-redis
           imagePullPolicy: {{ .Values.image.pullPolicy}}
           image: redis:{{ .Values.image.tag }}
+          command:
+            - redis-server
+          args:
+            - /etc/redis/redis.conf
           ports:
             - containerPort: {{ .Values.image.containerPort }}
           {{- with .Values.resources }}
@@ -35,7 +39,7 @@ spec:
             - name: redis-storage
               mountPath: /data
             - name: redis-conf
-              mountPath: /etc/redis/
+              mountPath: /etc/redis
       volumes:
         - name: timezone
           hostPath:

@@ -32,7 +32,7 @@ alerting:
       timeout: 10s
       path_prefix: /
 
-# 监控任务
+# 数据抓取配置
 scrape_configs:
   - job_name: kubernetes-apiservers
     scrape_interval: 1m
@@ -137,7 +137,7 @@ scrape_configs:
         separator: ;
         regex: (mysql)
         target_label: alertingTargetType
-        replacement: MySQLCluster
+        replacement: MySQL
         action: replace
       - source_labels: [ app_name ]
         separator: ;
@@ -191,7 +191,7 @@ scrape_configs:
         separator: ;
         regex: (redis)
         target_label: alertingTargetType
-        replacement: RedisCluster
+        replacement: Redis
         action: replace
       - source_labels: [ app_name ]
         separator: ;
@@ -275,7 +275,7 @@ scrape_configs:
         separator: ;
         regex: (mssql)
         target_label: alertingTargetType
-        replacement: SQLServerCluster
+        replacement: SQLServer
         action: replace
       - source_labels: [ app_name ]
         separator: ;
@@ -317,7 +317,7 @@ scrape_configs:
         separator: ;
         regex: (mongodb)
         target_label: alertingTargetType
-        replacement: MongoCluster
+        replacement: MongoDB
         action: replace
       - source_labels: [ app_name ]
         separator: ;
@@ -367,7 +367,6 @@ scrape_configs:
       ca_file: /etc/kubernetes/pki/etcd/ca.crt
       cert_file: /etc/kubernetes/pki/etcd/server.crt
       key_file: /etc/kubernetes/pki/etcd/server.key
-
   - job_name: clickhouse-exporter
     kubernetes_sd_configs:
       - role: pod
@@ -416,7 +415,72 @@ scrape_configs:
       - action: labeldrop
         regex: 'container_id|image_id|controller_revision_hash|pod_template_generation|pod_template_hash'
 
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
     metric_relabel_configs:
       - source_labels: [ __name__ ]
         regex: 'process_virtual.*|process_max_fds|process_start_time.*|http_.*|go_gc.*'
         action: drop
+  - job_name: mariadb-exporter
+    scrape_interval: 15s
+    scrape_timeout: 10s
+    metrics_path: /metrics
+    scheme: http
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_label_db_type, __meta_kubernetes_pod_label_type ]
+        separator: ;
+        regex: mariadb;database
+        replacement: $1
+        action: keep
+      - source_labels: [ __address__ ]
+        separator: ;
+        regex: (.*)
+        target_label: __address__
+        replacement: mysqld-exporter:9104
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - separator: ;
+        regex: __meta_kubernetes_pod_label_((app_name)|(db_role)|(db_type)|(type))
+        replacement: $1
+        action: labelmap
+      - source_labels: [ __meta_kubernetes_namespace, __meta_kubernetes_pod_label_app_name ]
+        separator: /
+        regex: (.*)
+        target_label: __param_secret
+        replacement: ${1}-component-user-suffix
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        separator: ;
+        regex: (.*)
+        target_label: __param_ip
+        replacement: ${1}
+        action: replace
+      - source_labels: [ db_type ]
+        separator: ;
+        regex: (mariadb)
+        target_label: alertingTargetType
+        replacement: MariaDB
+        action: replace
+      - source_labels: [ app_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target

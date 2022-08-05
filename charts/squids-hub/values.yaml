@@ -15,7 +15,7 @@ image:
     name: hub
     tag: v1.0.0
   terraformProvider:
-    name: terraform-provider
+    name: hub-terraform-provider
     tag: v1.0.0
 
 service:
@@ -28,11 +28,13 @@ service:
 env: test
 server:
   host: localhost
-mysql: 
+mysql:
   username: squidsRoot9527
   password: squids123456
 phoenix:
   domain: phoenix.squids-monitor.svc.cluster.local
+dms:
+  domain: localhost
 
 imagePullSecrets: []
 nameOverride: ""

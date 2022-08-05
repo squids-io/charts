@@ -14,11 +14,13 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   console:
     name: squids-console
-    tag: 1.4.1
+    tag: 1.14.3
   web:
     name: squids-web
-    tag: 1.6.2
+    tag: 1.9.0
 
+dms:
+  ip: 127.0.0.1
 console:
   url: https://console.squids.cn
   ip: 127.0.0.1
@@ -27,6 +29,8 @@ web:
   ip: 127.0.0.1
 grafana:
   url: https://chartlog.squids.cn:30001
+dbmotion:
+  url: https://dbmotion.squids.cn:3000
 
 nginx:
   auth: false

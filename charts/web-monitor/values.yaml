@@ -6,14 +6,14 @@ objectStorage:
   accessKeyId: "input these please"
   accessKeySecret: "input these please"
 
-image:
-  pullPolicy: IfNotPresent
-  prometheusTag: v2.19.2
-  thanosTag: v0.16.0-rc.1
-  alertmanagerTag: v0.21.0
-
 alertmanagerSts:
   replicaCount: 1
+  image:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: prometheus/alertmanager
+    pullPolicy: IfNotPresent
+    tag: v0.23.0
 
   smtp_from: "input these please"
   smtp_auth_username: "input these please"
@@ -49,7 +49,12 @@ alertmanagerSts:
 
 prometheusSts:
   replicaCount: 1
-
+  image:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: prometheus/prometheus
+    pullPolicy: IfNotPresent
+    tag: v2.30.3
   pvcSize: 200Gi
 
   kubePKIPath: /etc/kubernetes/pki
@@ -90,6 +95,14 @@ prometheusSts:
 
   thanos:
     resources: {}
+
+thanos:
+  image:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: thanos/thanos
+    pullPolicy: IfNotPresent
+    tag: v0.23.1
 
 thanosQuery:
   httpPort: 9090

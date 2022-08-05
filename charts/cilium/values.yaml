@@ -12,29 +12,29 @@ agent:
 
 operator:
   image:
-    repository: docker.io/cilium/operator-generic
+    repository: swr.cn-east-2.myhuaweicloud.com/squids/cilium/operator-generic
     tag: v1.10.3
     pullPolicy: IfNotPresent
 
 hubble:
   relay:
     image:
-      repository: docker.io/cilium/hubble-relay
+      repository: swr.cn-east-2.myhuaweicloud.com/squids/cilium/hubble-relay
       tag: v1.10.3
       pullPolicy: IfNotPresent
   ui:
     frontend:
       image:
-        repository: quay.io/cilium/hubble-ui
+        repository: swr.cn-east-2.myhuaweicloud.com/squids/cilium/hubble-ui
         tag: v0.7.9
         pullPolicy: IfNotPresent
     backend:
       image:
-        repository: quay.io/cilium/hubble-ui-backend
+        repository: swr.cn-east-2.myhuaweicloud.com/squids/cilium/hubble-ui-backend
         tag: v0.7.9
         pullPolicy: IfNotPresent
 envoy:
   image:
-    repository: docker.io/envoyproxy/envoy
+    repository: swr.cn-east-2.myhuaweicloud.com/squids/envoyproxy/envoy
     tag: v1.18.2
     pullPolicy: IfNotPresent
