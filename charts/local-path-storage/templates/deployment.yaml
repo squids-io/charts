@@ -48,6 +48,10 @@ spec:
         - name: config-volume
           configMap:
             name: local-path-config
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
 ---
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
