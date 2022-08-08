@@ -1,4 +1,14 @@
 image:
   repository: swr.cn-east-2.myhuaweicloud.com/squids/local-path-provisioner
-  tag: v0.0.19
+  tag: v0.0.20
   pullPolicy: IfNotPresent
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "squids/cluster"
+              operator: In
+              values:
+                - "squids-master"
