@@ -202,6 +202,48 @@ scrape_configs:
       - source_labels: [ __meta_kubernetes_pod_label_target ]
         action: replace
         target_label: target
+  - job_name: 'predixy-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        action: replace
+        target_label: __address__
+        replacement: $1:9121
+      - source_labels: [ __meta_kubernetes_pod_label_db_type ]
+        separator: ;
+        regex: (predixy)
+        replacement: $1
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [ db_type ]
+        separator: ;
+        regex: (predixy)
+        target_label: alertingTargetType
+        replacement: RedisCluster
+        action: replace
+      - source_labels: [ app_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
   - job_name: 'mssql-exporter'
     scrape_interval: 1m
     scrape_timeout: 50s

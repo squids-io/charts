@@ -160,3 +160,19 @@ rules:
     - get
     - list
     - watch
+- apiGroups:
+    - redis.kun
+  resources:
+    - distributedredisclusters
+  verbs:
+    - get
+    - list
+    - watch
+- apiGroups:
+    - apps
+  resources:
+    - statefulsets
+  verbs:
+    - get
+    - list
+    - watch

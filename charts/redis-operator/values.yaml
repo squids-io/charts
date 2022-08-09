@@ -10,7 +10,7 @@ global:
 image:
   pullPolicy: IfNotPresent
   operator:
-    operator: v1.0.1
+    operator: v1.0.2
 
 nodeSelector:
   node-role.kubernetes.io/master: ""
