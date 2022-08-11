@@ -33,6 +33,8 @@ spec:
               mountPath: /etc/localtime
             - name: config-volume
               mountPath: /config
+            - name: tls
+              mountPath: /grpcserver_tls
       volumes:
         - name: timezone
           hostPath:
@@ -43,6 +45,16 @@ spec:
         - name: config-volume
           configMap:
             name: squids-backup
+        - name: tls
+          secret:
+            secretName: grpc-client.tls
+            items:
+              - key: ca.crt
+                path: ca.pem
+              - key: tls.crt
+                path: client-cert.pem
+              - key: tls.key
+                path: client-key.pem
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
