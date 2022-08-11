@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squids-backup
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: squids-backup
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+  selector:
+    app: squids-backup
