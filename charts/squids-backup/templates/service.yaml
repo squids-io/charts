@@ -9,4 +9,4 @@ spec:
   ports:
     - port: {{ .Values.service.port }}
   selector:
-    app: squids-backup
+    app-name: squids-backup
