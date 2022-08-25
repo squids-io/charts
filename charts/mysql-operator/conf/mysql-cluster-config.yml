@@ -1624,15 +1624,6 @@
     description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
     engine: mysql
     version: 5.7
-  - uuid: 3869045f1ebd11eda4dbf02f74a088c2
-    name: block_encryption_mode
-    defaultValue: aes-128-ecb
-    type: string
-    needRestart: false
-    range: aes-128-ecb|aes-192-ecb|aes-256-ecb|aes-128-cbc|aes-192-cbc|aes-256-cbc
-    description:
-    engine: mysql
-    version: 5.7
   - uuid: 38692abd1ebd11eda4dbf02f74a088c2
     name: slow_query_log
     defaultValue: ON
@@ -3534,15 +3525,6 @@
     needRestart: false
     range: 0|1|2
     description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
-    engine: mysql
-    version: 8.0
-  - uuid: 0645b85c1ebd11ed8a09f02f74a088c2
-    name: block_encryption_mode
-    defaultValue: aes-128-ecb
-    type: string
-    needRestart: false
-    range: aes-128-ecb|aes-192-ecb|aes-256-ecb|aes-128-cbc|aes-192-cbc|aes-256-cbc
-    description: This variable controls the block encryption mode for block-based algorithms such as AES. It affects encryption for AES_ENCRYPT() and AES_DECRYPT().
     engine: mysql
     version: 8.0
   - uuid: 0645ccd71ebd11ed8a09f02f74a088c2

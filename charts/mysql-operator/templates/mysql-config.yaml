@@ -2295,7 +2295,6 @@ data:
     innodb_read_ahead_threshold=56
     optimizer_switch=index_merge=on,index_merge_union=on,index_merge_sort_union=on,index_merge_intersection=on,engine_condition_pushdown=on,index_condition_pushdown=on,mrr=on,mrr_cost_based=on,block_nested_loop=on,batched_key_access=off,materialization=on,semijoin=on,loosescan=on,firstmatch=on,subquery_materialization_cost_based=on,use_index_extensions=on
     concurrent_insert=1
-    block_encryption_mode="aes-128-ecb"
     slow_query_log=ON
     net_buffer_length=16384
     query_cache_size=0
@@ -2863,7 +2862,6 @@ data:
     preload_buffer_size=32768
     innodb_read_ahead_threshold=56
     concurrent_insert=1
-    block_encryption_mode=\"aes-128-ecb\"
     slow_query_log=ON
     net_buffer_length=16384
     delayed_insert_limit=100
