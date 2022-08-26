@@ -1,9 +1,9 @@
-
 "5.6":
   - uuid: 28bde50bd14a11eab013ee77d8cf02a0
     name: group_concat_max_len
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 4~18446744073709551615
     description: 用于控制group_concat()函数能够连接的最大结果集字节长度。
@@ -13,6 +13,7 @@
     name: back_log
     defaultValue: 512
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~65535
     description: 当请求达到max_connections时，MySQL暂停接受新请求之前的短时间内多少个请求可以被存在堆栈中。
@@ -22,6 +23,7 @@
     name: innodb_additional_mem_pool_size
     defaultValue: 8388608
     type: int
+    blockSize: 1
     needRestart: true
     range: 2097152~4294967295
     description: 内存池的字节大小InnoDB 用于存储数据字典信息和其他内部数据结构。应用程序中的表越多，您在此处分配的内存就越多。如果InnoDB 该池中的内存不足，它将开始从操作系统分配内存，并将警告消息写入MySQL错误日志。
@@ -31,6 +33,7 @@
     name: innodb_autoinc_lock_mode
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~2
     description: |
@@ -43,6 +46,7 @@
     name: innodb_purge_threads
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~32
     description: 专用于InnoDB 清除操作的后台线程数，默认值为1；增加该值将创建其他清除线程，这可以提高在多个表上执行DML操作的系统效率，最大值为32。
@@ -52,6 +56,7 @@
     name: innodb_read_io_threads
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: 后台InnoDB I/O读取操作线程数。
@@ -70,6 +75,7 @@
     name: innodb_write_io_threads
     defaultValue: 16
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: 后台InnoDB I/O写入操作线程数。
@@ -88,6 +94,7 @@
     name: innodb_sort_buffer_size
     defaultValue: 1048576
     type: int
+    blockSize: 1
     needRestart: true
     range: 65536~67108864
     description: 指定在创建InnoDB索引期间用于对数据进行排序的排序缓冲区的大小。指定的大小定义了读入内存以进行内部排序然后写出到磁盘的数据量。该过程称为“ 运行 ”。在合并阶段，将读取并合并指定大小的缓冲区对。设置越大，运行和合并的次数越少。
@@ -97,15 +104,17 @@
     name: join_buffer_size
     defaultValue: 4194304
     type: int
+    blockSize: 128
     needRestart: false
     range: 1024~18446744073709547520
-    description: 用于存放join查询中间结果的缓存大小。对于无法通过索引进行联结操作的查询，可以通过适当增大join_buffer_size的值来改善联结查询性能(但最好是想办法让join使用到索引来提高性能)。join_buffer_size都是每线程独占分配，数值不要设置过大应当为1024倍数。
+    description: 用于存放join查询中间结果的缓存大小。对于无法通过索引进行联结操作的查询，可以通过适当增大join_buffer_size的值来改善联结查询性能(但最好是想办法让join使用到索引来提高性能)。join_buffer_size都是每线程独占分配，数值不要设置过大，应当为128倍数。
     engine: mysql
     version: 5.6
   - uuid: 7d829ff17b4611ebad9676798682834e
     name: sort_buffer_size
     defaultValue: 2097152
     type: int
+    blockSize: 1
     needRestart: false
     range: 1048576~18446744073709551615
     description: 用于存放排序数据的缓存大小，超过这个大小就会使用文件排序。如果通过show global status看到Sort_merge_passes的值很大，可以考虑通过适当调整sort_buffer_size，改善带有order by和group by子句的sql性能。sort_buffer_size是每线程独占分配，不要设置过大。
@@ -115,6 +124,7 @@
     name: tmp_table_size
     defaultValue: 8388608
     type: int
+    blockSize: 1
     needRestart: false
     range: 1024~18446744073709551615
     description: Created_tmp_disk_tables/(Created_tmp_disk_tables+Created_tmp_tables)*100% > 10%的话，就需要注意适当提高tmp_table_size 的大小，但是不能设置太大，因为它是每个session都会分配的，可能会导致OOM。
@@ -124,6 +134,7 @@
     name: max_heap_table_size
     defaultValue: 8388608
     type: int
+    blockSize: 1024
     needRestart: false
     range: 16384~1844674407370954752
     description: 该参数是用于控制用户创建的内存表的数据大小,也与tmp_table_size结合使用以限制内部内存表的大小。如果设置与tmp_table_size大小不一样，则控制内部内存临时表以较小的为准，数值应当为1024倍数。
@@ -133,6 +144,7 @@
     name: max_length_for_sort_data
     defaultValue: 16384
     type: int
+    blockSize: 1
     needRestart: false
     range: 4~8388608
     description: 控制MySQL排序的最大字段定义的列总字节长度。
@@ -142,6 +154,7 @@
     name: read_buffer_size
     defaultValue: 2097152
     type: int
+    blockSize: 4096
     needRestart: false
     range: 8200~2147479552
     description: 控制ORDER BY行排序时的临时文件中缓存索引的大小；控制批量插入到分区中的数据大小；控制缓存嵌套查询的结果集大小，数值应当为4096倍数。
@@ -151,6 +164,7 @@
     name: read_rnd_buffer_size
     defaultValue: 2097152
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~2147483647
     description: MyISAM表排序缓存的缓存大小，如果需要对Myisam表做排序，可以增大read_rnd_buffer_size改善性能，这个变量同样的每会话独占，也不能设置太大。 该变量控制的buffer在从任何存储引擎读取数据的时候，都会用于缓存读取的数据，包括MRR优化特性也会使用。
@@ -160,6 +174,7 @@
     name: long_query_time
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0.1~31536000
     description: 定义执行时间超过多少秒的查询会被记录到慢查询日志中。
@@ -169,6 +184,7 @@
     name: auto_increment_increment
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~65535
     description: 设置自增的步长值，常常与auto_increment_offset变量一起用于在主主复制环境中避开双写时的主键冲突。
@@ -178,6 +194,7 @@
     name: auto_increment_offset
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~65535
     description: 设置自增的偏移量(起始值)，常常与auto_increment_increment变量一起用于在主主复制环境中避开双写时的主键冲突。
@@ -187,6 +204,7 @@
     name: innodb_lock_wait_timeout
     defaultValue: 120
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1073741824
     description: innodb事务请求行锁的超时时间限制参数。
@@ -196,6 +214,7 @@
     name: lock_wait_timeout
     defaultValue: 31536000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~31536000
     description: MDL元数据锁的超时时间。
@@ -205,6 +224,7 @@
     name: wait_timeout
     defaultValue: 28800
     type: int
+    blockSize: 1
     needRestart: false
     range: 10~31536000
     description: MySQL在关闭一个非交互的连接之前所要等待的秒数。
@@ -214,6 +234,7 @@
     name: interactive_timeout
     defaultValue: 172800
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~31536000
     description: MySQL在关闭一个交互的连接之前所要等待的秒数。
@@ -232,6 +253,7 @@
     name: sync_binlog
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000
     description: 控制MySQL二进制日志同步到磁盘的频率。参数sync_binlog=[N]，如果N为1，表示采用同步写磁盘的方式来写二进制日志，每次事务提交时就会刷新binlog到磁盘；如果N为0，表示刷新binlog时间点由操作系统自身来决定，操作系统自身会每隔一段时间就会刷新系统缓存到磁盘；如果N>1，表示每写入N次系统缓存就执行一次写入磁盘并刷新的操作。如果不设置1，有数据丢失风险。
@@ -251,6 +273,7 @@
     name: performance_schema_max_table_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented tables.
@@ -269,6 +292,7 @@
     name: performance_schema_max_index_stat
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of index statistics for instrumented tables.
@@ -278,6 +302,7 @@
     name: bulk_insert_buffer_size
     defaultValue: 4194304
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: MyISAM uses a special tree-like cache to make bulk inserts faster for INSERT ... SELECT, INSERT ... VALUES (...), (...), ..., and LOAD DATA INFILE when adding data to nonempty tables. This variable limits the size of the cache tree in bytes per thread. Setting it to 0 disables this optimization. The default value is 8MB.
@@ -296,6 +321,7 @@
     name: ft_query_expansion_limit
     defaultValue: 20
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1000
     description: Number of best matches to use for query expansion
@@ -305,6 +331,7 @@
     name: innodb_old_blocks_time
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1024
     description: Move blocks to the 'new' end of the buffer pool if the first access was at least this many milliseconds ago. The timeout is disabled if 0.
@@ -314,15 +341,17 @@
     name: thread_stack
     defaultValue: 262144
     type: int
+    blockSize: 1024
     needRestart: true
     range: 131072~2147483647
-    description: The stack size for each thread. The default of 192KB (256KB for 64-bit systems) is large enough for normal operation. If the thread stack size is too small, it limits the complexity of the SQL statements that the server can handle, the recursion depth of stored procedures, and other memory-consuming actions.
+    description: The stack size for each thread. The default of 192KB (256KB for 64-bit systems) is large enough for normal operation. If the thread stack size is too small, it limits the complexity of the SQL statements that the server can handle, the recursion depth of stored procedures, and other memory-consuming actions. The block size is 1024.
     engine: mysql
     version: 5.7
   - uuid: 38658a771ebd11eda46df02f74a088c2
     name: innodb_log_file_size
     defaultValue: 2500M
     type: int
+    blockSize: 1
     needRestart: true
     range: 4194304~107374182400
     description: The size in bytes of each log file in a log group.
@@ -341,6 +370,7 @@
     name: innodb_thread_concurrency
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1000
     description: Helps in performance tuning in heavily concurrent environments. Sets the maximum number of threads allowed inside InnoDB. Value 0 will disable the thread throttling.
@@ -350,6 +380,7 @@
     name: sync_master_info
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: The effects of this variable on a replication slave depend on whether the slaves master_info_repository is set to FILE or TABLE, as explained in the following paragraphs.
@@ -368,6 +399,7 @@
     name: optimizer_search_depth
     defaultValue: 62
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~62
     description: The maximum depth of search performed by the query optimizer. Values larger than the number of relations in a query result in better query plans, but take longer to generate an execution plan for a query. Values smaller than the number of relations in a query return an execution plan quicker, but the resulting plan may be far from being optimal. If set to 0, the system automatically picks a reasonable value.
@@ -377,6 +409,7 @@
     name: innodb_compression_level
     defaultValue: 6
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~9
     description: Specifies the level of zlib compression to use for InnoDB compressed tables and indexes. A higher value lets you fit more data onto a storage device, at the expense of more CPU overhead during compression. A lower value lets you reduce CPU overhead when storage space is not critical, or you expect the data is not especially compressible.
@@ -386,6 +419,7 @@
     name: performance_schema_max_prepared_statements_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~4194304
     description: Maximum number of instrumented prepared statements.
@@ -395,6 +429,7 @@
     name: max_sort_length
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 4~8388608
     description: The number of bytes to use when sorting data values. The server uses only the first max_sort_length bytes of each value and ignores the rest. Consequently, values that differ only after the first max_sort_length bytes compare as equal for GROUP BY, ORDER BY, and DISTINCT operations.
@@ -404,15 +439,17 @@
     name: max_binlog_cache_size
     defaultValue: 18446744073709547520
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~18446744073709547520
-    description: max_binlog_cache_size sets the size for the transaction cache only.The visibility to sessions of max_binlog_cache_size matches that of the binlog_cache_size system variable.
+    description: max_binlog_cache_size sets the size for the transaction cache only.The visibility to sessions of max_binlog_cache_size matches that of the binlog_cache_size system variable. The block size is 4096.
     engine: mysql
     version: 5.7
   - uuid: 3865c8351ebd11eda476f02f74a088c2
     name: innodb_online_alter_log_max_size
     defaultValue: 134217728
     type: int
+    blockSize: 1
     needRestart: false
     range: 134217728~2147483647
     description: Maximum modification log file size for online index creation
@@ -422,9 +459,10 @@
     name: key_cache_block_size
     defaultValue: 1024
     type: int
+    blockSize: 512
     needRestart: false
     range: 512~16384
-    description: The default size of key cache blocks
+    description: The default size of key cache blocks. The block size is 512.
     engine: mysql
     version: 5.7
   - uuid: 3865c8351ebd11eda478f02f74a088c2
@@ -449,6 +487,7 @@
     name: innodb_adaptive_max_sleep_delay
     defaultValue: 150000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000000
     description: Permits InnoDB to automatically adjust the value of innodb_thread_sleep_delay up or down according to the current workload. Any nonzero value enables automated, dynamic adjustment of the innodb_thread_sleep_delay value, up to the maximum value specified in the innodb_adaptive_max_sleep_delay option. The value represents the number of microseconds. This option can be useful in busy systems, with greater than 16 InnoDB threads. (In practice, it is most valuable for MySQL systems with hundreds or thousands of simultaneous connections.)
@@ -458,6 +497,7 @@
     name: innodb_purge_rseg_truncate_frequency
     defaultValue: 128
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~128
     description: Defines the frequency with which the purge system frees rollback segments in terms of the number of times that purge is invoked. An undo tablespace cannot be truncated until its rollback segments are freed. Normally, the purge system frees rollback segments once every 128 times that purge is invoked. The default value is 128. Reducing this value increases the frequency with which the purge thread frees rollback segments.
@@ -467,15 +507,17 @@
     name: query_alloc_block_size
     defaultValue: 8192
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~16384
-    description: Allocation block size for query parsing and execution
+    description: Allocation block size for query parsing and execution. The block size is 1024.
     engine: mysql
     version: 5.7
   - uuid: 3865f1101ebd11eda47cf02f74a088c2
     name: innodb_lock_wait_timeout
     defaultValue: 50
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1073741824
     description: Timeout in seconds an InnoDB transaction may wait for a lock before being rolled back. Values above 100000000 disable the timeout.
@@ -485,6 +527,7 @@
     name: innodb_purge_threads
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~32
     description: Purge threads can be from 1 to 32. Default is 4.
@@ -494,6 +537,7 @@
     name: innodb_compression_failure_threshold_pct
     defaultValue: 5
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~100
     description: Defines the compression failure rate threshold for a table, as a percentage, at which point MySQL begins adding padding within compressed pages to avoid expensive compression failures. When this threshold is passed, MySQL begins to leave additional free space within each new compressed page, dynamically adjusting the amount of free space up to the percentage of page size specified by innodb_compression_pad_pct_max. A value of zero disables the mechanism that monitors compression efficiency and dynamically adjusts the padding amount.
@@ -503,6 +547,7 @@
     name: innodb_compression_pad_pct_max
     defaultValue: 50
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~70
     description: Specifies the maximum percentage that can be reserved as free space within each compressed page, allowing room to reorganize the data and modification log within the page when a compressed table or index is updated and the data might be recompressed. Only applies when innodb_compression_failure_threshold_pct is set to a nonzero value, and the rate of compression failures passes the cutoff point.
@@ -530,6 +575,7 @@
     name: innodb_stats_persistent_sample_pages
     defaultValue: 20
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The number of index pages to sample when estimating cardinality and other statistics for an indexed column, such as those calculated by ANALYZE TABLE. Increasing the value improves the accuracy of index statistics, which can improve the query execution plan, at the expense of increased I/O during the execution of ANALYZE TABLE for an InnoDB table.
@@ -539,6 +585,7 @@
     name: innodb_ft_total_cache_size
     defaultValue: 640000000
     type: int
+    blockSize: 1
     needRestart: true
     range: 32000000~1600000000
     description: The total memory allocated, in bytes, for the InnoDB full-text search index cache for all tables. Creating numerous tables, each with a FULLTEXT search index, could consume a significant portion of available memory. innodb_ft_total_cache_size defines a global memory limit for all full-text search indexes to help avoid excessive memory consumption. If the global limit is reached by an index operation, a forced sync is triggered.
@@ -566,6 +613,7 @@
     name: performance_schema_accounts_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented user@host accounts.
@@ -575,6 +623,7 @@
     name: eq_range_index_dive_limit
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The optimizer will use existing index statistics instead of doing index dives for equality ranges if the number of equality ranges for the index is larger than or equal to this number. If set to 0, index dives are always used.
@@ -584,6 +633,7 @@
     name: max_execution_time
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: statement be interrupted if the executing time exceeds this value
@@ -602,6 +652,7 @@
     name: performance_schema_events_stages_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -611,6 +662,7 @@
     name: connect_timeout
     defaultValue: 10
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~3600
     description: The number of seconds the mysqld server is waiting for a connect packet before responding with 'Bad handshake'
@@ -620,6 +672,7 @@
     name: innodb_purge_batch_size
     defaultValue: 300
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~5000
     description: Number of UNDO log pages to purge in one batch from the history list.
@@ -629,6 +682,7 @@
     name: div_precision_increment
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~30
     description: Precision of the result of '/' operator will be increased on that value
@@ -638,6 +692,7 @@
     name: performance_schema_events_statements_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -656,6 +711,7 @@
     name: innodb_sync_array_size
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~1024
     description: Defines the size of the mutex/lock wait array. Increasing the value splits the internal data structure used to coordinate threads, for higher concurrency in workloads with large numbers of waiting threads. This setting must be configured when the MySQL instance is starting up, and cannot be changed afterward. Increasing the value is recommended for workloads that frequently produce a large number of waiting threads, typically greater than 768.
@@ -674,6 +730,7 @@
     name: lock_wait_timeout
     defaultValue: 31536000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1073741824
     description: This variable specifies the timeout in seconds for attempts to acquire metadata locks. The permissible values range from 1 to 31536000 (1 year). The default is 31536000.
@@ -683,6 +740,7 @@
     name: net_read_timeout
     defaultValue: 30
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Number of seconds to wait for more data from a connection before aborting the read
@@ -701,6 +759,7 @@
     name: innodb_write_io_threads
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: Number of background write I/O threads in InnoDB.
@@ -719,6 +778,7 @@
     name: performance_schema_hosts_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented hosts.
@@ -728,6 +788,7 @@
     name: ngram_token_size
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~20
     description: Defines the n-gram token size for the n-gram full-text parser. The ngram_token_size option is read-only and can only be modified at startup. The default value is 2 (bigram). The maximum value is 10.
@@ -746,6 +807,7 @@
     name: max_binlog_stmt_cache_size
     defaultValue: 18446744073709547520
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~18446744073709547520
     description: If nontransactional statements within a transaction require more than this many bytes of memory, the server generates an error. The minimum value is 4096. The maximum and default values are 4GB on 32-bit platforms and 16EB (exabytes) on 64-bit platforms.
@@ -755,6 +817,7 @@
     name: performance_schema_max_table_lock_stat
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of lock statistics for instrumented tables.
@@ -764,6 +827,7 @@
     name: performance_schema_max_table_handles
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of opened instrumented tables.
@@ -782,6 +846,7 @@
     name: performance_schema_max_memory_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1024
     description:
@@ -800,6 +865,7 @@
     name: performance_schema_events_waits_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -827,6 +893,7 @@
     name: innodb_io_capacity
     defaultValue: 20000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: The innodb_io_capacity parameter sets an upper limit on the number of I/O operations performed per second by InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer.
@@ -836,6 +903,7 @@
     name: slow_launch_time
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1024
     description: If creating the thread takes longer than this value (in seconds), the Slow_launch_threads counter will be incremented
@@ -863,6 +931,7 @@
     name: tmp_table_size
     defaultValue: 2097152
     type: int
+    blockSize: 1
     needRestart: false
     range: 262144~134217728
     description: If an internal in-memory temporary table exceeds this size, MySQL will automatically convert it to an on-disk MyISAM table
@@ -890,6 +959,7 @@
     name: net_retry_count
     defaultValue: 10
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: If a read on a communication port is interrupted, retry this many times before giving up
@@ -899,6 +969,7 @@
     name: innodb_ft_cache_size
     defaultValue: 8000000
     type: int
+    blockSize: 1
     needRestart: true
     range: 1600000~80000000
     description: The memory allocated, in bytes, for the InnoDB FULLTEXT search index cache, which holds a parsed document in memory while creating an InnoDB FULLTEXT index. Index inserts and updates are only committed to disk when the innodb_ft_cache_size size limit is reached. innodb_ft_cache_size defines the cache size on a per table basis.
@@ -908,6 +979,7 @@
     name: binlog_cache_size
     defaultValue: 2M
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~16777216
     description: The size of the transactional cache for updates to transactional engines for the binary log. If you often use transactions containing many statements, you can increase this to get more performance
@@ -917,6 +989,7 @@
     name: innodb_max_dirty_pages_pct
     defaultValue: 75
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~99
     description: Percentage of dirty pages allowed in bufferpool.
@@ -926,6 +999,7 @@
     name: query_cache_limit
     defaultValue: 1048576
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1048576
     description: Don't cache results that are bigger than this
@@ -944,6 +1018,7 @@
     name: innodb_lru_scan_depth
     defaultValue: 8192
     type: int
+    blockSize: 1
     needRestart: false
     range: 100~18446744073709551615
     description: A parameter that influences the algorithms and heuristics for the flush operation for the InnoDB buffer pool. Primarily of interest to performance experts tuning I/O-intensive workloads. It specifies, per buffer pool instance, how far down the buffer pool LRU page list the page cleaner thread scans looking for dirty pages to flush. This is a background operation performed once per second.
@@ -953,6 +1028,7 @@
     name: innodb_ft_result_cache_limit
     defaultValue: 2000000000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1000000~4294967295
     description: The InnoDB full-text search query result cache limit (defined in bytes) per full-text search query or per thread. Intermediate and final InnoDB full-text search query results are handled in memory. Use innodb_ft_result_cache_limit to place a size limit on the full-text search query result cache to avoid excessive memory consumption in case of very large InnoDB full-text search query results (millions or hundreds of millions of rows, for example). Memory is allocated as required when a full-text search query is processed. If the result cache size limit is reached, an error is returned indicating that the query exceeds the maximum allowed memory.
@@ -962,6 +1038,7 @@
     name: long_query_time
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0.1~31536000
     description: Log all queries that have taken more than long_query_time seconds to execute to file. The argument will be treated as a decimal value with microsecond precision
@@ -971,6 +1048,7 @@
     name: interactive_timeout
     defaultValue: 7200
     type: int
+    blockSize: 1
     needRestart: false
     range: 10~86400
     description: The number of seconds the server waits for activity on an interactive connection before closing it
@@ -980,6 +1058,7 @@
     name: innodb_read_io_threads
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: Number of background read I/O threads in InnoDB.
@@ -989,6 +1068,7 @@
     name: transaction_prealloc_size
     defaultValue: 4096
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~131072
     description: There is a per-transaction memory pool from which various transaction-related allocations take memory. The initial size of the pool in bytes is transaction_prealloc_size. For every allocation that cannot be satisfied from the pool because it has insufficient memory available, the pool is increased by transaction_alloc_block_size bytes. When the transaction ends, the pool is truncated to transaction_prealloc_size bytes.
@@ -998,6 +1078,7 @@
     name: open_files_limit
     defaultValue: 65535
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~2147483647
     description: If this is not 0, then mysqld will use this value to reserve file descriptors to use with setrlimit()
@@ -1007,6 +1088,7 @@
     name: performance_schema_max_metadata_locks
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of metadata locks.
@@ -1016,6 +1098,7 @@
     name: innodb_open_files
     defaultValue: 3000
     type: int
+    blockSize: 1
     needRestart: true
     range: 10~2147483647
     description: How many files at the maximum InnoDB keeps open at the same time.
@@ -1025,15 +1108,17 @@
     name: max_heap_table_size
     defaultValue: 67108864
     type: int
+    blockSize: 1024
     needRestart: false
     range: 16384~1844674407370954752
-    description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The value of the variable is used to calculate MEMORY table MAX_ROWS values. Setting this variable has no effect on any existing MEMORY table, unless the table is re-created with a statement such as CREATE TABLE or altered with ALTER TABLE or TRUNCATE TABLE. A server restart also sets the maximum size of existing MEMORY tables to the global max_heap_table_size value.
+    description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The value of the variable is used to calculate MEMORY table MAX_ROWS values. Setting this variable has no effect on any existing MEMORY table, unless the table is re-created with a statement such as CREATE TABLE or altered with ALTER TABLE or TRUNCATE TABLE. A server restart also sets the maximum size of existing MEMORY tables to the global max_heap_table_size value. The block size is 1024.
     engine: mysql
     version: 5.7
   - uuid: 386711881ebd11eda4aef02f74a088c2
     name: performance_schema_digests_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Size of the statement digest.
@@ -1061,6 +1146,7 @@
     name: ft_max_word_len
     defaultValue: 84
     type: int
+    blockSize: 1
     needRestart: true
     range: 10~4294967295
     description: The maximum length of the word to be included in a MyISAM FULLTEXT index.
@@ -1070,6 +1156,7 @@
     name: innodb_autoextend_increment
     defaultValue: 64
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000
     description: The increment size (in megabytes) for extending the size of an auto-extending InnoDB system tablespace file when it becomes full. The default value is 64.
@@ -1088,6 +1175,7 @@
     name: innodb_stats_transient_sample_pages
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: The number of index pages to sample when estimating cardinality and other statistics for an indexed column, such as those calculated by ANALYZE TABLE. The default value is 8. Increasing the value improves the accuracy of index statistics, which can improve the query execution plan, at the expense of increased I/O when opening an InnoDB table or recalculating statistics.
@@ -1106,6 +1194,7 @@
     name: table_open_cache
     defaultValue: 8192
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~524288
     description: The number of open tables for all threads. Increasing this value increases the number of file descriptors that mysqld requires.
@@ -1115,6 +1204,7 @@
     name: range_optimizer_max_mem_size
     defaultValue: 8388608
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: The limit on memory consumption for the range optimizer. A value of 0 means “no limit.” If an execution plan considered by the optimizer uses the range access method but the optimizer estimates that the amount of memory needed for this method would exceed the limit, it abandons the plan and considers other plans. For more information, see Limiting Memory Use for Range Optimization.
@@ -1142,6 +1232,7 @@
     name: slave_net_timeout
     defaultValue: 60
     type: int
+    blockSize: 1
     needRestart: false
     range: 15~300
     description: The number of seconds to wait for more data from the master before the slave considers the connection broken, aborts the read, and tries to reconnect
@@ -1169,6 +1260,7 @@
     name: max_points_in_geometry
     defaultValue: 65536
     type: int
+    blockSize: 1
     needRestart: false
     range: 3~1048576
     description: The maximum value of the points_per_circle argument to the ST_Buffer_Strategy() function.
@@ -1187,6 +1279,7 @@
     name: max_prepared_stmt_count
     defaultValue: 16382
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1048576
     description: Maximum number of prepared statements in the server
@@ -1196,6 +1289,7 @@
     name: wait_timeout
     defaultValue: 86400
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~31536000
     description: The number of seconds the server waits for activity on a connection before closing it
@@ -1205,6 +1299,7 @@
     name: log_bin_use_v1_row_events
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0|1
     description: If equal to 1 then version 1 row events are written to a row based binary log. If equal to 0, then the latest version of events are written. This option is useful during some upgrades.
@@ -1214,6 +1309,7 @@
     name: performance_schema_setup_actors_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of rows in SETUP_ACTORS.
@@ -1223,6 +1319,7 @@
     name: query_cache_min_res_unit
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 512~18446744073709551608
     description: The minimum size (in bytes) for blocks allocated by the query cache. The default value is 4096 (4KB).
@@ -1241,6 +1338,7 @@
     name: binlog_stmt_cache_size
     defaultValue: 32768
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~16777216
     description: The size of the statement cache for updates to non-transactional engines for the binary log. If you often use statements updating a great number of rows, you can increase this to get more performance
@@ -1268,6 +1366,7 @@
     name: query_prealloc_size
     defaultValue: 8192
     type: int
+    blockSize: 1024
     needRestart: false
     range: 8192~1048576
     description: Persistent buffer for query parsing and execution
@@ -1277,6 +1376,7 @@
     name: key_cache_age_threshold
     defaultValue: 300
     type: int
+    blockSize: 100
     needRestart: false
     range: 100~4294967295
     description: This characterizes the number of hits a hot block has to be untouched until it is considered aged enough to be downgraded to a warm block. This specifies the percentage ratio of that number of hits to the total number of blocks in key cache
@@ -1286,6 +1386,7 @@
     name: performance_schema_setup_objects_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of rows in SETUP_OBJECTS.
@@ -1295,6 +1396,7 @@
     name: transaction_alloc_block_size
     defaultValue: 8192
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~131072
     description: The amount in bytes by which to increase a per-transaction memory pool which needs memory. See the description of transaction_prealloc_size.
@@ -1304,6 +1406,7 @@
     name: metadata_locks_cache_size
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~1048576
     description: The size of the metadata locks cache. The server uses this cache to avoid creation and destruction of synchronization objects. This is particularly helpful on systems where such operations are expensive, such as Windows XP.
@@ -1313,6 +1416,7 @@
     name: optimizer_prune_level
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0|1
     description: Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. A value of 0 disables heuristics so that the optimizer performs an exhaustive search. A value of 1 causes the optimizer to prune plans based on the number of rows retrieved by intermediate plans.
@@ -1322,6 +1426,7 @@
     name: performance_schema_max_file_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented files.
@@ -1331,6 +1436,7 @@
     name: innodb_max_purge_lag
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: Defines the maximum length of the purge queue. The default value of 0 indicates no limit (no delays).
@@ -1340,6 +1446,7 @@
     name: innodb_buffer_pool_dump_pct
     defaultValue: 25
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~100
     description: Specifies the percentage of the most recently used pages for each buffer pool to read out and dump. The range is 1 to 100. The default value is 25. For example, if there are 4 buffer pools with 100 pages each, and innodb_buffer_pool_dump_pct is set to 25, the 25 most recently used pages from each buffer pool are dumped.
@@ -1349,6 +1456,7 @@
     name: innodb_max_dirty_pages_pct_lwm
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~99
     description: Defines a low water mark representing the percentage of dirty pages at which preflushing is enabled to control the dirty page ratio. The default of 0 disables the pre-flushing behavior entirely
@@ -1358,6 +1466,7 @@
     name: max_sp_recursion_depth
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~255
     description: The number of times that any given stored procedure may be called recursively. The default value for this option is 0, which completely disables recursion in stored procedures. The maximum value is 255.
@@ -1394,6 +1503,7 @@
     name: innodb_change_buffer_max_size
     defaultValue: 25
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~50
     description: Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. You might increase this value for a MySQL server with heavy insert, update, and delete activity, or decrease it for a MySQL server with unchanging data used for reporting.
@@ -1421,6 +1531,7 @@
     name: performance_schema_max_file_handles
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~32768
     description:
@@ -1430,6 +1541,7 @@
     name: innodb_ft_max_token_size
     defaultValue: 84
     type: int
+    blockSize: 1
     needRestart: true
     range: 10~84
     description: InnoDB Fulltext search maximum token size in characters
@@ -1448,6 +1560,7 @@
     name: performance_schema_users_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented users.
@@ -1457,6 +1570,7 @@
     name: innodb_max_undo_log_size
     defaultValue: 1073741824
     type: int
+    blockSize: 1
     needRestart: false
     range: 10485760~18446744073709551615
     description: Defines a threshold size for undo tablespaces. If an undo tablespace exceeds the threshold, it can be marked for truncation when innodb_undo_log_truncate is enabled. The default value is 1073741824 bytes (1024 MiB).
@@ -1484,6 +1598,7 @@
     name: innodb_sync_spin_loops
     defaultValue: 30
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The number of times a thread waits for an InnoDB mutex to be freed before the thread is suspended.
@@ -1493,6 +1608,7 @@
     name: net_write_timeout
     defaultValue: 60
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Number of seconds to wait for a block to be written to a connection before aborting the write
@@ -1502,6 +1618,7 @@
     name: flush_time
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~31536000
     description: If this is set to a nonzero value, all tables are closed every flush_time seconds to free up resources and synchronize unflushed data to disk. This option is best used only on systems with minimal resources.
@@ -1556,6 +1673,7 @@
     name: performance_schema_max_statement_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -1565,6 +1683,7 @@
     name: key_cache_division_limit
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~100
     description: The minimum percentage of warm blocks in key cache
@@ -1574,6 +1693,7 @@
     name: performance_schema_max_rwlock_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~104857600
     description: Maximum number of instrumented RWLOCK objects.
@@ -1583,6 +1703,7 @@
     name: delayed_insert_timeout
     defaultValue: 300
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~3600
     description: How long a INSERT DELAYED thread should wait for INSERT statements before terminating. This variable is deprecated along with INSERT DELAYED.
@@ -1592,6 +1713,7 @@
     name: preload_buffer_size
     defaultValue: 32768
     type: int
+    blockSize: 1
     needRestart: false
     range: 1024~1073741824
     description: The size of the buffer that is allocated when preloading indexes.
@@ -1601,6 +1723,7 @@
     name: innodb_read_ahead_threshold
     defaultValue: 56
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1024
     description: Number of pages that must be accessed sequentially for InnoDB to trigger a readahead.
@@ -1637,6 +1760,7 @@
     name: net_buffer_length
     defaultValue: 16384
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~1048576
     description: Each client thread is associated with a connection buffer and result buffer. Both begin with a size given by net_buffer_length but are dynamically enlarged up to max_allowed_packet bytes as needed. The result buffer shrinks to net_buffer_length after each SQL statement.
@@ -1646,6 +1770,7 @@
     name: query_cache_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~10485760000
     description: The memory allocated to store results from old queries
@@ -1655,6 +1780,7 @@
     name: performance_schema_max_socket_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -1664,6 +1790,7 @@
     name: delayed_insert_limit
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: After inserting delayed_insert_limit rows, the INSERT DELAYED handler will check if there are any SELECT statements pending. If so, it allows these to execute before continuing. This variable is deprecated along with INSERT DELAYED.
@@ -1682,6 +1809,7 @@
     name: performance_schema_max_program_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented programs.
@@ -1691,6 +1819,7 @@
     name: innodb_adaptive_flushing_lwm
     defaultValue: 10
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~70
     description: Defines the low water mark representing percentage of redo log capacity at which adaptive flushing is enabled.
@@ -1709,6 +1838,7 @@
     name: delayed_queue_size
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: What size queue (in rows) should be allocated for handling INSERT DELAYED. If the queue becomes full, any client that does INSERT DELAYED will wait until there is room in the queue again. This variable is deprecated along with INSERT DELAYED.
@@ -1727,6 +1857,7 @@
     name: innodb_thread_sleep_delay
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1000000
     description: Time of innodb thread sleeping before joining InnoDB queue (usec). Value 0 disable a sleep
@@ -1736,6 +1867,7 @@
     name: innodb_old_blocks_pct
     defaultValue: 37
     type: int
+    blockSize: 1
     needRestart: false
     range: 5~95
     description: Percentage of the buffer pool to reserve for 'old' blocks.
@@ -1745,6 +1877,7 @@
     name: innodb_ft_sort_pll_degree
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~16
     description: Number of threads used in parallel to index and tokenize text in an InnoDB FULLTEXT index when building a search index.
@@ -1772,6 +1905,7 @@
     name: stored_program_cache
     defaultValue: 256
     type: int
+    blockSize: 1
     needRestart: false
     range: 16~524288
     description: Sets a soft upper limit for the number of cached stored routines per connection. The value of this variable is specified in terms of the number of stored routines held in each of the two caches maintained by the MySQL Server for, respectively, stored procedures and stored functions.
@@ -1781,6 +1915,7 @@
     name: group_concat_max_len
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 4~1844674407370954752
     description: The maximum length of the result of function GROUP_CONCAT()
@@ -1790,6 +1925,7 @@
     name: innodb_sort_buffer_size
     defaultValue: 1048576
     type: int
+    blockSize: 1
     needRestart: true
     range: 65536~67108864
     description: Specifies the size of sort buffers used to sort data during creation of an InnoDB index. The specified size defines the amount of data that is read into memory for internal sorting and then written out to disk. This process is referred to as a “run”. During the merge phase, pairs of buffers of the specified size are read in and merged. The larger the setting, the fewer runs and merges there are.
@@ -1799,6 +1935,7 @@
     name: innodb_page_cleaners
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: The number of page cleaner threads that flush dirty pages from buffer pool instances. Page cleaner threads perform flush list and LRU flushing. A single page cleaner thread was introduced in MySQL 5.6 to offload buffer pool flushing work from the InnoDB master thread. In MySQL 5.7, InnoDB provides support for multiple page cleaner threads. A value of 1 maintains the pre-MySQL 5.7 configuration in which there is a single page cleaner thread. When there are multiple page cleaner threads, buffer pool flushing tasks for each buffer pool instance are dispatched to idle page cleaner threads. The innodb_page_cleaners default value was changed from 1 to 4 in MySQL 5.7. If the number of page cleaner threads exceeds the number of buffer pool instances
@@ -1808,6 +1945,7 @@
     name: innodb_spin_wait_delay
     defaultValue: 6
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The maximum delay between polls for a spin lock. The low-level implementation of this mechanism varies depending on the combination of hardware and operating system, so the delay does not correspond to a fixed time interval. For more information, see Section 14.6.10, “Configuring Spin Lock Polling”.
@@ -1817,6 +1955,7 @@
     name: myisam_sort_buffer_size
     defaultValue: 262144
     type: int
+    blockSize: 1
     needRestart: false
     range: 262144~16777216
     description: The buffer that is allocated when sorting the index when doing a REPAIR or when creating indexes with CREATE INDEX or ALTER TABLE
@@ -1826,6 +1965,7 @@
     name: innodb_rollback_segments
     defaultValue: 128
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~128
     description: Defines the number of rollback segments used by InnoDB.
@@ -1835,6 +1975,7 @@
     name: innodb_commit_concurrency
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1000
     description: The number of threads that can commit at the same time. A value of 0 (the default) permits any number of transactions to commit simultaneously.
@@ -1844,6 +1985,7 @@
     name: innodb_concurrency_tickets
     defaultValue: 5000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: Number of times a thread is allowed to enter InnoDB within the same SQL query after it has once got the ticket
@@ -1853,6 +1995,7 @@
     name: performance_schema_max_cond_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -1862,6 +2005,7 @@
     name: table_definition_cache
     defaultValue: 4096
     type: int
+    blockSize: 1
     needRestart: false
     range: 400~524288
     description: The number of cached table definitions
@@ -1871,6 +2015,7 @@
     name: auto_increment_increment
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~65535
     description: Auto-increment columns are incremented by this
@@ -1889,6 +2034,7 @@
     name: performance_schema_max_stage_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -1907,6 +2053,7 @@
     name: performance_schema_events_statements_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -1925,6 +2072,7 @@
     name: max_length_for_sort_data
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~838860
     description: Max number of bytes in sorted records
@@ -1934,6 +2082,7 @@
     name: back_log
     defaultValue: 3000
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~65535
     description: The number of outstanding connection requests MySQL can have. This comes into play when the main MySQL thread gets very many connection requests in a very short time
@@ -1943,6 +2092,7 @@
     name: max_error_count
     defaultValue: 64
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~65535
     description: The maximum number of error, warning, and information messages to be stored for display by the SHOW ERRORS and SHOW WARNINGS statements. This is the same as the number of condition areas in the diagnostics area, and thus the number of conditions that can be inspected by GET DIAGNOSTICS.
@@ -1952,6 +2102,7 @@
     name: innodb_io_capacity_max
     defaultValue: 40000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: If flushing activity falls behind, InnoDB can flush more aggressively than the limit imposed by innodb_io_capacity. innodb_io_capacity_max defines an upper limit the number of I/O operations performed per second by InnoDB background tasks in such situations.
@@ -1970,6 +2121,7 @@
     name: performance_schema_events_transactions_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -1988,6 +2140,7 @@
     name: min_examined_row_limit
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: Queries that examine fewer than this number of rows are not logged to the slow query log.
@@ -1997,6 +2150,7 @@
     name: performance_schema
     defaultValue: off
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1
     description: Enable the performance schema.
@@ -2006,6 +2160,7 @@
     name: innodb_ft_min_token_size
     defaultValue: 3
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~16
     description: InnoDB Fulltext search minimum token size in characters
@@ -2015,6 +2170,7 @@
     name: performance_schema_events_transactions_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -2024,6 +2180,7 @@
     name: sync_relay_log_info
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: Setting this variable takes effect for all replication channels immediately, including running channels.
@@ -2042,6 +2199,7 @@
     name: max_connect_errors
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: If there is more than this number of interrupted connections from a host this host will be blocked from further connections
@@ -2051,6 +2209,7 @@
     name: performance_schema_max_file_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -2059,10 +2218,11 @@
   - uuid: 3869c6fb1ebd11eda507f02f74a088c2
     name: join_buffer_size
     defaultValue: 1M
-    type: string
+    type: int
+    blockSize: 128
     needRestart: false
     range: 128~4294967295
-    description: The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans.
+    description: The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans. The block size is 128.
     engine: mysql
     version: 5.7
   - uuid: 3869c6fb1ebd11eda508f02f74a088c2
@@ -2078,6 +2238,7 @@
     name: optimizer_trace_max_mem_size
     defaultValue: 16384
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The maximum cumulative size of stored optimizer traces.
@@ -2087,6 +2248,7 @@
     name: innodb_autoinc_lock_mode
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 0|1|2
     description:  |
@@ -2108,6 +2270,7 @@
     name: performance_schema_max_thread_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented threads.
@@ -2117,6 +2280,7 @@
     name: max_write_lock_count
     defaultValue: 102400
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~102400
     description: After this many write locks, allow some read locks to run in between
@@ -2135,6 +2299,7 @@
     name: innodb_ft_num_word_optimize
     defaultValue: 2000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~10000
     description: Number of words to process during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Because a bulk insert or update operation to a table containing a full-text search index could require substantial index maintenance to incorporate all changes, you might do a series of OPTIMIZE TABLE statements, each picking up where the last left off.
@@ -2144,6 +2309,7 @@
     name: performance_schema_max_statement_stack
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -2153,6 +2319,7 @@
     name: max_join_size
     defaultValue: 18446744073709551615
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Do not permit statements that probably need to examine more than max_join_size rows (for single-table statements) or row combinations (for multiple-table statements) or that are likely to do more than max_join_size disk seeks. By setting this value, you can catch statements where keys are not used properly and that would probably take a long time. Set it if your users tend to perform joins that lack a WHERE clause, that take a long time, or that return millions of rows.
@@ -2162,6 +2329,7 @@
     name: log_error_verbosity
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~3
     description: The log_error_verbosity system variable specifies the verbosity for handling events intended for the error log.
@@ -2171,6 +2339,7 @@
     name: log_throttle_queries_not_using_indexes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: If log_queries_not_using_indexes is enabled, the log_throttle_queries_not_using_indexes variable limits the number of such queries per minute that can be written to the slow query log.
@@ -2180,6 +2349,7 @@
     name: innodb_max_purge_lag_delay
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~10000000
     description: Specifies the maximum delay in microseconds for the delay imposed by theinnodb_max_purge_lag configuration option. A nonzero value represents an upper limit on the delay period computed from the formula based on the value of innodb_max_purge_lag. The default of zero means that there is no upper limit imposed on the delay interval.
@@ -2198,6 +2368,7 @@
     name: default_week_format
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~7
     description: The default week format used by WEEK() functions
@@ -2225,6 +2396,7 @@
     name: host_cache_size
     defaultValue: 644
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~65535
     description: The size of the internal host cache (see Section 8.12.5.2, “DNS Lookup Optimization and the Host Cache”). Setting the size to 0 disables the host cache. Changing the cache size at runtime implicitly causes a FLUSH HOSTS operation to clear the host cache and truncate the host_cache table.
@@ -2243,6 +2415,7 @@
     name: auto_increment_offset
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~65535
     description: Offset added to Auto-increment columns. Used when auto-increment-increment != 1
@@ -2252,6 +2425,7 @@
     name: range_alloc_block_size
     defaultValue: 4096
     type: int
+    blockSize: 1024
     needRestart: false
     range: 4096~18446744073709551615
     description: The size of blocks that are allocated when doing range optimization.
@@ -2261,6 +2435,7 @@
     name: ft_min_word_len
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~3600
     description: 'The minimum length of the word to be included in a FULLTEXT index. Note: FULLTEXT indexes must be rebuilt after changing this variable'
@@ -2270,6 +2445,7 @@
     name: sort_buffer_size
     defaultValue: 2M
     type: int
+    blockSize: 1
     needRestart: false
     range: 32768~4294967295
     description: Each session that must perform a sort allocates a buffer of this size.
@@ -2279,6 +2455,7 @@
     name: performance_schema_max_sql_text_length
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1048576
     description:
@@ -2297,6 +2474,7 @@
     name: max_allowed_packet
     defaultValue: 1073741824
     type: int
+    blockSize: 1024
     needRestart: false
     range: 16384~1073741824
     description: The packet message buffer is initialized to net_buffer_length bytes, but can grow up to max_allowed_packet bytes when needed. This value by default is small, to catch large (possibly incorrect) packets.
@@ -2306,6 +2484,7 @@
     name: read_buffer_size
     defaultValue: 1M
     type: int
+    blockSize: 4096
     needRestart: false
     range: 8200~2147479552
     description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
@@ -2315,6 +2494,7 @@
     name: thread_cache_size
     defaultValue: 256
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~16384
     description:
@@ -2324,6 +2504,7 @@
     name: optimizer_trace_offset
     defaultValue: -1
     type: int
+    blockSize: 1
     needRestart: false
     range: -2147483648~2147483647
     description: The offset of optimizer traces to display.
@@ -2333,6 +2514,7 @@
     name: performance_schema_events_waits_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -2360,6 +2542,7 @@
     name: table_open_cache_instances
     defaultValue: 16
     type: int
+    blockSize: 1
     needRestart: false
     range:
     description:
@@ -2378,6 +2561,7 @@
     name: innodb_buffer_pool_instances
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: The number of regions that the InnoDB buffer pool is divided into. For systems with buffer pools in the multi-gigabyte range, dividing the buffer pool into separate instances can improve concurrency, by reducing contention as different threads read and write to cached pages. Each page that is stored in or read from the buffer pool is assigned to one of the buffer pool instances randomly, using a hashing function. Each buffer pool manages its own free lists, flush lists, LRUs, and all other data structures connected to a buffer pool, and is protected by its own buffer pool mutex.
@@ -2387,6 +2571,7 @@
     name: read_rnd_buffer_size
     defaultValue: 2097152
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~2147483647
     description: MyISAM表排序缓存的缓存大小，如果需要对Myisam表做排序，可以增大read_rnd_buffer_size改善性能，这个变量同样的每会话独占，也不能设置太大。 该变量控制的buffer在从任何存储引擎读取数据的时候，都会用于缓存读取的数据，包括MRR优化特性也会使用。
@@ -2396,6 +2581,7 @@
     name: sync_binlog
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000
     description: 控制MySQL二进制日志同步到磁盘的频率。参数sync_binlog=[N]，如果N为1，表示采用同步写磁盘的方式来写二进制日志，每次事务提交时就会刷新binlog到磁盘；如果N为0，表示刷新binlog时间点由操作系统自身来决定，操作系统自身会每隔一段时间就会刷新系统缓存到磁盘；如果N>1，表示每写入N次系统缓存就执行一次写入磁盘并刷新的操作。如果不设置1，有数据丢失风险。
@@ -2424,6 +2610,7 @@
     name: bulk_insert_buffer_size
     defaultValue: 4194304
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: MyISAM uses a special tree-like cache to make bulk inserts faster for INSERT ... SELECT, INSERT ... VALUES (...), (...), ..., and LOAD DATA INFILE when adding data to nonempty tables. This variable limits the size of the cache tree in bytes per thread. Setting it to 0 disables this optimization. The default value is 8MB.
@@ -2442,6 +2629,7 @@
     name: ft_query_expansion_limit
     defaultValue: 20
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1000
     description: Number of best matches to use for query expansion
@@ -2451,6 +2639,7 @@
     name: innodb_old_blocks_time
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1024
     description: Move blocks to the 'new' end of the buffer pool if the first access was at least this many milliseconds ago. The timeout is disabled if 0.
@@ -2460,15 +2649,17 @@
     name: thread_stack
     defaultValue: 262144
     type: int
+    blockSize: 1024
     needRestart: true
     range: 131072~2147483647
-    description: The stack size for each thread. The default of 192KB (256KB for 64-bit systems) is large enough for normal operation. If the thread stack size is too small, it limits the complexity of the SQL statements that the server can handle, the recursion depth of stored procedures, and other memory-consuming actions.
+    description: The stack size for each thread. The default of 192KB (256KB for 64-bit systems) is large enough for normal operation. If the thread stack size is too small, it limits the complexity of the SQL statements that the server can handle, the recursion depth of stored procedures, and other memory-consuming actions. The block size is 1024.
     engine: mysql
     version: 8.0
   - uuid: 06438f151ebd11ed89b3f02f74a088c2
     name: innodb_log_file_size
     defaultValue: 2500M
     type: int
+    blockSize: 1
     needRestart: true
     range: 4194304~107374182400
     description: The size in bytes of each log file in a log group.
@@ -2487,6 +2678,7 @@
     name: innodb_thread_concurrency
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1000
     description: Helps in performance tuning in heavily concurrent environments. Sets the maximum number of threads allowed inside InnoDB. Value 0 will disable the thread throttling.
@@ -2496,6 +2688,7 @@
     name: sync_master_info
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: The effects of this variable on a replication slave depend on whether the slaves master_info_repository is set to FILE or TABLE, as explained in the following paragraphs.
@@ -2505,6 +2698,7 @@
     name: optimizer_search_depth
     defaultValue: 62
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~62
     description: The maximum depth of search performed by the query optimizer. Values larger than the number of relations in a query result in better query plans, but take longer to generate an execution plan for a query. Values smaller than the number of relations in a query return an execution plan quicker, but the resulting plan may be far from being optimal. If set to 0, the system automatically picks a reasonable value.
@@ -2514,6 +2708,7 @@
     name: innodb_compression_level
     defaultValue: 6
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~9
     description: Specifies the level of zlib compression to use for InnoDB compressed tables and indexes. A higher value lets you fit more data onto a storage device, at the expense of more CPU overhead during compression. A lower value lets you reduce CPU overhead when storage space is not critical, or you expect the data is not especially compressible.
@@ -2523,6 +2718,7 @@
     name: max_sort_length
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 4~8388608
     description: The number of bytes to use when sorting data values. The server uses only the first max_sort_length bytes of each value and ignores the rest. Consequently, values that differ only after the first max_sort_length bytes compare as equal for GROUP BY, ORDER BY, and DISTINCT operations.
@@ -2532,15 +2728,17 @@
     name: max_binlog_cache_size
     defaultValue: 18446744073709547520
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~18446744073709547520
-    description: max_binlog_cache_size sets the size for the transaction cache only.The visibility to sessions of max_binlog_cache_size matches that of the binlog_cache_size system variable.
+    description: max_binlog_cache_size sets the size for the transaction cache only.The visibility to sessions of max_binlog_cache_size matches that of the binlog_cache_size system variable. The block size is 4096.
     engine: mysql
     version: 8.0
   - uuid: 0643b7d61ebd11ed89b9f02f74a088c2
     name: innodb_online_alter_log_max_size
     defaultValue: 134217728
     type: int
+    blockSize: 1
     needRestart: false
     range: 134217728~2147483647
     description: Maximum modification log file size for online index creation
@@ -2550,9 +2748,10 @@
     name: key_cache_block_size
     defaultValue: 1024
     type: int
+    blockSize: 512
     needRestart: false
     range: 512~16384
-    description: The default size of key cache blocks
+    description: The default size of key cache blocks. The block size is 512.
     engine: mysql
     version: 8.0
   - uuid: 0643cc801ebd11ed89b9f02f74a088c2
@@ -2577,6 +2776,7 @@
     name: innodb_adaptive_max_sleep_delay
     defaultValue: 150000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000000
     description: Permits InnoDB to automatically adjust the value of innodb_thread_sleep_delay up or down according to the current workload. Any nonzero value enables automated, dynamic adjustment of the innodb_thread_sleep_delay value, up to the maximum value specified in the innodb_adaptive_max_sleep_delay option. The value represents the number of microseconds. This option can be useful in busy systems, with greater than 16 InnoDB threads. (In practice, it is most valuable for MySQL systems with hundreds or thousands of simultaneous connections.)
@@ -2586,6 +2786,7 @@
     name: innodb_purge_rseg_truncate_frequency
     defaultValue: 128
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~128
     description: Defines the frequency with which the purge system frees rollback segments in terms of the number of times that purge is invoked. An undo tablespace cannot be truncated until its rollback segments are freed. Normally, the purge system frees rollback segments once every 128 times that purge is invoked. The default value is 128. Reducing this value increases the frequency with which the purge thread frees rollback segments.
@@ -2595,15 +2796,17 @@
     name: query_alloc_block_size
     defaultValue: 8192
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~16384
-    description: Allocation block size for query parsing and execution
+    description: Allocation block size for query parsing and execution. The block size is 1024.
     engine: mysql
     version: 8.0
   - uuid: 0643e0f01ebd11ed89bcf02f74a088c2
     name: innodb_lock_wait_timeout
     defaultValue: 50
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1073741824
     description: Timeout in seconds an InnoDB transaction may wait for a lock before being rolled back. Values above 100000000 disable the timeout.
@@ -2613,6 +2816,7 @@
     name: innodb_purge_threads
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~32
     description: Purge threads can be from 1 to 32. Default is 4.
@@ -2622,6 +2826,7 @@
     name: innodb_compression_failure_threshold_pct
     defaultValue: 5
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~100
     description: Defines the compression failure rate threshold for a table, as a percentage, at which point MySQL begins adding padding within compressed pages to avoid expensive compression failures. When this threshold is passed, MySQL begins to leave additional free space within each new compressed page, dynamically adjusting the amount of free space up to the percentage of page size specified by innodb_compression_pad_pct_max. A value of zero disables the mechanism that monitors compression efficiency and dynamically adjusts the padding amount.
@@ -2631,6 +2836,7 @@
     name: innodb_compression_pad_pct_max
     defaultValue: 50
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~70
     description: Specifies the maximum percentage that can be reserved as free space within each compressed page, allowing room to reorganize the data and modification log within the page when a compressed table or index is updated and the data might be recompressed. Only applies when innodb_compression_failure_threshold_pct is set to a nonzero value, and the rate of compression failures passes the cutoff point.
@@ -2649,6 +2855,7 @@
     name: max_execution_time
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: statement be interrupted if the executing time exceeds this value
@@ -2658,6 +2865,7 @@
     name: innodb_stats_persistent_sample_pages
     defaultValue: 20
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The number of index pages to sample when estimating cardinality and other statistics for an indexed column, such as those calculated by ANALYZE TABLE. Increasing the value improves the accuracy of index statistics, which can improve the query execution plan, at the expense of increased I/O during the execution of ANALYZE TABLE for an InnoDB table.
@@ -2667,6 +2875,7 @@
     name: innodb_ft_total_cache_size
     defaultValue: 640000000
     type: int
+    blockSize: 1
     needRestart: true
     range: 32000000~1600000000
     description: The total memory allocated, in bytes, for the InnoDB full-text search index cache for all tables. Creating numerous tables, each with a FULLTEXT search index, could consume a significant portion of available memory. innodb_ft_total_cache_size defines a global memory limit for all full-text search indexes to help avoid excessive memory consumption. If the global limit is reached by an index operation, a forced sync is triggered.
@@ -2694,6 +2903,7 @@
     name: eq_range_index_dive_limit
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The optimizer will use existing index statistics instead of doing index dives for equality ranges if the number of equality ranges for the index is larger than or equal to this number. If set to 0, index dives are always used.
@@ -2703,6 +2913,7 @@
     name: connect_timeout
     defaultValue: 10
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~3600
     description: The number of seconds the mysqld server is waiting for a connect packet before responding with 'Bad handshake'
@@ -2712,6 +2923,7 @@
     name: innodb_purge_batch_size
     defaultValue: 300
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~5000
     description: Number of UNDO log pages to purge in one batch from the history list.
@@ -2721,6 +2933,7 @@
     name: div_precision_increment
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~30
     description: Precision of the result of '/' operator will be increased on that value
@@ -2739,6 +2952,7 @@
     name: innodb_sync_array_size
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: Defines the size of the mutex/lock wait array. Increasing the value splits the internal data structure used to coordinate threads, for higher concurrency in workloads with large numbers of waiting threads. This setting must be configured when the MySQL instance is starting up, and cannot be changed afterward. Increasing the value is recommended for workloads that frequently produce a large number of waiting threads, typically greater than 768.
@@ -2757,6 +2971,7 @@
     name: lock_wait_timeout
     defaultValue: 31536000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1073741824
     description: This variable specifies the timeout in seconds for attempts to acquire metadata locks. The permissible values range from 1 to 31536000 (1 year). The default is 31536000.
@@ -2766,6 +2981,7 @@
     name: net_read_timeout
     defaultValue: 30
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Number of seconds to wait for more data from a connection before aborting the read
@@ -2784,6 +3000,7 @@
     name: innodb_write_io_threads
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: Number of background write I/O threads in InnoDB.
@@ -2802,6 +3019,7 @@
     name: ngram_token_size
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~20
     description: Defines the n-gram token size for the n-gram full-text parser. The ngram_token_size option is read-only and can only be modified at startup. The default value is 2 (bigram). The maximum value is 10.
@@ -2811,6 +3029,7 @@
     name: max_binlog_stmt_cache_size
     defaultValue: 18446744073709547520
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~18446744073709547520
     description: If nontransactional statements within a transaction require more than this many bytes of memory, the server generates an error. The minimum value is 4096. The maximum and default values are 4GB on 32-bit platforms and 16EB (exabytes) on 64-bit platforms.
@@ -2847,6 +3066,7 @@
     name: innodb_io_capacity
     defaultValue: 20000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: The innodb_io_capacity parameter sets an upper limit on the number of I/O operations performed per second by InnoDB background tasks, such as flushing pages from the buffer pool and merging data from the change buffer.
@@ -2856,6 +3076,7 @@
     name: slow_launch_time
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1024
     description: If creating the thread takes longer than this value (in seconds), the Slow_launch_threads counter will be incremented
@@ -2883,6 +3104,7 @@
     name: tmp_table_size
     defaultValue: 2097152
     type: int
+    blockSize: 1
     needRestart: false
     range: 262144~134217728
     description: If an internal in-memory temporary table exceeds this size, MySQL will automatically convert it to an on-disk MyISAM table
@@ -2910,6 +3132,7 @@
     name: net_retry_count
     defaultValue: 10
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: If a read on a communication port is interrupted, retry this many times before giving up
@@ -2919,6 +3142,7 @@
     name: innodb_ft_cache_size
     defaultValue: 8000000
     type: int
+    blockSize: 1
     needRestart: true
     range: 1600000~80000000
     description: The memory allocated, in bytes, for the InnoDB FULLTEXT search index cache, which holds a parsed document in memory while creating an InnoDB FULLTEXT index. Index inserts and updates are only committed to disk when the innodb_ft_cache_size size limit is reached. innodb_ft_cache_size defines the cache size on a per table basis.
@@ -2928,6 +3152,7 @@
     name: binlog_cache_size
     defaultValue: 1M
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~16777216
     description: The size of the transactional cache for updates to transactional engines for the binary log. If you often use transactions containing many statements, you can increase this to get more performance
@@ -2937,6 +3162,7 @@
     name: innodb_max_dirty_pages_pct
     defaultValue: 75
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~99
     description: Percentage of dirty pages allowed in bufferpool.
@@ -2955,6 +3181,7 @@
     name: innodb_lru_scan_depth
     defaultValue: 4096
     type: int
+    blockSize: 1
     needRestart: false
     range: 100~18446744073709551615
     description: A parameter that influences the algorithms and heuristics for the flush operation for the InnoDB buffer pool. Primarily of interest to performance experts tuning I/O-intensive workloads. It specifies, per buffer pool instance, how far down the buffer pool LRU page list the page cleaner thread scans looking for dirty pages to flush. This is a background operation performed once per second.
@@ -2964,6 +3191,7 @@
     name: innodb_ft_result_cache_limit
     defaultValue: 2000000000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1000000~4294967295
     description: The InnoDB full-text search query result cache limit (defined in bytes) per full-text search query or per thread. Intermediate and final InnoDB full-text search query results are handled in memory. Use innodb_ft_result_cache_limit to place a size limit on the full-text search query result cache to avoid excessive memory consumption in case of very large InnoDB full-text search query results (millions or hundreds of millions of rows, for example). Memory is allocated as required when a full-text search query is processed. If the result cache size limit is reached, an error is returned indicating that the query exceeds the maximum allowed memory.
@@ -2973,6 +3201,7 @@
     name: long_query_time
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0.1~31536000
     description: Log all queries that have taken more than long_query_time seconds to execute to file. The argument will be treated as a decimal value with microsecond precision
@@ -2982,6 +3211,7 @@
     name: interactive_timeout
     defaultValue: 7200
     type: int
+    blockSize: 1
     needRestart: false
     range: 10~86400
     description: The number of seconds the server waits for activity on an interactive connection before closing it
@@ -2991,6 +3221,7 @@
     name: innodb_read_io_threads
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: Number of background read I/O threads in InnoDB.
@@ -3000,6 +3231,7 @@
     name: transaction_prealloc_size
     defaultValue: 4096
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~131072
     description: There is a per-transaction memory pool from which various transaction-related allocations take memory. The initial size of the pool in bytes is transaction_prealloc_size. For every allocation that cannot be satisfied from the pool because it has insufficient memory available, the pool is increased by transaction_alloc_block_size bytes. When the transaction ends, the pool is truncated to transaction_prealloc_size bytes.
@@ -3009,6 +3241,7 @@
     name: open_files_limit
     defaultValue: 65535
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~2147483647
     description: If this is not 0, then mysqld will use this value to reserve file descriptors to use with setrlimit()
@@ -3018,6 +3251,7 @@
     name: temptable_max_ram
     defaultValue: 1073741824
     type: int
+    blockSize: 1
     needRestart: false
     range: 2097152~107374182400
     description: Maximum amount of memory (in bytes) the TempTable storage engine is allowed to allocate from the main memory (RAM) before starting to store data on disk.
@@ -3027,6 +3261,7 @@
     name: innodb_open_files
     defaultValue: 3000
     type: int
+    blockSize: 1
     needRestart: true
     range: 10~2147483647
     description: How many files at the maximum InnoDB keeps open at the same time.
@@ -3036,9 +3271,10 @@
     name: max_heap_table_size
     defaultValue: 67108864
     type: int
+    blockSize: 1024
     needRestart: false
     range: 16384~1844674407370954752
-    description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The value of the variable is used to calculate MEMORY table MAX_ROWS values. Setting this variable has no effect on any existing MEMORY table, unless the table is re-created with a statement such as CREATE TABLE or altered with ALTER TABLE or TRUNCATE TABLE. A server restart also sets the maximum size of existing MEMORY tables to the global max_heap_table_size value.
+    description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The value of the variable is used to calculate MEMORY table MAX_ROWS values. Setting this variable has no effect on any existing MEMORY table, unless the table is re-created with a statement such as CREATE TABLE or altered with ALTER TABLE or TRUNCATE TABLE. A server restart also sets the maximum size of existing MEMORY tables to the global max_heap_table_size value. The block size is 1024.
     engine: mysql
     version: 8.0
   - uuid: 0644eb1b1ebd11ed89dff02f74a088c2
@@ -3063,6 +3299,7 @@
     name: ft_max_word_len
     defaultValue: 84
     type: int
+    blockSize: 1
     needRestart: true
     range: 10~4294967295
     description: The maximum length of the word to be included in a MyISAM FULLTEXT index.
@@ -3072,6 +3309,7 @@
     name: innodb_autoextend_increment
     defaultValue: 64
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000
     description: The increment size (in megabytes) for extending the size of an auto-extending InnoDB system tablespace file when it becomes full. The default value is 64.
@@ -3090,6 +3328,7 @@
     name: innodb_stats_transient_sample_pages
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: The number of index pages to sample when estimating cardinality and other statistics for an indexed column, such as those calculated by ANALYZE TABLE. The default value is 8. Increasing the value improves the accuracy of index statistics, which can improve the query execution plan, at the expense of increased I/O when opening an InnoDB table or recalculating statistics.
@@ -3108,6 +3347,7 @@
     name: table_open_cache
     defaultValue: 8192
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~524288
     description: The number of open tables for all threads. Increasing this value increases the number of file descriptors that mysqld requires.
@@ -3117,6 +3357,7 @@
     name: range_optimizer_max_mem_size
     defaultValue: 8388608
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: The limit on memory consumption for the range optimizer. A value of 0 means “no limit.” If an execution plan considered by the optimizer uses the range access method but the optimizer estimates that the amount of memory needed for this method would exceed the limit, it abandons the plan and considers other plans. For more information, see Limiting Memory Use for Range Optimization.
@@ -3144,6 +3385,7 @@
     name: slave_net_timeout
     defaultValue: 60
     type: int
+    blockSize: 1
     needRestart: false
     range: 15~300
     description: The number of seconds to wait for more data from the master before the slave considers the connection broken, aborts the read, and tries to reconnect
@@ -3162,6 +3404,7 @@
     name: max_points_in_geometry
     defaultValue: 65536
     type: int
+    blockSize: 1
     needRestart: false
     range: 3~1048576
     description: The maximum value of the points_per_circle argument to the ST_Buffer_Strategy() function.
@@ -3180,6 +3423,7 @@
     name: max_prepared_stmt_count
     defaultValue: 16382
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1048576
     description: Maximum number of prepared statements in the server
@@ -3189,6 +3433,7 @@
     name: wait_timeout
     defaultValue: 86400
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~31536000
     description: The number of seconds the server waits for activity on a connection before closing it
@@ -3216,6 +3461,7 @@
     name: binlog_stmt_cache_size
     defaultValue: 32768
     type: int
+    blockSize: 4096
     needRestart: false
     range: 4096~16777216
     description: The size of the statement cache for updates to non-transactional engines for the binary log. If you often use statements updating a great number of rows, you can increase this to get more performance
@@ -3243,6 +3489,7 @@
     name: query_prealloc_size
     defaultValue: 8192
     type: int
+    blockSize: 1024
     needRestart: false
     range: 8192~1048576
     description: Persistent buffer for query parsing and execution
@@ -3252,6 +3499,7 @@
     name: key_cache_age_threshold
     defaultValue: 300
     type: int
+    blockSize: 100
     needRestart: false
     range: 100~4294967295
     description: This characterizes the number of hits a hot block has to be untouched until it is considered aged enough to be downgraded to a warm block. This specifies the percentage ratio of that number of hits to the total number of blocks in key cache
@@ -3261,6 +3509,7 @@
     name: transaction_alloc_block_size
     defaultValue: 8192
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~131072
     description: The amount in bytes by which to increase a per-transaction memory pool which needs memory. See the description of transaction_prealloc_size.
@@ -3270,6 +3519,7 @@
     name: optimizer_trace_limit
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The maximum number of optimizer traces to display.
@@ -3288,6 +3538,7 @@
     name: innodb_max_purge_lag
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: Defines the maximum length of the purge queue. The default value of 0 indicates no limit (no delays).
@@ -3297,6 +3548,7 @@
     name: innodb_buffer_pool_dump_pct
     defaultValue: 25
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~100
     description: Specifies the percentage of the most recently used pages for each buffer pool to read out and dump. The range is 1 to 100. The default value is 25. For example, if there are 4 buffer pools with 100 pages each, and innodb_buffer_pool_dump_pct is set to 25, the 25 most recently used pages from each buffer pool are dumped.
@@ -3306,6 +3558,7 @@
     name: innodb_max_dirty_pages_pct_lwm
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~99
     description: Defines a low water mark representing the percentage of dirty pages at which preflushing is enabled to control the dirty page ratio. The default of 0 disables the pre-flushing behavior entirely
@@ -3315,6 +3568,7 @@
     name: max_sp_recursion_depth
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~255
     description: The number of times that any given stored procedure may be called recursively. The default value for this option is 0, which completely disables recursion in stored procedures. The maximum value is 255.
@@ -3351,6 +3605,7 @@
     name: innodb_change_buffer_max_size
     defaultValue: 25
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~50
     description: Maximum size for the InnoDB change buffer, as a percentage of the total size of the buffer pool. You might increase this value for a MySQL server with heavy insert, update, and delete activity, or decrease it for a MySQL server with unchanging data used for reporting.
@@ -3378,6 +3633,7 @@
     name: innodb_ft_max_token_size
     defaultValue: 84
     type: int
+    blockSize: 1
     needRestart: true
     range: 10~84
     description: InnoDB Fulltext search maximum token size in characters
@@ -3387,6 +3643,7 @@
     name: innodb_max_undo_log_size
     defaultValue: 1073741824
     type: int
+    blockSize: 1
     needRestart: false
     range: 10485760~18446744073709551615
     description: Defines a threshold size for undo tablespaces. If an undo tablespace exceeds the threshold, it can be marked for truncation when innodb_undo_log_truncate is enabled. The default value is 1073741824 bytes (1024 MiB).
@@ -3414,6 +3671,7 @@
     name: innodb_sync_spin_loops
     defaultValue: 30
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The number of times a thread waits for an InnoDB mutex to be freed before the thread is suspended.
@@ -3423,6 +3681,7 @@
     name: net_write_timeout
     defaultValue: 60
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Number of seconds to wait for a block to be written to a connection before aborting the write
@@ -3432,6 +3691,7 @@
     name: flush_time
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~31536000
     description: If this is set to a nonzero value, all tables are closed every flush_time seconds to free up resources and synchronize unflushed data to disk. This option is best used only on systems with minimal resources.
@@ -3486,6 +3746,7 @@
     name: key_cache_division_limit
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~100
     description: The minimum percentage of warm blocks in key cache
@@ -3495,6 +3756,7 @@
     name: delayed_insert_timeout
     defaultValue: 300
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~3600
     description: How long a INSERT DELAYED thread should wait for INSERT statements before terminating. This variable is deprecated along with INSERT DELAYED.
@@ -3504,6 +3766,7 @@
     name: preload_buffer_size
     defaultValue: 32768
     type: int
+    blockSize: 1
     needRestart: false
     range: 1024~1073741824
     description: The size of the buffer that is allocated when preloading indexes.
@@ -3513,6 +3776,7 @@
     name: innodb_read_ahead_threshold
     defaultValue: 56
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1024
     description: Number of pages that must be accessed sequentially for InnoDB to trigger a readahead.
@@ -3522,6 +3786,7 @@
     name: concurrent_insert
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0|1|2
     description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
@@ -3540,6 +3805,7 @@
     name: net_buffer_length
     defaultValue: 16384
     type: int
+    blockSize: 1024
     needRestart: false
     range: 1024~1048576
     description: Each client thread is associated with a connection buffer and result buffer. Both begin with a size given by net_buffer_length but are dynamically enlarged up to max_allowed_packet bytes as needed. The result buffer shrinks to net_buffer_length after each SQL statement.
@@ -3549,6 +3815,7 @@
     name: delayed_insert_limit
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: After inserting delayed_insert_limit rows, the INSERT DELAYED handler will check if there are any SELECT statements pending. If so, it allows these to execute before continuing. This variable is deprecated along with INSERT DELAYED.
@@ -3558,6 +3825,7 @@
     name: innodb_adaptive_flushing_lwm
     defaultValue: 10
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~70
     description: Defines the low water mark representing percentage of redo log capacity at which adaptive flushing is enabled.
@@ -3576,6 +3844,7 @@
     name: delayed_queue_size
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: What size queue (in rows) should be allocated for handling INSERT DELAYED. If the queue becomes full, any client that does INSERT DELAYED will wait until there is room in the queue again. This variable is deprecated along with INSERT DELAYED.
@@ -3594,6 +3863,7 @@
     name: innodb_thread_sleep_delay
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~1000000
     description: Time of innodb thread sleeping before joining InnoDB queue (usec). Value 0 disable a sleep
@@ -3603,6 +3873,7 @@
     name: innodb_old_blocks_pct
     defaultValue: 37
     type: int
+    blockSize: 1
     needRestart: false
     range: 5~95
     description: Percentage of the buffer pool to reserve for 'old' blocks.
@@ -3612,6 +3883,7 @@
     name: innodb_ft_sort_pll_degree
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~16
     description: Number of threads used in parallel to index and tokenize text in an InnoDB FULLTEXT index when building a search index.
@@ -3639,6 +3911,7 @@
     name: stored_program_cache
     defaultValue: 256
     type: int
+    blockSize: 1
     needRestart: false
     range: 16~524288
     description: Sets a soft upper limit for the number of cached stored routines per connection. The value of this variable is specified in terms of the number of stored routines held in each of the two caches maintained by the MySQL Server for, respectively, stored procedures and stored functions.
@@ -3648,6 +3921,7 @@
     name: group_concat_max_len
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 4~1844674407370954752
     description: The maximum length of the result of function GROUP_CONCAT()
@@ -3657,6 +3931,7 @@
     name: innodb_sort_buffer_size
     defaultValue: 1048576
     type: int
+    blockSize: 1
     needRestart: true
     range: 65536~67108864
     description: Specifies the size of sort buffers used to sort data during creation of an InnoDB index. The specified size defines the amount of data that is read into memory for internal sorting and then written out to disk. This process is referred to as a “run”. During the merge phase, pairs of buffers of the specified size are read in and merged. The larger the setting, the fewer runs and merges there are.
@@ -3666,6 +3941,7 @@
     name: innodb_page_cleaners
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: The number of page cleaner threads that flush dirty pages from buffer pool instances. Page cleaner threads perform flush list and LRU flushing. A single page cleaner thread was introduced in MySQL 5.6 to offload buffer pool flushing work from the InnoDB master thread. In MySQL 5.7, InnoDB provides support for multiple page cleaner threads. A value of 1 maintains the pre-MySQL 5.7 configuration in which there is a single page cleaner thread. When there are multiple page cleaner threads, buffer pool flushing tasks for each buffer pool instance are dispatched to idle page cleaner threads. The innodb_page_cleaners default value was changed from 1 to 4 in MySQL 5.7. If the number of page cleaner threads exceeds the number of buffer pool instances
@@ -3675,6 +3951,7 @@
     name: innodb_spin_wait_delay
     defaultValue: 6
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The maximum delay between polls for a spin lock. The low-level implementation of this mechanism varies depending on the combination of hardware and operating system, so the delay does not correspond to a fixed time interval. For more information, see Section 14.6.10, “Configuring Spin Lock Polling”.
@@ -3684,6 +3961,7 @@
     name: myisam_sort_buffer_size
     defaultValue: 262144
     type: int
+    blockSize: 1
     needRestart: false
     range: 262144~16777216
     description: The buffer that is allocated when sorting the index when doing a REPAIR or when creating indexes with CREATE INDEX or ALTER TABLE
@@ -3693,6 +3971,7 @@
     name: innodb_rollback_segments
     defaultValue: 128
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~128
     description: Defines the number of rollback segments used by InnoDB.
@@ -3702,6 +3981,7 @@
     name: innodb_commit_concurrency
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1000
     description: The number of threads that can commit at the same time. A value of 0 (the default) permits any number of transactions to commit simultaneously.
@@ -3711,6 +3991,7 @@
     name: innodb_concurrency_tickets
     defaultValue: 5000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~4294967295
     description: Number of times a thread is allowed to enter InnoDB within the same SQL query after it has once got the ticket
@@ -3720,6 +4001,7 @@
     name: table_definition_cache
     defaultValue: 4500
     type: int
+    blockSize: 1
     needRestart: false
     range: 400~524288
     description: The number of cached table definitions
@@ -3729,6 +4011,7 @@
     name: auto_increment_increment
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~65535
     description: Auto-increment columns are incremented by this
@@ -3747,6 +4030,7 @@
     name: max_seeks_for_key
     defaultValue: 18446744073709500000
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Limit the assumed maximum number of seeks when looking up rows based on a key. The MySQL optimizer assumes that no more than this number of key seeks are required when searching for matching rows in a table by scanning an index, regardless of the actual cardinality of the index. By setting this to a low value (say, 100), you can force MySQL to prefer indexes instead of table scans.
@@ -3756,6 +4040,7 @@
     name: max_length_for_sort_data
     defaultValue: 1024
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~838860
     description: Max number of bytes in sorted records
@@ -3765,6 +4050,7 @@
     name: back_log
     defaultValue: 3000
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~65535
     description: The number of outstanding connection requests MySQL can have. This comes into play when the main MySQL thread gets very many connection requests in a very short time
@@ -3774,6 +4060,7 @@
     name: max_error_count
     defaultValue: 64
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~65535
     description: The maximum number of error, warning, and information messages to be stored for display by the SHOW ERRORS and SHOW WARNINGS statements. This is the same as the number of condition areas in the diagnostics area, and thus the number of conditions that can be inspected by GET DIAGNOSTICS.
@@ -3783,6 +4070,7 @@
     name: innodb_io_capacity_max
     defaultValue: 40000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: If flushing activity falls behind, InnoDB can flush more aggressively than the limit imposed by innodb_io_capacity. innodb_io_capacity_max defines an upper limit the number of I/O operations performed per second by InnoDB background tasks in such situations.
@@ -3810,6 +4098,7 @@
     name: min_examined_row_limit
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: Queries that examine fewer than this number of rows are not logged to the slow query log.
@@ -3819,6 +4108,7 @@
     name: performance_schema
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1
     description: Enable the performance schema.
@@ -3828,6 +4118,7 @@
     name: innodb_ft_min_token_size
     defaultValue: 3
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~16
     description: InnoDB Fulltext search minimum token size in characters
@@ -3837,6 +4128,7 @@
     name: sync_relay_log_info
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~18446744073709551615
     description: Setting this variable takes effect for all replication channels immediately, including running channels.
@@ -3855,6 +4147,7 @@
     name: max_connect_errors
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range:
     description: If there is more than this number of interrupted connections from a host this host will be blocked from further connections
@@ -3864,9 +4157,10 @@
     name: join_buffer_size
     defaultValue: 1M
     type: int
+    blockSize: 128
     needRestart: false
     range: 128~4294967295
-    description: The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans.
+    description: The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans. The block size is 128.
     engine: mysql
     version: 8.0
   - uuid: 06465c4b1ebd11ed8a28f02f74a088c2
@@ -3882,6 +4176,7 @@
     name: optimizer_trace_max_mem_size
     defaultValue: 16384
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: The maximum cumulative size of stored optimizer traces.
@@ -3891,6 +4186,7 @@
     name: innodb_autoinc_lock_mode
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: true
     range: 0|1|2
     description:  |
@@ -3912,6 +4208,7 @@
     name: max_write_lock_count
     defaultValue: 102400
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~102400
     description: After this many write locks, allow some read locks to run in between
@@ -3930,6 +4227,7 @@
     name: innodb_ft_num_word_optimize
     defaultValue: 2000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~10000
     description: Number of words to process during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Because a bulk insert or update operation to a table containing a full-text search index could require substantial index maintenance to incorporate all changes, you might do a series of OPTIMIZE TABLE statements, each picking up where the last left off.
@@ -3939,6 +4237,7 @@
     name: max_join_size
     defaultValue: 18446744073709551615
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~18446744073709551615
     description: Do not permit statements that probably need to examine more than max_join_size rows (for single-table statements) or row combinations (for multiple-table statements) or that are likely to do more than max_join_size disk seeks. By setting this value, you can catch statements where keys are not used properly and that would probably take a long time. Set it if your users tend to perform joins that lack a WHERE clause, that take a long time, or that return millions of rows.
@@ -3948,6 +4247,7 @@
     name: log_error_verbosity
     defaultValue: 2
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~3
     description: The log_error_verbosity system variable specifies the verbosity for handling events intended for the error log.
@@ -3957,6 +4257,7 @@
     name: log_throttle_queries_not_using_indexes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: If log_queries_not_using_indexes is enabled, the log_throttle_queries_not_using_indexes variable limits the number of such queries per minute that can be written to the slow query log.
@@ -3966,6 +4267,7 @@
     name: innodb_max_purge_lag_delay
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~10000000
     description: Specifies the maximum delay in microseconds for the delay imposed by theinnodb_max_purge_lag configuration option. A nonzero value represents an upper limit on the delay period computed from the formula based on the value of innodb_max_purge_lag. The default of zero means that there is no upper limit imposed on the delay interval.
@@ -3975,6 +4277,7 @@
     name: default_week_format
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~7
     description: The default week format used by WEEK() functions
@@ -3993,6 +4296,7 @@
     name: host_cache_size
     defaultValue: 644
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~65535
     description: The size of the internal host cache (see Section 8.12.5.2, “DNS Lookup Optimization and the Host Cache”). Setting the size to 0 disables the host cache. Changing the cache size at runtime implicitly causes a FLUSH HOSTS operation to clear the host cache and truncate the host_cache table.
@@ -4011,6 +4315,7 @@
     name: auto_increment_offset
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~65535
     description: Offset added to Auto-increment columns. Used when auto-increment-increment != 1
@@ -4020,6 +4325,7 @@
     name: range_alloc_block_size
     defaultValue: 4096
     type: int
+    blockSize: 1024
     needRestart: false
     range: 4096~18446744073709551615
     description: The size of blocks that are allocated when doing range optimization.
@@ -4029,6 +4335,7 @@
     name: ft_min_word_len
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~3600
     description: 'The minimum length of the word to be included in a FULLTEXT index. Note: FULLTEXT indexes must be rebuilt after changing this variable'
@@ -4047,6 +4354,7 @@
     name: sort_buffer_size
     defaultValue: 2M
     type: int
+    blockSize: 1
     needRestart: false
     range: 32768~4294967295
     description: Each session that must perform a sort allocates a buffer of this size.
@@ -4065,6 +4373,7 @@
     name: max_allowed_packet
     defaultValue: 1073741824
     type: int
+    blockSize: 1024
     needRestart: false
     range: 16384~1073741824
     description: The packet message buffer is initialized to net_buffer_length bytes, but can grow up to max_allowed_packet bytes when needed. This value by default is small, to catch large (possibly incorrect) packets.
@@ -4074,6 +4383,7 @@
     name: read_buffer_size
     defaultValue: 1M
     type: int
+    blockSize: 4096
     needRestart: false
     range: 8200~2147479552
     description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
@@ -4083,6 +4393,7 @@
     name: thread_cache_size
     defaultValue: 100
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~16384
     description: How many threads the server should cache for reuse. When a client disconnects, the client's threads are put in the cache if there are fewer than thread_cache_size threads there. Requests for threads are satisfied by reusing threads taken from the cache if possible, and only when the cache is empty is a new thread created. This variable can be increased to improve performance if you have a lot of new connections. Normally, this does not provide a notable performance improvement if you have a good thread implementation. However, if your server sees hundreds of connections per second you should normally set thread_cache_size high enough so that most new connections use cached threads. By examining the difference between the Connections and Threads_created status variables, you can see how efficient the thread cache is.
@@ -4092,6 +4403,7 @@
     name: optimizer_trace_offset
     defaultValue: -1
     type: int
+    blockSize: 1
     needRestart: false
     range: -2147483648~2147483647
     description: The offset of optimizer traces to display.
@@ -4119,6 +4431,7 @@
     name: table_open_cache_instances
     defaultValue: 16
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: The number of open tables cache instances.
@@ -4137,6 +4450,7 @@
     name: innodb_buffer_pool_instances
     defaultValue: 8
     type: int
+    blockSize: 1
     needRestart: true
     range: 1~64
     description: The number of regions that the InnoDB buffer pool is divided into. For systems with buffer pools in the multi-gigabyte range, dividing the buffer pool into separate instances can improve concurrency, by reducing contention as different threads read and write to cached pages. Each page that is stored in or read from the buffer pool is assigned to one of the buffer pool instances randomly, using a hashing function. Each buffer pool manages its own free lists, flush lists, LRUs, and all other data structures connected to a buffer pool, and is protected by its own buffer pool mutex.
@@ -4146,6 +4460,7 @@
     name: performance_schema_max_table_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented tables.
@@ -4155,6 +4470,7 @@
     name: performance_schema_max_index_stat
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of index statistics for instrumented tables.
@@ -4164,6 +4480,7 @@
     name: performance_schema_max_digest_sample_age
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1048576
     description:
@@ -4173,6 +4490,7 @@
     name: performance_schema_max_digest_length
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1048576
     description:
@@ -4182,6 +4500,7 @@
     name: performance_schema_max_prepared_statements_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~4194304
     description: Maximum number of instrumented prepared statements.
@@ -4191,6 +4510,7 @@
     name: innodb_log_write_ahead_size
     defaultValue: 4096
     type: int
+    blockSize: 1
     needRestart: false
     range: 512~16384
     description: Log write ahead unit size to avoid read-on-write, it should match the OS cache block IO size.
@@ -4200,6 +4520,7 @@
     name: performance_schema_max_mutex_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4209,6 +4530,7 @@
     name: performance_schema_max_socket_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of opened instrumented sockets.
@@ -4218,6 +4540,7 @@
     name: performance_schema_error_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1048576
     description:
@@ -4227,6 +4550,7 @@
     name: performance_schema_accounts_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented user@host accounts.
@@ -4236,6 +4560,7 @@
     name: performance_schema_events_stages_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -4245,6 +4570,7 @@
     name: performance_schema_events_statements_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -4254,6 +4580,7 @@
     name: performance_schema_hosts_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented hosts.
@@ -4263,6 +4590,7 @@
     name: performance_schema_max_cond_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented condition objects.
@@ -4272,6 +4600,7 @@
     name: performance_schema_max_table_lock_stat
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of lock statistics for instrumented tables.
@@ -4281,6 +4610,7 @@
     name: performance_schema_max_table_handles
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of opened instrumented tables.
@@ -4290,6 +4620,7 @@
     name: performance_schema_max_memory_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1024
     description:
@@ -4299,6 +4630,7 @@
     name: performance_schema_events_waits_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -4308,6 +4640,7 @@
     name: performance_schema_events_stages_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -4317,6 +4650,7 @@
     name: performance_schema_session_connect_attrs_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -4326,6 +4660,7 @@
     name: performance_schema_max_thread_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4335,6 +4670,7 @@
     name: performance_schema_max_mutex_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~104857600
     description: Maximum number of instrumented MUTEX objects.
@@ -4344,6 +4680,7 @@
     name: performance_schema_max_metadata_locks
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of metadata locks.
@@ -4353,6 +4690,7 @@
     name: performance_schema_digests_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Size of the statement digest.
@@ -4362,6 +4700,7 @@
     name: performance_schema_max_rwlock_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4371,6 +4710,7 @@
     name: performance_schema_setup_actors_size
     defaultValue: 100000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of rows in SETUP_ACTORS.
@@ -4380,6 +4720,7 @@
     name: performance_schema_setup_objects_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of rows in SETUP_OBJECTS.
@@ -4389,6 +4730,7 @@
     name: performance_schema_max_file_instances
     defaultValue: 1000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented files.
@@ -4398,6 +4740,7 @@
     name: performance_schema_max_file_handles
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~32768
     description:
@@ -4407,6 +4750,7 @@
     name: performance_schema_users_size
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented users.
@@ -4416,6 +4760,7 @@
     name: performance_schema_max_statement_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4425,6 +4770,7 @@
     name: performance_schema_max_rwlock_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~104857600
     description: Maximum number of instrumented RWLOCK objects.
@@ -4434,6 +4780,7 @@
     name: performance_schema_max_socket_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4443,6 +4790,7 @@
     name: performance_schema_max_program_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented programs.
@@ -4452,6 +4800,7 @@
     name: information_schema_stats_expiry
     defaultValue: 86400
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~31536000
     description: The number of seconds after which mysqld server will fetch data from storage engine and replace the data in cache.
@@ -4461,6 +4810,7 @@
     name: performance_schema_max_cond_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4470,6 +4820,7 @@
     name: innodb_parallel_read_threads
     defaultValue: 4
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description: Number of threads to do parallel read.
@@ -4479,6 +4830,7 @@
     name: performance_schema_max_stage_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4488,6 +4840,7 @@
     name: performance_schema_events_statements_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -4497,6 +4850,7 @@
     name: performance_schema_events_transactions_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -4506,6 +4860,7 @@
     name: performance_schema_events_transactions_history_long_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description:
@@ -4515,6 +4870,7 @@
     name: performance_schema_max_file_classes
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4524,6 +4880,7 @@
     name: performance_schema_max_thread_instances
     defaultValue: 10000
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented threads.
@@ -4533,6 +4890,7 @@
     name: performance_schema_max_statement_stack
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~256
     description:
@@ -4551,6 +4909,7 @@
     name: performance_schema_max_sql_text_length
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: 0~1048576
     description:
@@ -4560,6 +4919,7 @@
     name: performance_schema_events_waits_history_size
     defaultValue: 0
     type: int
+    blockSize: 1
     needRestart: true
     range: -1~1024
     description:
@@ -4587,6 +4947,7 @@
     name: binlog_expire_logs_seconds
     defaultValue: 2592000
     type: int
+    blockSize: 1
     needRestart: false
     range: 0~4294967295
     description: 日志过期秒数。
@@ -4596,6 +4957,7 @@
     name: read_rnd_buffer_size
     defaultValue: 2097152
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~2147483647
     description: MyISAM表排序缓存的缓存大小，如果需要对Myisam表做排序，可以增大read_rnd_buffer_size改善性能，这个变量同样的每会话独占，也不能设置太大。 该变量控制的buffer在从任何存储引擎读取数据的时候，都会用于缓存读取的数据，包括MRR优化特性也会使用。
@@ -4605,6 +4967,7 @@
     name: sync_binlog
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 1~1000
     description: 控制MySQL二进制日志同步到磁盘的频率。参数sync_binlog=[N]，如果N为1，表示采用同步写磁盘的方式来写二进制日志，每次事务提交时就会刷新binlog到磁盘；如果N为0，表示刷新binlog时间点由操作系统自身来决定，操作系统自身会每隔一段时间就会刷新系统缓存到磁盘；如果N>1，表示每写入N次系统缓存就执行一次写入磁盘并刷新的操作。如果不设置1，有数据丢失风险。
@@ -4614,6 +4977,7 @@
     name: innodb_flush_log_at_trx_commit
     defaultValue: 1
     type: int
+    blockSize: 1
     needRestart: false
     range: 0|1|2
     description: 控制MySQL将事务日志同步到磁盘的频率。参数innodb_flush_log_at_trx_commit=[N]，如果N为1，表示事务提交时，把事务日志从缓存区写到日志文件中，并且立刻写入到磁盘上。如果N为0，表示每秒写入一次日志并将其刷新到磁盘，未刷新日志的事务可能会在崩溃中丢失。如果N为2，表示事务提交时，把事务日志从缓存区写到日志文件中，但不是立刻写入到磁盘上，而是大约每秒一次磁盘IO缓存刷新操作，如果写入前系统崩溃，就会导致最后1秒的日志丢失。如果不设置1，有数据丢失风险。
