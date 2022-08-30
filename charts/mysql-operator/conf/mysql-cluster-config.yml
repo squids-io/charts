@@ -33,7 +33,6 @@
     name: innodb_autoinc_lock_mode
     defaultValue: 2
     type: int
-    blockSize: 1
     needRestart: true
     range: 0~2
     description: |
@@ -2247,7 +2246,6 @@
     name: innodb_autoinc_lock_mode
     defaultValue: 2
     type: int
-    blockSize: 1
     needRestart: true
     range: 0|1|2
     description:  |
@@ -4184,7 +4182,6 @@
     name: innodb_autoinc_lock_mode
     defaultValue: 2
     type: int
-    blockSize: 1
     needRestart: true
     range: 0|1|2
     description:  |
