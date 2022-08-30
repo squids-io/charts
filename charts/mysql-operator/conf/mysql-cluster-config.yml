@@ -348,12 +348,12 @@
     version: 5.7
   - uuid: 38658a771ebd11eda46df02f74a088c2
     name: innodb_log_file_size
-    defaultValue: 2500M
+    defaultValue: 2621440000
     type: int
     blockSize: 1
     needRestart: true
     range: 4194304~107374182400
-    description: The size in bytes of each log file in a log group.
+    description: The size in bytes of each log file in a log group, default is 2500M.
     engine: mysql
     version: 5.7
   - uuid: 38658a771ebd11eda46ef02f74a088c2
@@ -2654,12 +2654,12 @@
     version: 8.0
   - uuid: 06438f151ebd11ed89b3f02f74a088c2
     name: innodb_log_file_size
-    defaultValue: 2500M
+    defaultValue: 2621440000
     type: int
     blockSize: 1
     needRestart: true
     range: 4194304~107374182400
-    description: The size in bytes of each log file in a log group.
+    description: The size in bytes of each log file in a log group, default is 2500M.
     engine: mysql
     version: 8.0
   - uuid: 06438f151ebd11ed89b4f02f74a088c2
