@@ -2148,12 +2148,11 @@
     version: 5.7
   - uuid: 3869c6fb1ebd11eda500f02f74a088c2
     name: performance_schema
-    defaultValue: off
-    type: int
-    blockSize: 1
+    defaultValue: ON
+    type: string
     needRestart: true
-    range: 0~1
-    description: Enable the performance schema.
+    range: ON|OFF
+    description: Enable/disable the performance schema.
     engine: mysql
     version: 5.7
   - uuid: 3869c6fb1ebd11eda501f02f74a088c2
@@ -4106,12 +4105,11 @@
     version: 8.0
   - uuid: 064647e71ebd11ed8a23f02f74a088c2
     name: performance_schema
-    defaultValue: 0
-    type: int
-    blockSize: 1
+    defaultValue: ON
+    type: string
     needRestart: true
-    range: 0~1
-    description: Enable the performance schema.
+    range: ON|OFF
+    description: Enable/disable the performance schema.
     engine: mysql
     version: 8.0
   - uuid: 064647e71ebd11ed8a24f02f74a088c2

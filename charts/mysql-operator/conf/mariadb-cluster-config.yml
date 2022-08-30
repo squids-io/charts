@@ -670,11 +670,11 @@
    version: 10.3.13
  - uuid: 849e47d01ebd11ed96cef02f74a088c2
    name: performance_schema
-   defaultValue: OFF
+   defaultValue: ON
    type: string
    needRestart: true
    range: ON|OFF
-   description: Enable the performance schema.
+   description: Enable/disable the performance schema.
    engine: mariadb
    version: 10.3.13
  - uuid: 849e47d01ebd11ed96cff02f74a088c2
@@ -1555,11 +1555,11 @@
    version: 10.3.35
  - uuid: 849e47d01ebd11ed96cef02f74a088c2
    name: performance_schema
-   defaultValue: OFF
+   defaultValue: ON
    type: string
    needRestart: true
    range: ON|OFF
-   description: Enable the performance schema.
+   description: Enable/disable the performance schema.
    engine: mariadb
    version: 10.3.35
  - uuid: 849e47d01ebd11ed96cff02f74a088c2
