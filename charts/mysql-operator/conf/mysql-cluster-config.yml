@@ -1280,7 +1280,7 @@
     type: int
     blockSize: 1
     needRestart: false
-    range: 0~1048576
+    range: 16382~1048576
     description: Maximum number of prepared statements in the server
     engine: mysql
     version: 5.7
@@ -3422,7 +3422,7 @@
     type: int
     blockSize: 1
     needRestart: false
-    range: 0~1048576
+    range: 16382~1048576
     description: Maximum number of prepared statements in the server
     engine: mysql
     version: 8.0
