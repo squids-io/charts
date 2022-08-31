@@ -810,6 +810,7 @@ spec:
                   pointInTime:
                     description: time that restores to
                     format: date-time
+                    nullable: true
                     type: string
                   restoreMethod:
                     type: string
