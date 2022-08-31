@@ -2411,7 +2411,7 @@
     version: 5.7
   - uuid: 386a3c2a1ebd11eda51df02f74a088c2
     name: slave_type_conversions
-    defaultValue:
+    defaultValue: EMPTY_STR
     type: string
     needRestart: true
     range:  EMPTY_STR|ALL_LOSSY|ALL_NON_LOSSY|ALL_SIGNED|ALL_UNSIGNED
@@ -4268,7 +4268,7 @@
     version: 8.0
   - uuid: 0646ad7c1ebd11ed8a37f02f74a088c2
     name: slave_type_conversions
-    defaultValue:
+    defaultValue: EMPTY_STR
     type: string
     needRestart: true
     range: EMPTY_STR|ALL_LOSSY|ALL_NON_LOSSY|ALL_SIGNED|ALL_UNSIGNED
