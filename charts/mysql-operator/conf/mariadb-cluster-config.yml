@@ -657,16 +657,6 @@
    description: Number of seconds to wait for a block to be written to a connection before aborting the write
    engine: mariadb
    version: 10.3.13
- - uuid: 849e47d01ebd11ed96cdf02f74a088c2
-   name: open_files_limit
-   defaultValue: 655350
-   type: int
-   blockSize: 1
-   needRestart: true
-   range: 4000~65535
-   description: If this is not 0, then mysqld will use this value to reserve file descriptors to use with setrlimit(). If this value is 0 then mysqld will reserve max_connections*5 or max_connections + table_open_cache*2 (whichever is larger) number of file descriptors
-   engine: mariadb
-   version: 10.3.13
  - uuid: 849e47d01ebd11ed96cef02f74a088c2
    name: performance_schema
    defaultValue: ON
@@ -704,16 +694,6 @@
    needRestart: false
    range: 0~104857600
    description: The memory allocated to store results from old queries RDS内存管理说明
-   engine: mariadb
-   version: 10.3.13
- - uuid: 849e47d01ebd11ed96d2f02f74a088c2
-   name: query_cache_type
-   defaultValue: 0
-   type: int
-   blockSize: 1
-   needRestart: true
-   range: 0|1|2
-   description: OFF = Don't cache or retrieve results. ON = Cache all results except SELECT SQL_NO_CACHE ... queries. DEMAND = Cache only SELECT SQL_CACHE ... queries
    engine: mariadb
    version: 10.3.13
  - uuid: 849e47d01ebd11ed96d3f02f74a088c2
@@ -1541,16 +1521,6 @@
    description: Number of seconds to wait for a block to be written to a connection before aborting the write
    engine: mariadb
    version: 10.3.35
- - uuid: 849e47d01ebd11ed96cdf02f74a088c2
-   name: open_files_limit
-   defaultValue: 655350
-   type: int
-   blockSize: 1
-   needRestart: true
-   range: 4000~65535
-   description: If this is not 0, then mysqld will use this value to reserve file descriptors to use with setrlimit(). If this value is 0 then mysqld will reserve max_connections*5 or max_connections + table_open_cache*2 (whichever is larger) number of file descriptors
-   engine: mariadb
-   version: 10.3.35
  - uuid: 849e47d01ebd11ed96cef02f74a088c2
    name: performance_schema
    defaultValue: ON
@@ -1588,15 +1558,6 @@
    needRestart: false
    range: 0~104857600
    description: The memory allocated to store results from old queries RDS内存管理说明
-   engine: mariadb
-   version: 10.3.35
- - uuid: 849e47d01ebd11ed96d2f02f74a088c2
-   name: query_cache_type
-   defaultValue: 0
-   type: string
-   needRestart: true
-   range: 0|1|2
-   description: OFF = Don't cache or retrieve results. ON = Cache all results except SELECT SQL_NO_CACHE ... queries. DEMAND = Cache only SELECT SQL_CACHE ... queries
    engine: mariadb
    version: 10.3.35
  - uuid: 849e47d01ebd11ed96d3f02f74a088c2

@@ -851,15 +851,6 @@
     description:
     engine: mysql
     version: 5.7
-  - uuid: 386680ea1ebd11eda497f02f74a088c2
-    name: query_cache_type
-    defaultValue: 0
-    type: string
-    needRestart: true
-    range: 0|1|2
-    description: OFF = Don't cache or retrieve results. ON = Cache all results except SELECT SQL_NO_CACHE ... queries. DEMAND = Cache only SELECT SQL_CACHE ... queries
-    engine: mysql
-    version: 5.7
   - uuid: 386680ea1ebd11eda498f02f74a088c2
     name: performance_schema_events_waits_history_long_size
     defaultValue: 0
@@ -1071,16 +1062,6 @@
     needRestart: false
     range: 1024~131072
     description: There is a per-transaction memory pool from which various transaction-related allocations take memory. The initial size of the pool in bytes is transaction_prealloc_size. For every allocation that cannot be satisfied from the pool because it has insufficient memory available, the pool is increased by transaction_alloc_block_size bytes. When the transaction ends, the pool is truncated to transaction_prealloc_size bytes.
-    engine: mysql
-    version: 5.7
-  - uuid: 3866fcdf1ebd11eda4abf02f74a088c2
-    name: open_files_limit
-    defaultValue: 65535
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~2147483647
-    description: If this is not 0, then mysqld will use this value to reserve file descriptors to use with setrlimit()
     engine: mysql
     version: 5.7
   - uuid: 3866fcdf1ebd11eda4acf02f74a088c2
@@ -1698,16 +1679,6 @@
     description: Maximum number of instrumented RWLOCK objects.
     engine: mysql
     version: 5.7
-  - uuid: 3869045f1ebd11eda4d6f02f74a088c2
-    name: delayed_insert_timeout
-    defaultValue: 300
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~3600
-    description: How long a INSERT DELAYED thread should wait for INSERT statements before terminating. This variable is deprecated along with INSERT DELAYED.
-    engine: mysql
-    version: 5.7
   - uuid: 3869045f1ebd11eda4d7f02f74a088c2
     name: preload_buffer_size
     defaultValue: 32768
@@ -1785,16 +1756,6 @@
     description:
     engine: mysql
     version: 5.7
-  - uuid: 38692abd1ebd11eda4dff02f74a088c2
-    name: delayed_insert_limit
-    defaultValue: 100
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~4294967295
-    description: After inserting delayed_insert_limit rows, the INSERT DELAYED handler will check if there are any SELECT statements pending. If so, it allows these to execute before continuing. This variable is deprecated along with INSERT DELAYED.
-    engine: mysql
-    version: 5.7
   - uuid: 38692abd1ebd11eda4e0f02f74a088c2
     name: innodb_large_prefix
     defaultValue: OFF
@@ -1831,16 +1792,6 @@
     needRestart: false
     range: ON|OFF
     description: Enables or disables checksums for redo log pages. innodb_log_checksums replaces innodb_log_checksum_algorithm.
-    engine: mysql
-    version: 5.7
-  - uuid: 38692abd1ebd11eda4e4f02f74a088c2
-    name: delayed_queue_size
-    defaultValue: 1000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~4294967295
-    description: What size queue (in rows) should be allocated for handling INSERT DELAYED. If the queue becomes full, any client that does INSERT DELAYED will wait until there is room in the queue again. This variable is deprecated along with INSERT DELAYED.
     engine: mysql
     version: 5.7
   - uuid: 386951ca1ebd11eda4e4f02f74a088c2
@@ -3234,16 +3185,6 @@
     description: There is a per-transaction memory pool from which various transaction-related allocations take memory. The initial size of the pool in bytes is transaction_prealloc_size. For every allocation that cannot be satisfied from the pool because it has insufficient memory available, the pool is increased by transaction_alloc_block_size bytes. When the transaction ends, the pool is truncated to transaction_prealloc_size bytes.
     engine: mysql
     version: 8.0
-  - uuid: 0644d6cb1ebd11ed89dcf02f74a088c2
-    name: open_files_limit
-    defaultValue: 65535
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~2147483647
-    description: If this is not 0, then mysqld will use this value to reserve file descriptors to use with setrlimit()
-    engine: mysql
-    version: 8.0
   - uuid: 0644d6cb1ebd11ed89ddf02f74a088c2
     name: temptable_max_ram
     defaultValue: 1073741824
@@ -3749,16 +3690,6 @@
     description: The minimum percentage of warm blocks in key cache
     engine: mysql
     version: 8.0
-  - uuid: 0645b85c1ebd11ed8a05f02f74a088c2
-    name: delayed_insert_timeout
-    defaultValue: 300
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~3600
-    description: How long a INSERT DELAYED thread should wait for INSERT statements before terminating. This variable is deprecated along with INSERT DELAYED.
-    engine: mysql
-    version: 8.0
   - uuid: 0645b85c1ebd11ed8a06f02f74a088c2
     name: preload_buffer_size
     defaultValue: 32768
@@ -3808,16 +3739,6 @@
     description: Each client thread is associated with a connection buffer and result buffer. Both begin with a size given by net_buffer_length but are dynamically enlarged up to max_allowed_packet bytes as needed. The result buffer shrinks to net_buffer_length after each SQL statement.
     engine: mysql
     version: 8.0
-  - uuid: 0645ccd71ebd11ed8a0bf02f74a088c2
-    name: delayed_insert_limit
-    defaultValue: 100
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~4294967295
-    description: After inserting delayed_insert_limit rows, the INSERT DELAYED handler will check if there are any SELECT statements pending. If so, it allows these to execute before continuing. This variable is deprecated along with INSERT DELAYED.
-    engine: mysql
-    version: 8.0
   - uuid: 0645ccd71ebd11ed8a0cf02f74a088c2
     name: innodb_adaptive_flushing_lwm
     defaultValue: 10
@@ -3835,16 +3756,6 @@
     needRestart: false
     range: ON|OFF
     description: Enables or disables checksums for redo log pages. innodb_log_checksums replaces innodb_log_checksum_algorithm.
-    engine: mysql
-    version: 8.0
-  - uuid: 0645e1601ebd11ed8a0df02f74a088c2
-    name: delayed_queue_size
-    defaultValue: 1000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~4294967295
-    description: What size queue (in rows) should be allocated for handling INSERT DELAYED. If the queue becomes full, any client that does INSERT DELAYED will wait until there is room in the queue again. This variable is deprecated along with INSERT DELAYED.
     engine: mysql
     version: 8.0
   - uuid: 0645e1601ebd11ed8a0ef02f74a088c2
