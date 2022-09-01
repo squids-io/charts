@@ -2411,10 +2411,10 @@
     version: 5.7
   - uuid: 386a3c2a1ebd11eda51df02f74a088c2
     name: slave_type_conversions
-    defaultValue: EMPTY_STR
+    defaultValue: ''
     type: string
     needRestart: true
-    range:  EMPTY_STR|ALL_LOSSY|ALL_NON_LOSSY|ALL_SIGNED|ALL_UNSIGNED
+    range:  "''|ALL_LOSSY|ALL_NON_LOSSY|ALL_SIGNED|ALL_UNSIGNED"
     description: Controls the type conversion mode in effect on the slave when using row-based replication.
     engine: mysql
     version: 5.7
@@ -4268,10 +4268,10 @@
     version: 8.0
   - uuid: 0646ad7c1ebd11ed8a37f02f74a088c2
     name: slave_type_conversions
-    defaultValue: EMPTY_STR
+    defaultValue: ''
     type: string
     needRestart: true
-    range: EMPTY_STR|ALL_LOSSY|ALL_NON_LOSSY|ALL_SIGNED|ALL_UNSIGNED
+    range: "''|ALL_LOSSY|ALL_NON_LOSSY|ALL_SIGNED|ALL_UNSIGNED"
     description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
     engine: mysql
     version: 8.0
