@@ -789,7 +789,7 @@
     type: int
     blockSize: 1
     needRestart: true
-    range: 0~20
+    range: 1~10
     description: Defines the n-gram token size for the n-gram full-text parser. The ngram_token_size option is read-only and can only be modified at startup. The default value is 2 (bigram). The maximum value is 10.
     engine: mysql
     version: 5.7
@@ -2969,7 +2969,7 @@
     type: int
     blockSize: 1
     needRestart: true
-    range: 0~20
+    range: 1~10
     description: Defines the n-gram token size for the n-gram full-text parser. The ngram_token_size option is read-only and can only be modified at startup. The default value is 2 (bigram). The maximum value is 10.
     engine: mysql
     version: 8.0
