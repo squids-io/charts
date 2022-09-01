@@ -2034,7 +2034,7 @@
     type: int
     blockSize: 1
     needRestart: true
-    range: 0~65535
+    range: 1~65535
     description: The number of outstanding connection requests MySQL can have. This comes into play when the main MySQL thread gets very many connection requests in a very short time
     engine: mysql
     version: 5.7
@@ -3960,7 +3960,7 @@
     type: int
     blockSize: 1
     needRestart: true
-    range: 0~65535
+    range: 1~65535
     description: The number of outstanding connection requests MySQL can have. This comes into play when the main MySQL thread gets very many connection requests in a very short time
     engine: mysql
     version: 8.0
