@@ -478,7 +478,7 @@
     defaultValue: ''
     type: string
     needRestart: false
-    range: "''|'set names utf8mb4'|'set names utf8'|'set names utf8mb4 collate utf8mb4_general_ci'"
+    range: "''|set names utf8mb4|set names utf8|set names utf8mb4 collate utf8mb4_general_ci"
     description: Command(s) that are executed for each new connection
     engine: mysql
     version: 5.7
@@ -764,15 +764,6 @@
     description: Number of background write I/O threads in InnoDB.
     engine: mysql
     version: 5.7
-  - uuid: 38666c311ebd11eda48ef02f74a088c2
-    name: end_markers_in_json
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Whether optimizer JSON output should add end markers.
-    engine: mysql
-    version: 5.7
   - uuid: 38666c311ebd11eda48ff02f74a088c2
     name: performance_schema_hosts_size
     defaultValue: 10000
@@ -781,16 +772,6 @@
     needRestart: true
     range: -1~1048576
     description: Maximum number of instrumented hosts.
-    engine: mysql
-    version: 5.7
-  - uuid: 38666c311ebd11eda490f02f74a088c2
-    name: ngram_token_size
-    defaultValue: 2
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~10
-    description: Defines the n-gram token size for the n-gram full-text parser. The ngram_token_size option is read-only and can only be modified at startup. The default value is 2 (bigram). The maximum value is 10.
     engine: mysql
     version: 5.7
   - uuid: 38666c311ebd11eda491f02f74a088c2
@@ -945,16 +926,6 @@
     description: The default storage engine for new tables
     engine: mysql
     version: 5.7
-  - uuid: 3866bf531ebd11eda4a1f02f74a088c2
-    name: net_retry_count
-    defaultValue: 10
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~4294967295
-    description: If a read on a communication port is interrupted, retry this many times before giving up
-    engine: mysql
-    version: 5.7
   - uuid: 3866bf531ebd11eda4a2f02f74a088c2
     name: innodb_ft_cache_size
     defaultValue: 8000000
@@ -1104,15 +1075,6 @@
     description: Size of the statement digest.
     engine: mysql
     version: 5.7
-  - uuid: 386711881ebd11eda4aff02f74a088c2
-    name: automatic_sp_privileges
-    defaultValue: ON
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: When this variable has a value of 1 (the default), the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine, if the user cannot already execute and alter or drop the routine. (The ALTER ROUTINE privilege is required to drop the routine.) The server also automatically drops those privileges from the creator when the routine is dropped. If automatic_sp_privileges is 0, the server does not automatically add or drop these privileges.
-    engine: mysql
-    version: 5.7
   - uuid: 386711881ebd11eda4b0f02f74a088c2
     name: explicit_defaults_for_timestamp
     defaultValue: OFF
@@ -1120,16 +1082,6 @@
     needRestart: false
     range: ON|OFF
     description: This system variable determines whether the server enables certain nonstandard behaviors for default values and NULL-value handling in TIMESTAMP columns.
-    engine: mysql
-    version: 5.7
-  - uuid: 386711881ebd11eda4b1f02f74a088c2
-    name: ft_max_word_len
-    defaultValue: 84
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 10~4294967295
-    description: The maximum length of the word to be included in a MyISAM FULLTEXT index.
     engine: mysql
     version: 5.7
   - uuid: 386711881ebd11eda4b2f02f74a088c2
@@ -1170,16 +1122,6 @@
     description: Enables the random read-ahead technique for optimizing InnoDB I/O.
     engine: mysql
     version: 5.7
-  - uuid: 38673adc1ebd11eda4b4f02f74a088c2
-    name: table_open_cache
-    defaultValue: 8192
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~524288
-    description: The number of open tables for all threads. Increasing this value increases the number of file descriptors that mysqld requires.
-    engine: mysql
-    version: 5.7
   - uuid: 38673adc1ebd11eda4b6f02f74a088c2
     name: range_optimizer_max_mem_size
     defaultValue: 8388608
@@ -1188,34 +1130,6 @@
     needRestart: false
     range: 0~18446744073709551615
     description: The limit on memory consumption for the range optimizer. A value of 0 means “no limit.” If an execution plan considered by the optimizer uses the range access method but the optimizer estimates that the amount of memory needed for this method would exceed the limit, it abandons the plan and considers other plans. For more information, see Limiting Memory Use for Range Optimization.
-    engine: mysql
-    version: 5.7
-  - uuid: 38673adc1ebd11eda4b7f02f74a088c2
-    name: innodb_status_output
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Enables or disables periodic output for the standard InnoDB Monitor. Also used in combination with innodb_status_output_locks to enable or disable periodic output for the InnoDB Lock Monitor.
-    engine: mysql
-    version: 5.7
-  - uuid: 38673adc1ebd11eda4b8f02f74a088c2
-    name: innodb_log_compressed_pages
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Specifies whether images of re-compressed pages are written to the redo log. Re-compression may occur when changes are made to compressed data.
-    engine: mysql
-    version: 5.7
-  - uuid: 38674f5f1ebd11eda4b8f02f74a088c2
-    name: slave_net_timeout
-    defaultValue: 60
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 15~300
-    description: The number of seconds to wait for more data from the master before the slave considers the connection broken, aborts the read, and tries to reconnect
     engine: mysql
     version: 5.7
   - uuid: 38674f5f1ebd11eda4b9f02f74a088c2
@@ -1255,16 +1169,6 @@
     description: Whether the general query log is enabled. The destination for log output is controlled by the log_output system variable.
     engine: mysql
     version: 5.7
-  - uuid: 386764041ebd11eda4bcf02f74a088c2
-    name: max_prepared_stmt_count
-    defaultValue: 16382
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 16382~1048576
-    description: Maximum number of prepared statements in the server
-    engine: mysql
-    version: 5.7
   - uuid: 386764041ebd11eda4bdf02f74a088c2
     name: wait_timeout
     defaultValue: 86400
@@ -1277,11 +1181,10 @@
     version: 5.7
   - uuid: 386764041ebd11eda4bef02f74a088c2
     name: log_bin_use_v1_row_events
-    defaultValue: 1
-    type: int
-    blockSize: 1
+    defaultValue: OFF
+    type: string
     needRestart: false
-    range: 0|1
+    range: ON|OFF
     description: If equal to 1 then version 1 row events are written to a row based binary log. If equal to 0, then the latest version of events are written. This option is useful during some upgrades.
     engine: mysql
     version: 5.7
@@ -1397,8 +1300,8 @@
     defaultValue: 1
     type: int
     blockSize: 1
-    needRestart: false
-    range: 0|1
+    needRestart: true
+    range: 0~1
     description: Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. A value of 0 disables heuristics so that the optimizer performs an exhaustive search. A value of 1 causes the optimizer to prune plans based on the number of rows retrieved by intermediate plans.
     engine: mysql
     version: 5.7
@@ -1498,15 +1401,6 @@
     description: Changes the way OPTIMIZE TABLE operates on InnoDB tables. Intended to be enabled temporarily, during maintenance operations for InnoDB tables with FULLTEXT indexes.
     engine: mysql
     version: 5.7
-  - uuid: 3867cc2e1ebd11eda4cff02f74a088c2
-    name: local_infile
-    defaultValue: ON
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: This variable controls server-side LOCAL capability for LOAD DATA statements.
-    engine: mysql
-    version: 5.7
   - uuid: 3867e0b41ebd11eda4cff02f74a088c2
     name: performance_schema_max_file_handles
     defaultValue: 0
@@ -1515,16 +1409,6 @@
     needRestart: true
     range: -1~32768
     description:
-    engine: mysql
-    version: 5.7
-  - uuid: 3867e0b41ebd11eda4d0f02f74a088c2
-    name: innodb_ft_max_token_size
-    defaultValue: 84
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 10~84
-    description: InnoDB Fulltext search maximum token size in characters
     engine: mysql
     version: 5.7
   - uuid: 3867e0b41ebd11eda4d1f02f74a088c2
@@ -1640,15 +1524,6 @@
     description: The innodb_flush_sync parameter, which is enabled by default, causes the innodb_io_capacity setting to be ignored for bursts of I/O activity that occur at checkpoints. To adhere to the limit on InnoDB background I/O activity defined by the innodb_io_capacity setting, disable innodb_flush_sync.
     engine: mysql
     version: 5.7
-  - uuid: 3869045f1ebd11eda4d2f02f74a088c2
-    name: tls_version
-    defaultValue: TLSv1,TLSv1.1,TLSv1.2
-    type: string
-    needRestart: true
-    range: TLSv1,TLSv1.1,TLSv1.2
-    description: The protocols permitted by the server for encrypted connections. The value is a comma-separated list containing one or more protocol names. The protocols that can be named for this variable depend on the SSL library used to compile MySQL.
-    engine: mysql
-    version: 5.7
   - uuid: 3869045f1ebd11eda4d3f02f74a088c2
     name: performance_schema_max_statement_classes
     defaultValue: 0
@@ -1659,16 +1534,6 @@
     description:
     engine: mysql
     version: 5.7
-  - uuid: 3869045f1ebd11eda4d4f02f74a088c2
-    name: key_cache_division_limit
-    defaultValue: 100
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~100
-    description: The minimum percentage of warm blocks in key cache
-    engine: mysql
-    version: 5.7
   - uuid: 3869045f1ebd11eda4d5f02f74a088c2
     name: performance_schema_max_rwlock_instances
     defaultValue: 10000
@@ -1677,16 +1542,6 @@
     needRestart: true
     range: -1~104857600
     description: Maximum number of instrumented RWLOCK objects.
-    engine: mysql
-    version: 5.7
-  - uuid: 3869045f1ebd11eda4d7f02f74a088c2
-    name: preload_buffer_size
-    defaultValue: 32768
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1024~1073741824
-    description: The size of the buffer that is allocated when preloading indexes.
     engine: mysql
     version: 5.7
   - uuid: 3869045f1ebd11eda4d8f02f74a088c2
@@ -1710,10 +1565,10 @@
     version: 5.7
   - uuid: 3869045f1ebd11eda4daf02f74a088c2
     name: concurrent_insert
-    defaultValue: 1
+    defaultValue: AUTO
     type: string
     needRestart: false
-    range: 0|1|2
+    range: NEVER|AUTO|ALWAYS
     description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
     engine: mysql
     version: 5.7
@@ -1803,16 +1658,6 @@
     description: Controls a tracker for capturing GTIDs and returning them in the OK packet. Depending on the value of this option, at the end of executing a transaction, the GTIDs specified are captured by the tracker and appended to the OK packet.
     engine: mysql
     version: 5.7
-  - uuid: 386951ca1ebd11eda4e5f02f74a088c2
-    name: innodb_thread_sleep_delay
-    defaultValue: 10000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~1000000
-    description: Time of innodb thread sleeping before joining InnoDB queue (usec). Value 0 disable a sleep
-    engine: mysql
-    version: 5.7
   - uuid: 386951ca1ebd11eda4e6f02f74a088c2
     name: innodb_old_blocks_pct
     defaultValue: 37
@@ -1821,16 +1666,6 @@
     needRestart: false
     range: 5~95
     description: Percentage of the buffer pool to reserve for 'old' blocks.
-    engine: mysql
-    version: 5.7
-  - uuid: 386951ca1ebd11eda4e7f02f74a088c2
-    name: innodb_ft_sort_pll_degree
-    defaultValue: 2
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~16
-    description: Number of threads used in parallel to index and tokenize text in an InnoDB FULLTEXT index when building a search index.
     engine: mysql
     version: 5.7
   - uuid: 386951ca1ebd11eda4e8f02f74a088c2
@@ -1849,16 +1684,6 @@
     needRestart: false
     range: ON|OFF
     description: Enable statistics gathering for metadata commands such as SHOW TABLE STATUS for tables that use transient statistics (off by default)
-    engine: mysql
-    version: 5.7
-  - uuid: 386951ca1ebd11eda4eaf02f74a088c2
-    name: stored_program_cache
-    defaultValue: 256
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 16~524288
-    description: Sets a soft upper limit for the number of cached stored routines per connection. The value of this variable is specified in terms of the number of stored routines held in each of the two caches maintained by the MySQL Server for, respectively, stored procedures and stored functions.
     engine: mysql
     version: 5.7
   - uuid: 386951ca1ebd11eda4ebf02f74a088c2
@@ -1951,16 +1776,6 @@
     description:
     engine: mysql
     version: 5.7
-  - uuid: 386978de1ebd11eda4f3f02f74a088c2
-    name: table_definition_cache
-    defaultValue: 4096
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 400~524288
-    description: The number of cached table definitions
-    engine: mysql
-    version: 5.7
   - uuid: 386978de1ebd11eda4f4f02f74a088c2
     name: auto_increment_increment
     defaultValue: 1
@@ -1988,15 +1803,6 @@
     needRestart: true
     range: 0~256
     description:
-    engine: mysql
-    version: 5.7
-  - uuid: 38699ff61ebd11eda4f6f02f74a088c2
-    name: max_seeks_for_key
-    defaultValue: 18446744073709500000
-    type: string
-    needRestart: false
-    range: 1~18446744073709551615
-    description: Limit the assumed maximum number of seeks when looking up rows based on a key. The MySQL optimizer assumes that no more than this number of key seeks are required when searching for matching rows in a table by scanning an index, regardless of the actual cardinality of the index. By setting this to a low value (say, 100), you can force MySQL to prefer indexes instead of table scans.
     engine: mysql
     version: 5.7
   - uuid: 38699ff61ebd11eda4f7f02f74a088c2
@@ -2056,15 +1862,6 @@
     needRestart: false
     range: 0~18446744073709551615
     description: If flushing activity falls behind, InnoDB can flush more aggressively than the limit imposed by innodb_io_capacity. innodb_io_capacity_max defines an upper limit the number of I/O operations performed per second by InnoDB background tasks in such situations.
-    engine: mysql
-    version: 5.7
-  - uuid: 38699ff61ebd11eda4fdf02f74a088c2
-    name: innodb_strict_mode
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Use strict mode when evaluating create options.
     engine: mysql
     version: 5.7
   - uuid: 38699ff61ebd11eda4fef02f74a088c2
@@ -2243,16 +2040,6 @@
     description: Enabling this variable causes the master to examine checksums when reading from the binary log. master_verify_checksum is disabled by default.in this case, the master uses the event length from the binary log to verify events, so that only complete events are read from the binary log.
     engine: mysql
     version: 5.7
-  - uuid: 3869ee091ebd11eda50ef02f74a088c2
-    name: innodb_ft_num_word_optimize
-    defaultValue: 2000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~10000
-    description: Number of words to process during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Because a bulk insert or update operation to a table containing a full-text search index could require substantial index maintenance to incorporate all changes, you might do a series of OPTIMIZE TABLE statements, each picking up where the last left off.
-    engine: mysql
-    version: 5.7
   - uuid: 3869ee091ebd11eda50ff02f74a088c2
     name: performance_schema_max_statement_stack
     defaultValue: 1
@@ -2312,16 +2099,6 @@
     description: The optimizer_trace system variable has these on/off switches,enabled,one_line
     engine: mysql
     version: 5.7
-  - uuid: 386a15211ebd11eda514f02f74a088c2
-    name: default_week_format
-    defaultValue: 0
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~7
-    description: The default week format used by WEEK() functions
-    engine: mysql
-    version: 5.7
   - uuid: 386a15211ebd11eda515f02f74a088c2
     name: innodb_cmp_per_index_enabled
     defaultValue: OFF
@@ -2340,22 +2117,12 @@
     description: The INFORMATION_SCHEMA has tables that contain system and status variable information The Performance Schema tables are intended to replace the INFORMATION_SCHEMA tables, which are deprecated as of MySQL 5.7.6 and will be removed in a future MySQL release.
     engine: mysql
     version: 5.7
-  - uuid: 386a3c2a1ebd11eda516f02f74a088c2
-    name: host_cache_size
-    defaultValue: 644
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~65535
-    description: The size of the internal host cache (see Section 8.12.5.2, “DNS Lookup Optimization and the Host Cache”). Setting the size to 0 disables the host cache. Changing the cache size at runtime implicitly causes a FLUSH HOSTS operation to clear the host cache and truncate the host_cache table.
-    engine: mysql
-    version: 5.7
   - uuid: 386a3c2a1ebd11eda517f02f74a088c2
     name: low_priority_updates
-    defaultValue: 0
+    defaultValue: OFF
     type: string
     needRestart: false
-    range: 0|1
+    range: ON|OFF
     description: INSERT/DELETE/UPDATE has lower priority than selects
     engine: mysql
     version: 5.7
@@ -2377,16 +2144,6 @@
     needRestart: false
     range: 4096~18446744073709551615
     description: The size of blocks that are allocated when doing range optimization.
-    engine: mysql
-    version: 5.7
-  - uuid: 386a3c2a1ebd11eda51af02f74a088c2
-    name: ft_min_word_len
-    defaultValue: 4
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~3600
-    description: 'The minimum length of the word to be included in a FULLTEXT index. Note: FULLTEXT indexes must be rebuilt after changing this variable'
     engine: mysql
     version: 5.7
   - uuid: 386a3c2a1ebd11eda51bf02f74a088c2
@@ -2436,16 +2193,6 @@
     needRestart: false
     range: 8200~2147479552
     description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
-    engine: mysql
-    version: 5.7
-  - uuid: 386a3c2a1ebd11eda520f02f74a088c2
-    name: thread_cache_size
-    defaultValue: 256
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~16384
-    description:
     engine: mysql
     version: 5.7
   - uuid: 386a63371ebd11eda520f02f74a088c2
@@ -2716,7 +2463,7 @@
     defaultValue: ''
     type: string
     needRestart: false
-    range: "''|'set names utf8mb4'|'set names utf8'|'set default_collation_for_utf8mb4=utf8mb4_general_ci'|'set default_collation_for_utf8mb4=utf8mb4_general_ci;set names utf8mb4'|'set names utf8mb4 collate utf8mb4_general_ci'"
+    range: "''|set names utf8mb4|set names utf8|set default_collation_for_utf8mb4=utf8mb4_general_ci|set default_collation_for_utf8mb4=utf8mb4_general_ci;set names utf8mb4|set names utf8mb4 collate utf8mb4_general_ci"
     description: Command(s) that are executed for each new connection
     engine: mysql
     version: 8.0
@@ -2954,25 +2701,6 @@
     description: Number of background write I/O threads in InnoDB.
     engine: mysql
     version: 8.0
-  - uuid: 064446d51ebd11ed89caf02f74a088c2
-    name: end_markers_in_json
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Whether optimizer JSON output should add end markers.
-    engine: mysql
-    version: 8.0
-  - uuid: 064446d51ebd11ed89cbf02f74a088c2
-    name: ngram_token_size
-    defaultValue: 2
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~10
-    description: Defines the n-gram token size for the n-gram full-text parser. The ngram_token_size option is read-only and can only be modified at startup. The default value is 2 (bigram). The maximum value is 10.
-    engine: mysql
-    version: 8.0
   - uuid: 06446fbf1ebd11ed89cbf02f74a088c2
     name: max_binlog_stmt_cache_size
     defaultValue: 18446744073709547520
@@ -3074,16 +2802,6 @@
     needRestart: true
     range: InnoDB|innodb
     description: The default storage engine for new tables
-    engine: mysql
-    version: 8.0
-  - uuid: 064499db1ebd11ed89d4f02f74a088c2
-    name: net_retry_count
-    defaultValue: 10
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~4294967295
-    description: If a read on a communication port is interrupted, retry this many times before giving up
     engine: mysql
     version: 8.0
   - uuid: 0644ae4e1ebd11ed89d4f02f74a088c2
@@ -3215,15 +2933,6 @@
     description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The value of the variable is used to calculate MEMORY table MAX_ROWS values. Setting this variable has no effect on any existing MEMORY table, unless the table is re-created with a statement such as CREATE TABLE or altered with ALTER TABLE or TRUNCATE TABLE. A server restart also sets the maximum size of existing MEMORY tables to the global max_heap_table_size value. The block size is 1024.
     engine: mysql
     version: 8.0
-  - uuid: 0644eb1b1ebd11ed89dff02f74a088c2
-    name: automatic_sp_privileges
-    defaultValue: ON
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: When this variable has a value of 1 (the default), the server automatically grants the EXECUTE and ALTER ROUTINE privileges to the creator of a stored routine, if the user cannot already execute and alter or drop the routine. (The ALTER ROUTINE privilege is required to drop the routine.) The server also automatically drops those privileges from the creator when the routine is dropped. If automatic_sp_privileges is 0, the server does not automatically add or drop these privileges.
-    engine: mysql
-    version: 8.0
   - uuid: 0644eb1b1ebd11ed89e0f02f74a088c2
     name: explicit_defaults_for_timestamp
     defaultValue: OFF
@@ -3231,16 +2940,6 @@
     needRestart: false
     range: ON|OFF
     description: This system variable determines whether the server enables certain nonstandard behaviors for default values and NULL-value handling in TIMESTAMP columns.
-    engine: mysql
-    version: 8.0
-  - uuid: 0644eb1b1ebd11ed89e1f02f74a088c2
-    name: ft_max_word_len
-    defaultValue: 84
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 10~4294967295
-    description: The maximum length of the word to be included in a MyISAM FULLTEXT index.
     engine: mysql
     version: 8.0
   - uuid: 0644eb1b1ebd11ed89e2f02f74a088c2
@@ -3281,16 +2980,6 @@
     description: Enables the random read-ahead technique for optimizing InnoDB I/O.
     engine: mysql
     version: 8.0
-  - uuid: 0644ff821ebd11ed89e5f02f74a088c2
-    name: table_open_cache
-    defaultValue: 8192
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~524288
-    description: The number of open tables for all threads. Increasing this value increases the number of file descriptors that mysqld requires.
-    engine: mysql
-    version: 8.0
   - uuid: 0645133c1ebd11ed89e5f02f74a088c2
     name: range_optimizer_max_mem_size
     defaultValue: 8388608
@@ -3299,34 +2988,6 @@
     needRestart: false
     range: 0~18446744073709551615
     description: The limit on memory consumption for the range optimizer. A value of 0 means “no limit.” If an execution plan considered by the optimizer uses the range access method but the optimizer estimates that the amount of memory needed for this method would exceed the limit, it abandons the plan and considers other plans. For more information, see Limiting Memory Use for Range Optimization.
-    engine: mysql
-    version: 8.0
-  - uuid: 064514201ebd11ed89e5f02f74a088c2
-    name: innodb_status_output
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Enables or disables periodic output for the standard InnoDB Monitor. Also used in combination with innodb_status_output_locks to enable or disable periodic output for the InnoDB Lock Monitor.
-    engine: mysql
-    version: 8.0
-  - uuid: 064514201ebd11ed89e6f02f74a088c2
-    name: innodb_log_compressed_pages
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Specifies whether images of re-compressed pages are written to the redo log. Re-compression may occur when changes are made to compressed data.
-    engine: mysql
-    version: 8.0
-  - uuid: 064514201ebd11ed89e7f02f74a088c2
-    name: slave_net_timeout
-    defaultValue: 60
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 15~300
-    description: The number of seconds to wait for more data from the master before the slave considers the connection broken, aborts the read, and tries to reconnect
     engine: mysql
     version: 8.0
   - uuid: 064514201ebd11ed89e8f02f74a088c2
@@ -3357,16 +3018,6 @@
     description: Whether the general query log is enabled. The destination for log output is controlled by the log_output system variable.
     engine: mysql
     version: 8.0
-  - uuid: 064528881ebd11ed89eaf02f74a088c2
-    name: max_prepared_stmt_count
-    defaultValue: 16382
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 16382~1048576
-    description: Maximum number of prepared statements in the server
-    engine: mysql
-    version: 8.0
   - uuid: 064528881ebd11ed89ebf02f74a088c2
     name: wait_timeout
     defaultValue: 86400
@@ -3379,10 +3030,10 @@
     version: 8.0
   - uuid: 064528881ebd11ed89ecf02f74a088c2
     name: log_bin_use_v1_row_events
-    defaultValue: 1
+    defaultValue: OFF
     type: string
     needRestart: false
-    range: 0|1
+    range: ON|OFF
     description: If equal to 1 then version 1 row events are written to a row based binary log. If equal to 0, then the latest version of events are written. This option is useful during some upgrades.
     engine: mysql
     version: 8.0
@@ -3466,9 +3117,9 @@
   - uuid: 064551451ebd11ed89f3f02f74a088c2
     name: optimizer_prune_level
     defaultValue: 1
-    type: string
-    needRestart: false
-    range: 0|1
+    type: int
+    needRestart: true
+    range: 0~1
     description: Controls the heuristics applied during query optimization to prune less-promising partial plans from the optimizer search space. A value of 0 disables heuristics so that the optimizer performs an exhaustive search. A value of 1 causes the optimizer to prune plans based on the number of rows retrieved by intermediate plans.
     engine: mysql
     version: 8.0
@@ -3556,25 +3207,6 @@
     needRestart: false
     range: ON|OFF
     description: Changes the way OPTIMIZE TABLE operates on InnoDB tables. Intended to be enabled temporarily, during maintenance operations for InnoDB tables with FULLTEXT indexes.
-    engine: mysql
-    version: 8.0
-  - uuid: 06457a101ebd11ed89fbf02f74a088c2
-    name: local_infile
-    defaultValue: ON
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: This variable controls server-side LOCAL capability for LOAD DATA statements.
-    engine: mysql
-    version: 8.0
-  - uuid: 06457a101ebd11ed89fcf02f74a088c2
-    name: innodb_ft_max_token_size
-    defaultValue: 84
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 10~84
-    description: InnoDB Fulltext search maximum token size in characters
     engine: mysql
     version: 8.0
   - uuid: 06458dc11ebd11ed89fcf02f74a088c2
@@ -3671,35 +3303,6 @@
     description: The innodb_flush_sync parameter, which is enabled by default, causes the innodb_io_capacity setting to be ignored for bursts of I/O activity that occur at checkpoints. To adhere to the limit on InnoDB background I/O activity defined by the innodb_io_capacity setting, disable innodb_flush_sync.
     engine: mysql
     version: 8.0
-  - uuid: 0645a4081ebd11ed8a04f02f74a088c2
-    name: tls_version
-    defaultValue: TLSv1,TLSv1.1,TLSv1.2
-    type: string
-    needRestart: true
-    range: TLSv1,TLSv1.1,TLSv1.2|TLSv1,TLSv1.1|TLSv1.2
-    description: The protocols permitted by the server for encrypted connections. The value is a comma-separated list containing one or more protocol names. The protocols that can be named for this variable depend on the SSL library used to compile MySQL.
-    engine: mysql
-    version: 8.0
-  - uuid: 0645b85c1ebd11ed8a04f02f74a088c2
-    name: key_cache_division_limit
-    defaultValue: 100
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~100
-    description: The minimum percentage of warm blocks in key cache
-    engine: mysql
-    version: 8.0
-  - uuid: 0645b85c1ebd11ed8a06f02f74a088c2
-    name: preload_buffer_size
-    defaultValue: 32768
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1024~1073741824
-    description: The size of the buffer that is allocated when preloading indexes.
-    engine: mysql
-    version: 8.0
   - uuid: 0645b85c1ebd11ed8a07f02f74a088c2
     name: innodb_read_ahead_threshold
     defaultValue: 56
@@ -3712,11 +3315,10 @@
     version: 8.0
   - uuid: 0645b85c1ebd11ed8a08f02f74a088c2
     name: concurrent_insert
-    defaultValue: 1
-    type: int
-    blockSize: 1
+    defaultValue: AUTO
+    type: string
     needRestart: false
-    range: 0|1|2
+    range: NEVER|AUTO|ALWAYS
     description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
     engine: mysql
     version: 8.0
@@ -3767,16 +3369,6 @@
     description: Controls a tracker for capturing GTIDs and returning them in the OK packet. Depending on the value of this option, at the end of executing a transaction, the GTIDs specified are captured by the tracker and appended to the OK packet.
     engine: mysql
     version: 8.0
-  - uuid: 0645e1601ebd11ed8a0ff02f74a088c2
-    name: innodb_thread_sleep_delay
-    defaultValue: 10000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~1000000
-    description: Time of innodb thread sleeping before joining InnoDB queue (usec). Value 0 disable a sleep
-    engine: mysql
-    version: 8.0
   - uuid: 0645e1601ebd11ed8a10f02f74a088c2
     name: innodb_old_blocks_pct
     defaultValue: 37
@@ -3785,16 +3377,6 @@
     needRestart: false
     range: 5~95
     description: Percentage of the buffer pool to reserve for 'old' blocks.
-    engine: mysql
-    version: 8.0
-  - uuid: 0645e1601ebd11ed8a11f02f74a088c2
-    name: innodb_ft_sort_pll_degree
-    defaultValue: 2
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~16
-    description: Number of threads used in parallel to index and tokenize text in an InnoDB FULLTEXT index when building a search index.
     engine: mysql
     version: 8.0
   - uuid: 0645e1601ebd11ed8a12f02f74a088c2
@@ -3813,16 +3395,6 @@
     needRestart: false
     range: ON|OFF
     description: Enable statistics gathering for metadata commands such as SHOW TABLE STATUS for tables that use transient statistics (off by default)
-    engine: mysql
-    version: 8.0
-  - uuid: 0645f5d41ebd11ed8a13f02f74a088c2
-    name: stored_program_cache
-    defaultValue: 256
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 16~524288
-    description: Sets a soft upper limit for the number of cached stored routines per connection. The value of this variable is specified in terms of the number of stored routines held in each of the two caches maintained by the MySQL Server for, respectively, stored procedures and stored functions.
     engine: mysql
     version: 8.0
   - uuid: 0645f5d41ebd11ed8a14f02f74a088c2
@@ -3861,7 +3433,7 @@
     type: int
     blockSize: 1
     needRestart: false
-    range: 0~4294967295
+    range: 0~1000
     description: The maximum delay between polls for a spin lock. The low-level implementation of this mechanism varies depending on the combination of hardware and operating system, so the delay does not correspond to a fixed time interval. For more information, see Section 14.6.10, “Configuring Spin Lock Polling”.
     engine: mysql
     version: 8.0
@@ -3905,16 +3477,6 @@
     description: Number of times a thread is allowed to enter InnoDB within the same SQL query after it has once got the ticket
     engine: mysql
     version: 8.0
-  - uuid: 06461ea31ebd11ed8a1af02f74a088c2
-    name: table_definition_cache
-    defaultValue: 4500
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 400~524288
-    description: The number of cached table definitions
-    engine: mysql
-    version: 8.0
   - uuid: 06461ea31ebd11ed8a1bf02f74a088c2
     name: auto_increment_increment
     defaultValue: 1
@@ -3932,16 +3494,6 @@
     needRestart: true
     range: CRC32|NONE
     description: Type of BINLOG_CHECKSUM_ALG. Include checksum for log events in the binary log. Possible values are NONE and CRC32 default is CRC32.
-    engine: mysql
-    version: 8.0
-  - uuid: 06461ea31ebd11ed8a1df02f74a088c2
-    name: max_seeks_for_key
-    defaultValue: 18446744073709500000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 1~18446744073709551615
-    description: Limit the assumed maximum number of seeks when looking up rows based on a key. The MySQL optimizer assumes that no more than this number of key seeks are required when searching for matching rows in a table by scanning an index, regardless of the actual cardinality of the index. By setting this to a low value (say, 100), you can force MySQL to prefer indexes instead of table scans.
     engine: mysql
     version: 8.0
   - uuid: 06461ea31ebd11ed8a1ef02f74a088c2
@@ -3982,15 +3534,6 @@
     needRestart: false
     range: 0~18446744073709551615
     description: If flushing activity falls behind, InnoDB can flush more aggressively than the limit imposed by innodb_io_capacity. innodb_io_capacity_max defines an upper limit the number of I/O operations performed per second by InnoDB background tasks in such situations.
-    engine: mysql
-    version: 8.0
-  - uuid: 0646337d1ebd11ed8a21f02f74a088c2
-    name: innodb_strict_mode
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: Use strict mode when evaluating create options.
     engine: mysql
     version: 8.0
   - uuid: 0646337d1ebd11ed8a22f02f74a088c2
@@ -4129,16 +3672,6 @@
     description: Enabling this variable causes the master to examine checksums when reading from the binary log. master_verify_checksum is disabled by default.in this case, the master uses the event length from the binary log to verify events, so that only complete events are read from the binary log.
     engine: mysql
     version: 8.0
-  - uuid: 0646709b1ebd11ed8a2cf02f74a088c2
-    name: innodb_ft_num_word_optimize
-    defaultValue: 2000
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~10000
-    description: Number of words to process during each OPTIMIZE TABLE operation on an InnoDB FULLTEXT index. Because a bulk insert or update operation to a table containing a full-text search index could require substantial index maintenance to incorporate all changes, you might do a series of OPTIMIZE TABLE statements, each picking up where the last left off.
-    engine: mysql
-    version: 8.0
   - uuid: 0646709b1ebd11ed8a2df02f74a088c2
     name: max_join_size
     defaultValue: 18446744073709551615
@@ -4179,16 +3712,6 @@
     description: Specifies the maximum delay in microseconds for the delay imposed by theinnodb_max_purge_lag configuration option. A nonzero value represents an upper limit on the delay period computed from the formula based on the value of innodb_max_purge_lag. The default of zero means that there is no upper limit imposed on the delay interval.
     engine: mysql
     version: 8.0
-  - uuid: 064684e11ebd11ed8a30f02f74a088c2
-    name: default_week_format
-    defaultValue: 0
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~7
-    description: The default week format used by WEEK() functions
-    engine: mysql
-    version: 8.0
   - uuid: 064684e11ebd11ed8a31f02f74a088c2
     name: innodb_cmp_per_index_enabled
     defaultValue: OFF
@@ -4198,22 +3721,12 @@
     description: Enables per-index compression-related statistics in the INFORMATION_SCHEMA.INNODB_CMP_PER_INDEX table. Because these statistics can be expensive to gather, only enable this option on development, test, or slave instances during performance tuning related to InnoDB compressed tables.
     engine: mysql
     version: 8.0
-  - uuid: 064699371ebd11ed8a31f02f74a088c2
-    name: host_cache_size
-    defaultValue: 644
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~65535
-    description: The size of the internal host cache (see Section 8.12.5.2, “DNS Lookup Optimization and the Host Cache”). Setting the size to 0 disables the host cache. Changing the cache size at runtime implicitly causes a FLUSH HOSTS operation to clear the host cache and truncate the host_cache table.
-    engine: mysql
-    version: 8.0
   - uuid: 064699371ebd11ed8a32f02f74a088c2
     name: low_priority_updates
-    defaultValue: 0
+    defaultValue: OFF
     type: string
     needRestart: false
-    range: 0|1
+    range: ON|OFF
     description: INSERT/DELETE/UPDATE has lower priority than selects
     engine: mysql
     version: 8.0
@@ -4235,16 +3748,6 @@
     needRestart: false
     range: 4096~18446744073709551615
     description: The size of blocks that are allocated when doing range optimization.
-    engine: mysql
-    version: 8.0
-  - uuid: 064699371ebd11ed8a35f02f74a088c2
-    name: ft_min_word_len
-    defaultValue: 4
-    type: int
-    blockSize: 1
-    needRestart: true
-    range: 1~3600
-    description: 'The minimum length of the word to be included in a FULLTEXT index. Note: FULLTEXT indexes must be rebuilt after changing this variable'
     engine: mysql
     version: 8.0
   - uuid: 064699371ebd11ed8a36f02f74a088c2
@@ -4293,16 +3796,6 @@
     needRestart: false
     range: 8200~2147479552
     description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
-    engine: mysql
-    version: 8.0
-  - uuid: 0646ad7c1ebd11ed8a3af02f74a088c2
-    name: thread_cache_size
-    defaultValue: 100
-    type: int
-    blockSize: 1
-    needRestart: false
-    range: 0~16384
-    description: How many threads the server should cache for reuse. When a client disconnects, the client's threads are put in the cache if there are fewer than thread_cache_size threads there. Requests for threads are satisfied by reusing threads taken from the cache if possible, and only when the cache is empty is a new thread created. This variable can be increased to improve performance if you have a lot of new connections. Normally, this does not provide a notable performance improvement if you have a good thread implementation. However, if your server sees hundreds of connections per second you should normally set thread_cache_size high enough so that most new connections use cached threads. By examining the difference between the Connections and Threads_created status variables, you can see how efficient the thread cache is.
     engine: mysql
     version: 8.0
   - uuid: 0646c1321ebd11ed8a3af02f74a088c2
