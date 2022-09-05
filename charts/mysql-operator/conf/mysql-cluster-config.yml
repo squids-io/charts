@@ -721,8 +721,8 @@
     defaultValue: nulls_equal
     type: string
     needRestart: false
-    range: nulls_equal|nulls_unequal|nulls_ignored]Specifies how InnoDB index statistics collection code should treat NULLs. Possible values are NULLS_EQUAL (default), NULLS_UNEQUAL and NULLS_IGNORED
-    description:
+    range: nulls_equal|nulls_unequal|nulls_ignored
+    description: Specifies how InnoDB index statistics collection code should treat NULLs. Possible values are NULLS_EQUAL (default), NULLS_UNEQUAL and NULLS_IGNORED
     engine: mysql
     version: 5.7
   - uuid: 386657b21ebd11eda48cf02f74a088c2
