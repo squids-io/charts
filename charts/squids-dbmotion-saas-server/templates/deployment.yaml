@@ -66,7 +66,7 @@ spec:
             path: /etc/localtime
         - name: log-volume
           persistentVolumeClaim:
-            claimName: dbmotion-saas
+            claimName: dbmotion-sass-log
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
@@ -74,3 +74,18 @@ spec:
       {{- with .Values.tolerations }}
       tolerations: {{ toYaml . | nindent 8 }}
       {{- end }}
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dbmotion-sass-log
+  namespace: {{ .Release.Namespace }}
+spec:
+  storageClassName: local-path
+  volumeMode: "Filesystem"
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 20Gi
