@@ -114,3 +114,13 @@ data:
   "configs": |
     {{ range .Files.Lines "conf/mysql-cluster-config.yml" }}
     {{ . }}{{ end }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mariadb-cluster-config
+  namespace: {{.Release.Namespace}}
+data:
+  "configs": |
+    {{ range .Files.Lines "conf/mariadb-cluster-config.yml" }}
+    {{ . }}{{ end }}
