@@ -166,7 +166,7 @@ data:
           proxy_pass http://squids-trade:29528;
         }
 
-        location ~* ^/api/v2/(migrate_tasks){
+        location ~* ^/api/(init|version|v2/migrate_tasks){
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
@@ -281,7 +281,7 @@ data:
         proxy_pass http://squids-trade:29528;
       }
 
-      location ~* ^/api/v2/(migrate_tasks){
+      location ~* ^/api/(init|version|v2/migrate_tasks){
         auth_basic off;
         add_header Access-Control-Allow-Origin  '$allow_origin';
         add_header Access-Control-Allow-Credentials 'true';
