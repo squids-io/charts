@@ -9,13 +9,14 @@ image:
   dbmotionSassServer:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: squids-dbmotion-saas-server
-    tag: 2.0.0
+    name: dbmotion
+    tag: dev
     containerPort: 3000
   dbmotion:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: squids-dbmotion-tool
+    name: dbmotion
+    tag: dev
 
 service:
   type: ClusterIP

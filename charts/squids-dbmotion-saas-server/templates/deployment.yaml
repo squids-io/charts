@@ -55,6 +55,8 @@ spec:
               mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
+            - mountPath: /dbmotion/log
+              name: log-volume
       volumes:
         - name: timezone
           hostPath:
@@ -62,6 +64,9 @@ spec:
         - name: localtime
           hostPath:
             path: /etc/localtime
+        - name: log-volume
+          persistentVolumeClaim:
+            claimName: dbmotion-saas
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
