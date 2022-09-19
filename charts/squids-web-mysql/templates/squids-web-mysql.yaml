@@ -1,0 +1,37 @@
+apiVersion: mysql.squids.io/v1
+kind: MysqlCluster
+metadata:
+  labels:
+    app-name: {{ .Chart.Name }}
+    squids.io/db-type: mysql
+  name: {{ .Chart.Name }}
+  namespace: {{.Release.Namespace}}
+spec:
+  clusterSpec:
+    backupImage: {{ .Values.image.repository }}/qfb-mysql-5.7:v1.0.0
+    image: {{ .Values.image.repository }}/mysql:5.7.26
+    leaderImage: {{ .Values.image.repository }}/mysqlleader:v1.0.0
+    matchLabels:
+      app-name: {{ .Chart.Name }}
+      squids.io/db-type: mysql
+    mode: HACluster
+    nodeAffinityStrategies:
+      - key: squids/cluster
+        operator: In
+        values:
+          - "squids-master"
+    restoreImage: {{ .Values.image.repository }}/qfb-mysql-5.7:v1.0.0
+    version: "5.7"
+  databaseResource:
+    resources:
+      limits:
+        cpu: "2"
+        memory: 2Gi
+      requests:
+        cpu: 500m
+        memory: 2Gi
+    storage:
+      iops: -1
+      size: 10737418240
+  replicas: {{ .Values.replicaCount }}
+  slaveReplicas: 0
