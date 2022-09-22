@@ -1,0 +1,26 @@
+apiVersion: backup.squids.io/v1
+kind: BackupPolicy
+metadata:
+  name: {{ .Chart.Name }}
+  namespace: {{ .Release.Namespace }}
+spec:
+  clusterName: {{ .Chart.Name }}
+  dbType: mysql
+  storageInterfaceType: jfs
+  backupStorageInterface:
+    jfs:
+      jfsVendor: {{ .Values.jfs.jfsVendor }}
+      bucket: {{ .Values.jfs.bucket }}
+      accessKey: {{ .Values.jfs.accessKey }}
+      secretKey: {{ .Values.jfs.secretKey }}
+  strategy:
+    cleanBackupSchedule: 0 */1 * * *
+    fullBackupSchedule: 0 0 * * 0
+    backupBinlog: true
+    binlogRetentionDays: 7
+    fullBackupSetRetentionNumber: 10
+    incrementalBackupSchedule: "0 0 * * 1,2,3,4,5,6"
+    retentionPolicy: ExpireDuration
+    backupSetExpireDuration: 7d
+    binlogBackupSchedule: "*/30 * * * *"
+  desiredPolicyStatus: Enable
