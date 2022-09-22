@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: woqu-adapter
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: woqu-adapter
+    app.kubernetes.io/name: woqu-adapter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: woqu-adapter
+      app.kubernetes.io/name: woqu-adapter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: woqu-adapter
+        app.kubernetes.io/name: woqu-adapter
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: woqu-adapter
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/woqu-adapter:w1.4
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8999
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/devops/etc/adapter.yaml
+              name: v-woqu-adapter-cm
+              subPath: adapter-yaml
+      restartPolicy: Always
+      volumes:
+        - name: v-woqu-adapter-cm
+          configMap:
+            name: woqu-adapter-cm

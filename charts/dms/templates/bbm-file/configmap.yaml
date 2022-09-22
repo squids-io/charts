@@ -1,0 +1,40 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bbm-file-cm
+  namespace: bb-system
+data:
+  bbm-file-yaml: |
+    server:
+      port: 9202
+      name: "bbmFile"
+      version: "latest"
+      ginPprof: false
+
+    storage:
+      path: "/opt/bbm_storage"
+
+    db:
+      project: "bbm"
+      driver: "postgres"
+      name: "bbm_file"
+      host: "postgres.bb-system.svc.cluster.local"
+      port: "5432"
+      user: "bobing"
+      password: "bobing"
+      charset: "utf8"
+      ssl: "disable"
+      debug: true
+
+
+    redis:
+      hostname: "redis.bb-system.svc.cluster.local"
+      database: 2
+      port: 6379
+      password: ""
+
+    log:
+      log_path: "./logs"
+      max_size: 128
+      max_age: 7
+      max_backups: 30

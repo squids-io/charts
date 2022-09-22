@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bbm-file
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/name: bbm-file
+    app.kubernetes.io/instance: bbm-file
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: bbm-file
+      app.kubernetes.io/instance: bbm-file
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: bbm-file
+        app.kubernetes.io/name: bbm-file
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: bbm-file
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/bbm-file:w1.4
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 9202
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/devops/fileSystem/config/bbm-file.yaml
+              name: v-bbm-file-cm
+              subPath: bbm-file-yaml
+            - mountPath: /opt/bbm_storage
+              name: v-pvc-bbm-file
+            - mountPath: /etc/localtime
+              name: v-time
+      restartPolicy: Always
+      volumes:
+        - name: v-pvc-bbm-file
+          persistentVolumeClaim:
+            claimName: pvc-bbm-file
+        - name: v-bbm-file-cm
+          configMap:
+            name: bbm-file-cm
+        - name: v-time
+          hostPath:
+            path: /etc/localtime

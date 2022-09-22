@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sql-exporter
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: sql-exporter
+    app.kubernetes.io/name: sql-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: sql-exporter
+      app.kubernetes.io/name: sql-exporter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: sql-exporter
+        app.kubernetes.io/name: sql-exporter
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: sql-exporter
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/sql-exporter:v1.0
+          imagePullPolicy: Always
+          ports:
+            - name: sql-exporter
+              containerPort: 9117
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/devops/exporter/sql_exporter.yaml
+              name: v-sql-exporter-cm
+              subPath: sql-exporter-yaml
+      restartPolicy: Always
+      volumes:
+        - name: v-sql-exporter-cm
+          configMap:
+            name: sql-exporter-cm

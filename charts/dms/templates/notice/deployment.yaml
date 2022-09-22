@@ -1,0 +1,35 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notice
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: notice
+    app.kubernetes.io/name: notice
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: notice
+      app.kubernetes.io/name: notice
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: notice
+        app.kubernetes.io/name: notice
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: notice
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/notice:v1.0
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 9003
+              protocol: TCP
+      restartPolicy: Always

@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: conn-pool
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: conn-pool
+    app.kubernetes.io/name: conn-pool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: conn-pool
+      app.kubernetes.io/name: conn-pool
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: conn-pool
+        app.kubernetes.io/name: conn-pool
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: conn-pool
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/conn-pool:w1.4
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 9006
+              protocol: TCP
+      restartPolicy: Always
+
+
