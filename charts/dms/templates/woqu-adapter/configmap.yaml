@@ -1,0 +1,27 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: woqu-adapter-cm
+  namespace: bb-system
+data:
+  adapter-yaml: |
+    log:
+      level: "DEBUG"
+      path: "./logs/"
+      name: "woqu_adapter.log"
+      max_size: 128
+      max_age: 7
+      max_backups:  30
+      to_console: true
+
+    model: "INFO"
+    pprof: false
+    mode: ""
+
+    services:
+      cmdb_url: "http://bbm.bb-system.svc.cluster.local:9000"
+      qfusion_url: ""
+
+    project: "squids"
+    user_sync_interval: 1800
+    cluster_sync_interval: 1800

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bbm-file
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: bbm-file
+    app.kubernetes.io/name: bbm-file
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9202
+      targetPort: bbm-file
+      protocol: TCP
+      name: bbm-file
+  selector:
+    app.kubernetes.io/instance: bbm-file
+    app.kubernetes.io/name: bbm-file

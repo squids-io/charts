@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: postgres
+    app.kubernetes.io/name: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: postgres
+      app.kubernetes.io/name: postgres
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: postgres
+        app.kubernetes.io/name: postgres
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: postgres
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/postgres:9.6-bb
+          imagePullPolicy: Always
+          env:
+            - name: POSTGRES_PASSWORD
+              value: bobing
+          ports:
+            - name: postgres
+              containerPort: 5432
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /var/lib/pgsql/9.6/data
+              name: v-pvc-bb-postgres
+      restartPolicy: Always
+      volumes:
+        - name: v-pvc-bb-postgres
+          persistentVolumeClaim:
+            claimName: pvc-bb-postgres

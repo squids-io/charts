@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: bb-nginx
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: bb-nginx
+    app.kubernetes.io/name: nginx
+spec:
+  type: NodePort
+  ports:
+    - name: bb-ngnix
+      protocol: TCP
+      port: 8888
+      targetPort: 8888
+      nodePort: 30449
+  selector:
+    app.kubernetes.io/instance: bb-nginx
+    app.kubernetes.io/name: nginx

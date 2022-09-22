@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bb-nginx
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: bb-nginx
+    app.kubernetes.io/name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: bb-nginx
+      app.kubernetes.io/name: nginx
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: bb-nginx
+        app.kubernetes.io/name: nginx
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: bb-nginx
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/nginx:w1.5
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 8888
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/devops/upload
+              name: v-pvc-bb-upload
+            - mountPath: /etc/nginx/nginx.conf
+              name: v-nginx-cm
+              subPath: nginx-conf
+            - name: v-nginx-cm
+              mountPath: /opt/devops/front/bbmConfig/index.json
+              subPath: index-json
+      restartPolicy: Always
+      volumes:
+        - name: v-pvc-bb-upload
+          persistentVolumeClaim:
+            claimName: pvc-bb-upload
+        - name: v-nginx-cm
+          configMap:
+            name: nginx-cm

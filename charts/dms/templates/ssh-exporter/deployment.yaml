@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ssh-exporter
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: ssh-exporter
+    app.kubernetes.io/name: ssh-exporter
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: ssh-exporter
+      app.kubernetes.io/name: ssh-exporter
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: ssh-exporter
+        app.kubernetes.io/name: ssh-exporter
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: ssh-exporter
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/ssh-exporter:v1.0
+          imagePullPolicy: Always
+          ports:
+            - name: ssh-exporter
+              containerPort: 9115
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/devops/bbm.yaml
+              name: v-ssh-exporter-cm
+              subPath: bbm-yaml
+      restartPolicy: Always
+      volumes:
+        - name: v-ssh-exporter-cm
+          configMap:
+            name: ssh-exporter-cm
