@@ -1,0 +1,63 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: clickhouse-exporter
+  labels:
+    clickhouse.altinity.com/chop: {{ .Chart.AppVersion }}
+    app: clickhouse-exporter
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: clickhouse-exporter
+  template:
+    metadata:
+      labels:
+        app: clickhouse-exporter
+      annotations:
+        prometheus.io/port: '8888'
+        prometheus.io/scrape: 'true'
+    spec:
+      serviceAccountName: clickhouse-exporter
+      containers:
+        - name: metrics-exporter
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/{{.Values.image.name}}:{{.Values.image.tag}}
+          imagePullPolicy: Always
+          volumeMounts:
+            - name: etc-clickhouse-exporter-folder
+              mountPath: /etc/clickhouse-operator
+            - name: etc-clickhouse-exporter-confd-folder
+              mountPath: /etc/clickhouse-operator/conf.d
+            - name: etc-clickhouse-exporter-configd-folder
+              mountPath: /etc/clickhouse-operator/config.d
+            - name: etc-clickhouse-exporter-templatesd-folder
+              mountPath: /etc/clickhouse-operator/templates.d
+            - name: etc-clickhouse-exporter-usersd-folder
+              mountPath: /etc/clickhouse-operator/users.d
+          ports:
+            - containerPort: 8888
+              name: metrics
+      volumes:
+        - name: etc-clickhouse-exporter-folder
+          configMap:
+            name: etc-clickhouse-exporter-files
+        - name: etc-clickhouse-exporter-confd-folder
+          configMap:
+            name: etc-clickhouse-exporter-confd-files
+        - name: etc-clickhouse-exporter-configd-folder
+          configMap:
+            name: etc-clickhouse-exporter-configd-files
+        - name: etc-clickhouse-exporter-templatesd-folder
+          configMap:
+            name: etc-clickhouse-exporter-templatesd-files
+        - name: etc-clickhouse-exporter-usersd-folder
+          configMap:
+            name: etc-clickhouse-exporter-usersd-files
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
