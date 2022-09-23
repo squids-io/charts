@@ -11,7 +11,7 @@ kind: CustomResourceDefinition
 metadata:
   name: clickhouseinstallations.clickhouse.altinity.com
   labels:
-    clickhouse.altinity.com/chop: v1.0.0
+    clickhouse.altinity.com/chop: {{.Chart.AppVersion}}
 spec:
   group: clickhouse.altinity.com
   scope: Namespaced
@@ -1359,7 +1359,7 @@ kind: CustomResourceDefinition
 metadata:
   name: clickhouseinstallationtemplates.clickhouse.altinity.com
   labels:
-    clickhouse.altinity.com/chop: v1.0.0
+    clickhouse.altinity.com/chop: {{.Chart.AppVersion}}
 spec:
   group: clickhouse.altinity.com
   scope: Namespaced
@@ -2709,7 +2709,7 @@ kind: CustomResourceDefinition
 metadata:
   name: clickhouseoperatorconfigurations.clickhouse.altinity.com
   labels:
-    clickhouse.altinity.com/chop: v1.0.0
+    clickhouse.altinity.com/chop: {{.Chart.AppVersion}}
 spec:
   group: clickhouse.altinity.com
   scope: Namespaced
