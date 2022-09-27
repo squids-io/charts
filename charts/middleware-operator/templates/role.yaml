@@ -25,6 +25,21 @@ rules:
       - get
       - list
       - watch
+      - patch
+  - apiGroups:
+      - clickhouse.altinity.com
+    resources:
+      - clickhouseinstallations/finalizers
+    verbs:
+      - update
+  - apiGroups:
+      - clickhouse.altinity.com
+    resources:
+      - clickhouseinstallations/status
+    verbs:
+      - get
+      - patch
+      - update
   - apiGroups:
       - apps
     resources:
