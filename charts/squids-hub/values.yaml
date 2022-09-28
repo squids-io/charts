@@ -5,24 +5,36 @@
 replicaCount: 1
 
 image:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
-  pullPolicy: Always
+  name: hub
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1
   containerPort: 29527
+  hub:
+    name: hub
+    tag: v1.0.0
+  terraformProvider:
+    name: hub-terraform-provider
+    tag: v1.0.0
 
 service:
   type: ClusterIP
   port: 29527
 
 #squids config
-env: pro
+
+# env: test pro
+env: test
 server:
   host: localhost
-mysql: 
-  username: squids
+mysql:
+  username: squidsRoot9527
   password: squids123456
+phoenix:
+  domain: phoenix.squids-monitor.svc.cluster.local
+dms:
+  domain: localhost
 
 imagePullSecrets: []
 nameOverride: ""
@@ -89,6 +101,17 @@ autoscaling:
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
 
-affinity: {}
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"

@@ -4,14 +4,13 @@
 
 replicaCount: 1
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 image:
   pullPolicy: IfNotPresent
-  leaderTag: v1.0.0
   operator:
-    operator: v1.0.0
+    operator: v1.0.2
 
 nodeSelector:
   node-role.kubernetes.io/master: ""

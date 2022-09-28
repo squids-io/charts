@@ -2,17 +2,6 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: redis-conf
-  namespace: squids
+  namespace: {{.Release.Namespace}}
 data:
-  redis.conf: |
-    bind 0.0.0.0
-    port 6379
-    tcp-backlog 511
-    timeout 0
-    daemonize yes
-    dir /data/
-    pidfile .pid
-    appendonly yes
-    pidfile /data/log/redis-6379.pid
-    logfile "/data/log/redis-6379.log"
-    protected-mode no
+{{ (.Files.Glob "conf/redis.conf").AsConfig | indent 2 }}

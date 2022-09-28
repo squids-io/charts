@@ -1,0 +1,1448 @@
+"10.3.13":
+ - uuid: 849d534e1ebd11ed9699f02f74a088c2
+   name: aria_pagecache_buffer_size
+   defaultValue: 16777216
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 131072~268435456
+   description: The size of the buffer used for index blocks for Aria tables
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d534e1ebd11ed969af02f74a088c2
+   name: aria_sort_buffer_size
+   defaultValue: 2097152
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 4096~16777216
+   description: The buffer that is allocated when sorting the index when doing a REPAIR or when creating indexes with CREATE INDEX or ALTER TABLE.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d534e1ebd11ed969bf02f74a088c2
+   name: auto_increment_increment
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~65535
+   description: Auto-increment columns are incremented by this
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d534e1ebd11ed969cf02f74a088c2
+   name: auto_increment_offset
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~65535
+   description: Offset added to Auto-increment columns. Used when auto-increment-increment != 1
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d534e1ebd11ed969df02f74a088c2
+   name: back_log
+   defaultValue: 3000
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~65535
+   description: The number of outstanding connection requests MySQL can have. This comes into play when the main MySQL thread gets very many connection requests in a very short time
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d534e1ebd11ed969ef02f74a088c2
+   name: binlog_cache_size
+   defaultValue: 2M
+   type: int
+   blockSize: 4096
+   needRestart: false
+   range: 4096~16777216
+   description: The size of the transactional cache for updates to transactional engines for the binary log. If you often use transactions containing many statements, you can increase this to get more performance
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d534e1ebd11ed969ff02f74a088c2
+   name: binlog_checksum
+   defaultValue: CRC32
+   type: string
+   needRestart: true
+   range: CRC32|NONE
+   description: Type of BINLOG_CHECKSUM_ALG. Include checksum for log events in the binary log. Possible values are NONE and CRC32, default is CRC32.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d67ae1ebd11ed969ff02f74a088c2
+   name: binlog_row_image
+   defaultValue: full
+   type: string
+   needRestart: false
+   range: full|minimal
+   description: 'Controls whether rows should be logged in ''FULL'', ''NOBLOB'' or ''MINIMAL'' formats. ''FULL'', means that all columns in the before and after image are logged. ''NOBLOB'', means that mysqld avoids logging blob columns whenever possible (eg, blob column was not changed or is not part of primary key). ''MINIMAL'', means that a PK equivalent (PK columns or full row if there is no PK in the table) is logged in the before image, and only changed columns are logged in the after image. (Default: FULL).'
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d67ae1ebd11ed96a0f02f74a088c2
+   name: binlog_stmt_cache_size
+   defaultValue: 32768
+   type: int
+   blockSize: 4096
+   needRestart: false
+   range: 4096~16777216
+   description: The size of the statement cache for updates to non-transactional engines for the binary log. If you often use statements updating a great number of rows, you can increase this to get more performance
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d67ae1ebd11ed96a2f02f74a088c2
+   name: concurrent_insert
+   defaultValue: AUTO
+   type: string
+   needRestart: false
+   range: NEVER|AUTO|ALWAYS
+   description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d7c031ebd11ed96a2f02f74a088c2
+   name: connect_timeout
+   defaultValue: 10
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~3600
+   description: The number of seconds the mysqld server is waiting for a connect packet before responding with 'Bad handshake'
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d7c031ebd11ed96a3f02f74a088c2
+   name: default_storage_engine
+   defaultValue: InnoDB
+   type: string
+   needRestart: true
+   range: InnoDB|innodb
+   description: The default storage engine for new tables
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d7c031ebd11ed96a5f02f74a088c2
+   name: delayed_insert_limit
+   defaultValue: 100
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967295
+   description: After inserting delayed_insert_limit rows, the INSERT DELAYED handler will check if there are any SELECT statements pending. If so, it allows these to execute before continuing. This variable is deprecated along with INSERT DELAYED.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96a6f02f74a088c2
+   name: delayed_queue_size
+   defaultValue: 1000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967295
+   description: What size queue (in rows) should be allocated for handling INSERT DELAYED. If the queue becomes full, any client that does INSERT DELAYED will wait until there is room in the queue again. This variable is deprecated along with INSERT DELAYED.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96a7f02f74a088c2
+   name: delay_key_write
+   defaultValue: ON
+   type: string
+   needRestart: false
+   range: ON|OFF|ALL
+   description: Type of DELAY_KEY_WRITE
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96a8f02f74a088c2
+   name: div_precision_increment
+   defaultValue: 4
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~30
+   description: Precision of the result of '/' operator will be increased on that value
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96a9f02f74a088c2
+   name: event_scheduler
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description:
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96abf02f74a088c2
+   name: ft_query_expansion_limit
+   defaultValue: 20
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 0~1000
+   description:
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96acf02f74a088c2
+   name: group_concat_max_len
+   defaultValue: 1024
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 4~1844674407370954752
+   description: 用于控制group_concat()函数能够连接的最大结果集字节长度。
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849d903f1ebd11ed96adf02f74a088c2
+   name: innodb_adaptive_hash_index
+   defaultValue: ON
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description:
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849da4961ebd11ed96adf02f74a088c2
+   name: innodb_autoinc_lock_mode
+   defaultValue: 1
+   type: int
+   needRestart: true
+   range: 0|1|2
+   description:  |
+     0:传统模式----所有的insert语句(insert like)都要在语句开始的时候得到一个表级的auto_inc锁，在语句结束的时候才释放这把锁。
+     1:连续模式----对simple insert做了优化，可确定mysql可以一次生成的连续值。此模式auto_inc锁不要一直保持到语句的结束，只要语句得到了相应的值后就可以提前释放锁。
+     2:交错模式----没有了auto_inc锁，所以这个模式下的性能是最好的；但是它也有一个问题，就是对于同一个语句来说它所得到的auto_incremant值可能不是连续的。
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849da4961ebd11ed96aef02f74a088c2
+   name: innodb_concurrency_tickets
+   defaultValue: 5000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0
+   description: Enable the event scheduler. Possible values are ON, OFF, and DISABLED (keep the event scheduler completely deactivated, it cannot be activated run-time)
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849da4961ebd11ed96b0f02f74a088c2
+   name: innodb_ft_min_token_size
+   defaultValue: 3
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 0~16
+   description:
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849da4961ebd11ed96b1f02f74a088c2
+   name: innodb_lock_wait_timeout
+   defaultValue: 50
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1073741824
+   description: InnoDB Fulltext search minimum token size in characters
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db85b1ebd11ed96b1f02f74a088c2
+   name: innodb_max_dirty_pages_pct
+   defaultValue: 75
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 50~90
+   description: Percentage of dirty pages allowed in bufferpool.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db9241ebd11ed96b1f02f74a088c2
+   name: innodb_old_blocks_pct
+   defaultValue: 37
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 5~95
+   description: Percentage of the buffer pool to reserve for 'old' blocks.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db9241ebd11ed96b2f02f74a088c2
+   name: innodb_old_blocks_time
+   defaultValue: 1000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~1024
+   description: Move blocks to the 'new' end of the buffer pool if the first access was at least this many milliseconds ago. The timeout is disabled if 0.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db9241ebd11ed96b3f02f74a088c2
+   name: innodb_online_alter_log_max_size
+   defaultValue: 134217728
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 134217728~2147483647
+   description: Maximum modification log file size for online index creation
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db9241ebd11ed96b4f02f74a088c2
+   name: innodb_print_all_deadlocks
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: OFF|ON
+   description: Print all deadlocks to MySQL error log (off by default)
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db9241ebd11ed96b5f02f74a088c2
+   name: innodb_purge_batch_size
+   defaultValue: 300
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~5000
+   description: Number of UNDO log pages to purge in one batch from the history list.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849db9241ebd11ed96b6f02f74a088c2
+   name: innodb_purge_threads
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~32
+   description: Purge threads can be from 1 to 32. Default is 4.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849dcce41ebd11ed96b6f02f74a088c2
+   name: innodb_read_ahead_threshold
+   defaultValue: 56
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~64
+   description: Number of pages that must be accessed sequentially for InnoDB to trigger a readahead.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849dcdc31ebd11ed96b6f02f74a088c2
+   name: innodb_read_io_threads
+   defaultValue: 4
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~64
+   description: Number of background read I/O threads in InnoDB.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849dcdc31ebd11ed96b7f02f74a088c2
+   name: innodb_rollback_on_timeout
+   defaultValue: OFF
+   type: string
+   needRestart: true
+   range: OFF|ON
+   description: Roll back the complete transaction on lock wait timeout, for 4.x compatibility (disabled by default)
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849dcdc31ebd11ed96b8f02f74a088c2
+   name: innodb_spin_wait_delay
+   defaultValue: 6
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~6000
+   description: The maximum delay between polls for a spin lock. The low-level implementation of this mechanism varies depending on the combination of hardware and operating system, so the delay does not correspond to a fixed time interval. For more information, see Section 14.6.10, “Configuring Spin Lock Polling”.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849dcdc31ebd11ed96b9f02f74a088c2
+   name: innodb_stats_method
+   defaultValue: nulls_equal
+   type: string
+   needRestart: false
+   range: nulls_equal|nulls_unequal|nulls_ignored
+   description: Specifies how InnoDB index statistics collection code should treat NULLs. Possible values are NULLS_EQUAL (default), NULLS_UNEQUAL and NULLS_IGNORED
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849de1891ebd11ed96b9f02f74a088c2
+   name: innodb_stats_on_metadata
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: Enable statistics gathering for metadata commands such as SHOW TABLE STATUS for tables that use transient statistics (off by default)
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849de23c1ebd11ed96b9f02f74a088c2
+   name: innodb_stats_sample_pages
+   defaultValue: 8
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967296
+   description: Deprecated, use innodb_stats_transient_sample_pages instead
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849de23c1ebd11ed96bbf02f74a088c2
+   name: innodb_sync_spin_loops
+   defaultValue: 30
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~4294967295
+   description: The number of times a thread waits for an InnoDB mutex to be freed before the thread is suspended.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849de23c1ebd11ed96bcf02f74a088c2
+   name: innodb_table_locks
+   defaultValue: ON
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: Enable InnoDB locking in LOCK TABLES
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849de23c1ebd11ed96bdf02f74a088c2
+   name: innodb_thread_concurrency
+   defaultValue: 0
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~128
+   description: Helps in performance tuning in heavily concurrent environments. Sets the maximum number of threads allowed inside InnoDB. Value 0 will disable the thread throttling.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849df6901ebd11ed96bef02f74a088c2
+   name: innodb_write_io_threads
+   defaultValue: 8
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~64
+   description: Number of background write I/O threads in InnoDB.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849df6901ebd11ed96bff02f74a088c2
+   name: interactive_timeout
+   defaultValue: 7200
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 10~86400
+   description: The number of seconds the server waits for activity on an interactive connection before closing it
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849df6901ebd11ed96c0f02f74a088c2
+   name: join_buffer_size
+   defaultValue: 2M
+   type: int
+   blockSize: 128
+   needRestart: false
+   range: 128~4294967295
+   description: The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans. The block size is 128.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849df6901ebd11ed96c1f02f74a088c2
+   name: key_cache_age_threshold
+   defaultValue: 300
+   type: int
+   blockSize: 100
+   needRestart: false
+   range: 100~4294967295
+   description: This characterizes the number of hits a hot block has to be untouched until it is considered aged enough to be downgraded to a warm block. This specifies the percentage ratio of that number of hits to the total number of blocks in key cache
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849df6901ebd11ed96c2f02f74a088c2
+   name: key_cache_block_size
+   defaultValue: 1024
+   type: int
+   blockSize: 512
+   needRestart: false
+   range: 512~16384
+   description: The default size of key cache blocks. The block size is 512.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e0ae81ebd11ed96c3f02f74a088c2
+   name: log_queries_not_using_indexes
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: Log queries that are executed without benefit of any index to the slow log if it is open
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e0ae81ebd11ed96c4f02f74a088c2
+   name: long_query_time
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0.03~31536000
+   description: Log all queries that have taken more than long_query_time seconds to execute to file. The argument will be treated as a decimal value with microsecond precision
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e0ae81ebd11ed96c5f02f74a088c2
+   name: lower_case_table_names
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 0|1
+   description: If set to 1 table names are stored in lowercase on disk and table names will be case-insensitive. Should be set to 2 if you are using a case insensitive file system
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e0ae81ebd11ed96c6f02f74a088c2
+   name: low_priority_updates
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: INSERT/DELETE/UPDATE has lower priority than selects
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e1f2c1ebd11ed96c6f02f74a088c2
+   name: max_connect_errors
+   defaultValue: 1000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967295
+   description: If there is more than this number of interrupted connections from a host this host will be blocked from further connections
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e33671ebd11ed96c6f02f74a088c2
+   name: max_heap_table_size
+   defaultValue: 16777216
+   type: int
+   blockSize: 1024
+   needRestart: false
+   range: 16384~4294967295
+   description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The block size is 1024.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e33671ebd11ed96c7f02f74a088c2
+   name: max_length_for_sort_data
+   defaultValue: 1024
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~838860
+   description: Max number of bytes in sorted records
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e33671ebd11ed96c9f02f74a088c2
+   name: max_write_lock_count
+   defaultValue: 102400
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~102400
+   description: After this many write locks, allow some read locks to run in between
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e33671ebd11ed96caf02f74a088c2
+   name: myisam_sort_buffer_size
+   defaultValue: 262144
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 262144~16777216
+   description: The buffer that is allocated when sorting the index when doing a REPAIR or when creating indexes with CREATE INDEX or ALTER TABLE
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e33671ebd11ed96cbf02f74a088c2
+   name: net_read_timeout
+   defaultValue: 30
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~31536000
+   description: Number of seconds to wait for more data from a connection before aborting the read
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e47d01ebd11ed96ccf02f74a088c2
+   name: net_write_timeout
+   defaultValue: 60
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~31536000
+   description: Number of seconds to wait for a block to be written to a connection before aborting the write
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e47d01ebd11ed96cef02f74a088c2
+   name: performance_schema
+   defaultValue: ON
+   type: string
+   needRestart: true
+   range: ON|OFF
+   description: Enable/disable the performance schema.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e47d01ebd11ed96cff02f74a088c2
+   name: query_alloc_block_size
+   defaultValue: 8192
+   type: int
+   blockSize: 1024
+   needRestart: false
+   range: 1024~16384
+   description: Allocation block size for query parsing and execution. The block size is 1024.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e47d01ebd11ed96d0f02f74a088c2
+   name: query_cache_limit
+   defaultValue: 1048576
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1048576
+   description: Don't cache results that are bigger than this
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e47d01ebd11ed96d1f02f74a088c2
+   name: query_cache_size
+   defaultValue: 0
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~104857600
+   description: The memory allocated to store results from old queries RDS内存管理说明
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e47d01ebd11ed96d3f02f74a088c2
+   name: query_prealloc_size
+   defaultValue: 8192
+   type: int
+   blockSize: 1024
+   needRestart: false
+   range: 8192~1048576
+   description: Persistent buffer for query parsing and execution
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e5d8a1ebd11ed96d3f02f74a088c2
+   name: read_buffer_size
+   defaultValue: 1M
+   type: int
+   blockSize: 4096
+   needRestart: false
+   range: 8200~2147479552
+   description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e5d8a1ebd11ed96d4f02f74a088c2
+   name: read_rnd_buffer_size
+   defaultValue: 262144
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 8200~2147483647
+   description: This variable is used for reads from MyISAM tables, and, for any storage engine, for Multi-Range Read optimization
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e5d8a1ebd11ed96d6f02f74a088c2
+   name: slow_launch_time
+   defaultValue: 2
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1024
+   description: If creating the thread takes longer than this value (in seconds), the Slow_launch_threads counter will be incremented
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e723e1ebd11ed96d6f02f74a088c2
+   name: sort_buffer_size
+   defaultValue: 2M
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 32768~4294967295
+   description: Each session that must perform a sort allocates a buffer of this size.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e723e1ebd11ed96d7f02f74a088c2
+   name: sql_mode
+   defaultValue: STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+   type: string
+   needRestart: false
+   range: EMPTY_STR|REAL_AS_FLOAT|PIPES_AS_CONCAT|ANSI_QUOTES|IGNORE_SPACE|ONLY_FULL_GROUP_BY|NO_UNSIGNED_SUBTRACTION|NO_DIR_IN_CREATE|POSTGRESQL|ORACLE|MSSQL|DB2|MAXDB|NO_KEY_OPTIONS|NO_TABLE_OPTIONS|NO_FIELD_OPTIONS|MYSQL323|MYSQL40|ANSI|NO_AUTO_VALUE_ON_ZERO|NO_BACKSLASH_ESCAPES|STRICT_TRANS_TABLES|STRICT_ALL_TABLES|NO_ZERO_IN_DATE|NO_ZERO_DATE|ALLOW_INVALID_DATES|ERROR_FOR_DIVISION_BY_ZERO|TRADITIONAL|HIGH_NOT_PRECEDENCE|NO_ENGINE_SUBSTITUTION|PAD_CHAR_TO_FULL_LENGTH
+   description: 'Syntax: sql-mode=mode[,mode[,mode...]]. See the manual for the complete list of valid sql modes'
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e86b21ebd11ed96daf02f74a088c2
+   name: tmp_table_size
+   defaultValue: 2097152
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 262144~67108864
+   description: If an internal in-memory temporary table exceeds this size, MySQL will automatically convert it to an on-disk MyISAM table
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e86b21ebd11ed96dbf02f74a088c2
+   name: transaction_isolation
+   defaultValue: READ-COMMITTED
+   type: string
+   needRestart: true
+   range: READ-UNCOMMITTED|READ-COMMITTED|REPEATABLE-READ|SERIALIZABLE
+   description: Default transaction isolation level
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e86b21ebd11ed96dcf02f74a088c2
+   name: wait_timeout
+   defaultValue: 86400
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~31536000
+   description: The number of seconds the server waits for activity on a connection before closing it
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e86b21ebd11ed96ddf02f74a088c2
+   name: explicit_defaults_for_timestamp
+   defaultValue: ON
+   type: string
+   needRestart: true
+   range: OFF|ON
+   description: 此系统变量确定服务器是否对列中的默认值和NULL-value处理，启用某些非标准行为TIMESTAMP.
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e86b21ebd11ed96def02f74a088c2
+   name: innodb_sort_buffer_size
+   defaultValue: 1048576
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 65536~67108864
+   description: 指定在创建InnoDB索引期间用于对数据进行排序的排序缓冲区的大小。指定的大小定义了读入内存以进行内部排序然后写出到磁盘的数据量。该过程称为“ 运行 ”。在合并阶段，将读取并合并指定大小的缓冲区对。设置越大，运行和合并的次数越少。
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e9b031ebd11ed96def02f74a088c2
+   name: sync_binlog
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1000
+   description: 控制MySQL二进制日志同步到磁盘的频率。参数sync_binlog=[N]，如果N为1，表示采用同步写磁盘的方式来写二进制日志，每次事务提交时就会刷新binlog到磁盘；如果N为0，表示刷新binlog时间点由操作系统自身来决定，操作系统自身会每隔一段时间就会刷新系统缓存到磁盘；如果N>1，表示每写入N次系统缓存就执行一次写入磁盘并刷新的操作。如果不设置1，有数据丢失风险。
+   engine: mariadb
+   version: 10.3.13
+ - uuid: 849e9b031ebd11ed96dff02f74a088c2
+   name: innodb_flush_log_at_trx_commit
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0|1|2
+   description: 控制MySQL将事务日志同步到磁盘的频率。参数innodb_flush_log_at_trx_commit=[N]，如果N为1，表示事务提交时，把事务日志从缓存区写到日志文件中，并且立刻写入到磁盘上。如果N为0，表示每秒写入一次日志并将其刷新到磁盘，未刷新日志的事务可能会在崩溃中丢失。如果N为2，表示事务提交时，把事务日志从缓存区写到日志文件中，但不是立刻写入到磁盘上，而是大约每秒一次磁盘IO缓存刷新操作，如果写入前系统崩溃，就会导致最后1秒的日志丢失。如果不设置1，有数据丢失风险。
+   engine: mariadb
+   version: 10.3.13
+"10.3.35":
+ - uuid: 849d534e1ebd11ed9699f02f74a088c2
+   name: aria_pagecache_buffer_size
+   defaultValue: 16777216
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 131072~268435456
+   description: The size of the buffer used for index blocks for Aria tables
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d534e1ebd11ed969af02f74a088c2
+   name: aria_sort_buffer_size
+   defaultValue: 2097152
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 4096~16777216
+   description: The buffer that is allocated when sorting the index when doing a REPAIR or when creating indexes with CREATE INDEX or ALTER TABLE.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d534e1ebd11ed969bf02f74a088c2
+   name: auto_increment_increment
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~65535
+   description: Auto-increment columns are incremented by this
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d534e1ebd11ed969cf02f74a088c2
+   name: auto_increment_offset
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~65535
+   description: Offset added to Auto-increment columns. Used when auto-increment-increment != 1
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d534e1ebd11ed969df02f74a088c2
+   name: back_log
+   defaultValue: 3000
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~65535
+   description: The number of outstanding connection requests MySQL can have. This comes into play when the main MySQL thread gets very many connection requests in a very short time
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d534e1ebd11ed969ef02f74a088c2
+   name: binlog_cache_size
+   defaultValue: 2M
+   type: int
+   blockSize: 4096
+   needRestart: false
+   range: 4096~16777216
+   description: The size of the transactional cache for updates to transactional engines for the binary log. If you often use transactions containing many statements, you can increase this to get more performance
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d534e1ebd11ed969ff02f74a088c2
+   name: binlog_checksum
+   defaultValue: CRC32
+   type: string
+   needRestart: true
+   range: CRC32|NONE
+   description: Type of BINLOG_CHECKSUM_ALG. Include checksum for log events in the binary log. Possible values are NONE and CRC32, default is CRC32.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d67ae1ebd11ed969ff02f74a088c2
+   name: binlog_row_image
+   defaultValue: full
+   type: string
+   needRestart: false
+   range: full|minimal
+   description: 'Controls whether rows should be logged in ''FULL'', ''NOBLOB'' or ''MINIMAL'' formats. ''FULL'', means that all columns in the before and after image are logged. ''NOBLOB'', means that mysqld avoids logging blob columns whenever possible (eg, blob column was not changed or is not part of primary key). ''MINIMAL'', means that a PK equivalent (PK columns or full row if there is no PK in the table) is logged in the before image, and only changed columns are logged in the after image. (Default: FULL).'
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d67ae1ebd11ed96a0f02f74a088c2
+   name: binlog_stmt_cache_size
+   defaultValue: 32768
+   type: int
+   blockSize: 4096
+   needRestart: false
+   range: 4096~16777216
+   description: The size of the statement cache for updates to non-transactional engines for the binary log. If you often use statements updating a great number of rows, you can increase this to get more performance
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d67ae1ebd11ed96a2f02f74a088c2
+   name: concurrent_insert
+   defaultValue: AUTO
+   type: string
+   needRestart: false
+   range: NEVER|AUTO|ALWAYS
+   description: Use concurrent insert with MyISAM. Possible values are NEVER, AUTO, ALWAYS
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d7c031ebd11ed96a2f02f74a088c2
+   name: connect_timeout
+   defaultValue: 10
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~3600
+   description: The number of seconds the mysqld server is waiting for a connect packet before responding with 'Bad handshake'
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d7c031ebd11ed96a3f02f74a088c2
+   name: default_storage_engine
+   defaultValue: InnoDB
+   type: string
+   needRestart: true
+   range: InnoDB|innodb
+   description: The default storage engine for new tables
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d7c031ebd11ed96a5f02f74a088c2
+   name: delayed_insert_limit
+   defaultValue: 100
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967295
+   description: After inserting delayed_insert_limit rows, the INSERT DELAYED handler will check if there are any SELECT statements pending. If so, it allows these to execute before continuing. This variable is deprecated along with INSERT DELAYED.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96a6f02f74a088c2
+   name: delayed_queue_size
+   defaultValue: 1000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967295
+   description: What size queue (in rows) should be allocated for handling INSERT DELAYED. If the queue becomes full, any client that does INSERT DELAYED will wait until there is room in the queue again. This variable is deprecated along with INSERT DELAYED.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96a7f02f74a088c2
+   name: delay_key_write
+   defaultValue: ON
+   type: string
+   needRestart: false
+   range: ON|OFF|ALL
+   description: Type of DELAY_KEY_WRITE
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96a8f02f74a088c2
+   name: div_precision_increment
+   defaultValue: 4
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~30
+   description: Precision of the result of '/' operator will be increased on that value
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96a9f02f74a088c2
+   name: event_scheduler
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description:
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96abf02f74a088c2
+   name: ft_query_expansion_limit
+   defaultValue: 20
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 0~1000
+   description:
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96acf02f74a088c2
+   name: group_concat_max_len
+   defaultValue: 1024
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 4~1844674407370954752
+   description: 用于控制group_concat()函数能够连接的最大结果集字节长度。
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849d903f1ebd11ed96adf02f74a088c2
+   name: innodb_adaptive_hash_index
+   defaultValue: ON
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description:
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849da4961ebd11ed96adf02f74a088c2
+   name: innodb_autoinc_lock_mode
+   defaultValue: 1
+   type: int
+   needRestart: true
+   range: 0|1|2
+   description:  |
+     0:传统模式----所有的insert语句(insert like)都要在语句开始的时候得到一个表级的auto_inc锁，在语句结束的时候才释放这把锁。
+     1:连续模式----对simple insert做了优化，可确定mysql可以一次生成的连续值。此模式auto_inc锁不要一直保持到语句的结束，只要语句得到了相应的值后就可以提前释放锁。
+     2:交错模式----没有了auto_inc锁，所以这个模式下的性能是最好的；但是它也有一个问题，就是对于同一个语句来说它所得到的auto_incremant值可能不是连续的。
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849da4961ebd11ed96aef02f74a088c2
+   name: innodb_concurrency_tickets
+   defaultValue: 5000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0
+   description: Enable the event scheduler. Possible values are ON, OFF, and DISABLED (keep the event scheduler completely deactivated, it cannot be activated run-time)
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849da4961ebd11ed96b0f02f74a088c2
+   name: innodb_ft_min_token_size
+   defaultValue: 3
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 0~16
+   description:
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849da4961ebd11ed96b1f02f74a088c2
+   name: innodb_lock_wait_timeout
+   defaultValue: 50
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1073741824
+   description: InnoDB Fulltext search minimum token size in characters
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db85b1ebd11ed96b1f02f74a088c2
+   name: innodb_max_dirty_pages_pct
+   defaultValue: 75
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 50~90
+   description: Percentage of dirty pages allowed in bufferpool.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db9241ebd11ed96b1f02f74a088c2
+   name: innodb_old_blocks_pct
+   defaultValue: 37
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 5~95
+   description: Percentage of the buffer pool to reserve for 'old' blocks.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db9241ebd11ed96b2f02f74a088c2
+   name: innodb_old_blocks_time
+   defaultValue: 1000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~1024
+   description: Move blocks to the 'new' end of the buffer pool if the first access was at least this many milliseconds ago. The timeout is disabled if 0.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db9241ebd11ed96b3f02f74a088c2
+   name: innodb_online_alter_log_max_size
+   defaultValue: 134217728
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 134217728~2147483647
+   description: Maximum modification log file size for online index creation
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db9241ebd11ed96b4f02f74a088c2
+   name: innodb_print_all_deadlocks
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: OFF|ON
+   description: Print all deadlocks to MySQL error log (off by default)
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db9241ebd11ed96b5f02f74a088c2
+   name: innodb_purge_batch_size
+   defaultValue: 300
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~5000
+   description: Number of UNDO log pages to purge in one batch from the history list.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849db9241ebd11ed96b6f02f74a088c2
+   name: innodb_purge_threads
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~32
+   description: Purge threads can be from 1 to 32. Default is 4.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849dcce41ebd11ed96b6f02f74a088c2
+   name: innodb_read_ahead_threshold
+   defaultValue: 56
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~64
+   description: Number of pages that must be accessed sequentially for InnoDB to trigger a readahead.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849dcdc31ebd11ed96b6f02f74a088c2
+   name: innodb_read_io_threads
+   defaultValue: 4
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~64
+   description: Number of background read I/O threads in InnoDB.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849dcdc31ebd11ed96b7f02f74a088c2
+   name: innodb_rollback_on_timeout
+   defaultValue: OFF
+   type: string
+   needRestart: true
+   range: OFF|ON
+   description: Roll back the complete transaction on lock wait timeout, for 4.x compatibility (disabled by default)
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849dcdc31ebd11ed96b8f02f74a088c2
+   name: innodb_spin_wait_delay
+   defaultValue: 6
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~6000
+   description: The maximum delay between polls for a spin lock. The low-level implementation of this mechanism varies depending on the combination of hardware and operating system, so the delay does not correspond to a fixed time interval. For more information, see Section 14.6.10, “Configuring Spin Lock Polling”.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849dcdc31ebd11ed96b9f02f74a088c2
+   name: innodb_stats_method
+   defaultValue: nulls_equal
+   type: string
+   needRestart: false
+   range: nulls_equal|nulls_unequal|nulls_ignored
+   description: Specifies how InnoDB index statistics collection code should treat NULLs. Possible values are NULLS_EQUAL (default), NULLS_UNEQUAL and NULLS_IGNORED
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849de1891ebd11ed96b9f02f74a088c2
+   name: innodb_stats_on_metadata
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: Enable statistics gathering for metadata commands such as SHOW TABLE STATUS for tables that use transient statistics (off by default)
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849de23c1ebd11ed96b9f02f74a088c2
+   name: innodb_stats_sample_pages
+   defaultValue: 8
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967296
+   description: Deprecated, use innodb_stats_transient_sample_pages instead
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849de23c1ebd11ed96bbf02f74a088c2
+   name: innodb_sync_spin_loops
+   defaultValue: 30
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~4294967295
+   description: The number of times a thread waits for an InnoDB mutex to be freed before the thread is suspended.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849de23c1ebd11ed96bcf02f74a088c2
+   name: innodb_table_locks
+   defaultValue: ON
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: Enable InnoDB locking in LOCK TABLES
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849de23c1ebd11ed96bdf02f74a088c2
+   name: innodb_thread_concurrency
+   defaultValue: 0
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~128
+   description: Helps in performance tuning in heavily concurrent environments. Sets the maximum number of threads allowed inside InnoDB. Value 0 will disable the thread throttling.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849df6901ebd11ed96bef02f74a088c2
+   name: innodb_write_io_threads
+   defaultValue: 8
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 1~64
+   description: Number of background write I/O threads in InnoDB.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849df6901ebd11ed96bff02f74a088c2
+   name: interactive_timeout
+   defaultValue: 7200
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 10~86400
+   description: The number of seconds the server waits for activity on an interactive connection before closing it
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849df6901ebd11ed96c0f02f74a088c2
+   name: join_buffer_size
+   defaultValue: 2M
+   type: int
+   blockSize: 128
+   needRestart: false
+   range: 128~4294967295
+   description: The minimum size of the buffer that is used for plain index scans, range index scans, and joins that do not use indexes and thus perform full table scans. The block size is 128.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849df6901ebd11ed96c1f02f74a088c2
+   name: key_cache_age_threshold
+   defaultValue: 300
+   type: int
+   blockSize: 100
+   needRestart: false
+   range: 100~4294967295
+   description: This characterizes the number of hits a hot block has to be untouched until it is considered aged enough to be downgraded to a warm block. This specifies the percentage ratio of that number of hits to the total number of blocks in key cache
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849df6901ebd11ed96c2f02f74a088c2
+   name: key_cache_block_size
+   defaultValue: 1024
+   type: int
+   blockSize: 512
+   needRestart: false
+   range: 512~16384
+   description: The default size of key cache blocks. The block size is 512.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e0ae81ebd11ed96c3f02f74a088c2
+   name: log_queries_not_using_indexes
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: Log queries that are executed without benefit of any index to the slow log if it is open
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e0ae81ebd11ed96c4f02f74a088c2
+   name: long_query_time
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0.03~31536000
+   description: Log all queries that have taken more than long_query_time seconds to execute to file. The argument will be treated as a decimal value with microsecond precision
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e0ae81ebd11ed96c5f02f74a088c2
+   name: lower_case_table_names
+   defaultValue: 1
+   type: string
+   needRestart: true
+   range: 0|1
+   description: If set to 1 table names are stored in lowercase on disk and table names will be case-insensitive. Should be set to 2 if you are using a case insensitive file system
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e0ae81ebd11ed96c6f02f74a088c2
+   name: low_priority_updates
+   defaultValue: OFF
+   type: string
+   needRestart: false
+   range: ON|OFF
+   description: INSERT/DELETE/UPDATE has lower priority than selects
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e1f2c1ebd11ed96c6f02f74a088c2
+   name: max_connect_errors
+   defaultValue: 1000
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~4294967295
+   description: If there is more than this number of interrupted connections from a host this host will be blocked from further connections
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e33671ebd11ed96c6f02f74a088c2
+   name: max_heap_table_size
+   defaultValue: 16777216
+   type: int
+   blockSize: 1024
+   needRestart: false
+   range: 16384~4294967295
+   description: This variable sets the maximum size to which user-created MEMORY tables are permitted to grow. The block size is 1024.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e33671ebd11ed96c7f02f74a088c2
+   name: max_length_for_sort_data
+   defaultValue: 1024
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~838860
+   description: Max number of bytes in sorted records
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e33671ebd11ed96c9f02f74a088c2
+   name: max_write_lock_count
+   defaultValue: 102400
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~102400
+   description: After this many write locks, allow some read locks to run in between
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e33671ebd11ed96caf02f74a088c2
+   name: myisam_sort_buffer_size
+   defaultValue: 262144
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 262144~16777216
+   description: The buffer that is allocated when sorting the index when doing a REPAIR or when creating indexes with CREATE INDEX or ALTER TABLE
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e33671ebd11ed96cbf02f74a088c2
+   name: net_read_timeout
+   defaultValue: 30
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~31536000
+   description: Number of seconds to wait for more data from a connection before aborting the read
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e47d01ebd11ed96ccf02f74a088c2
+   name: net_write_timeout
+   defaultValue: 60
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~31536000
+   description: Number of seconds to wait for a block to be written to a connection before aborting the write
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e47d01ebd11ed96cef02f74a088c2
+   name: performance_schema
+   defaultValue: ON
+   type: string
+   needRestart: true
+   range: ON|OFF
+   description: Enable/disable the performance schema.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e47d01ebd11ed96cff02f74a088c2
+   name: query_alloc_block_size
+   defaultValue: 8192
+   type: int
+   blockSize: 1024
+   needRestart: false
+   range: 1024~16384
+   description: Allocation block size for query parsing and execution. The block size is 1024.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e47d01ebd11ed96d0f02f74a088c2
+   name: query_cache_limit
+   defaultValue: 1048576
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1048576
+   description: Don't cache results that are bigger than this
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e47d01ebd11ed96d1f02f74a088c2
+   name: query_cache_size
+   defaultValue: 0
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 0~104857600
+   description: The memory allocated to store results from old queries RDS内存管理说明
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e47d01ebd11ed96d3f02f74a088c2
+   name: query_prealloc_size
+   defaultValue: 8192
+   type: int
+   blockSize: 1024
+   needRestart: false
+   range: 8192~1048576
+   description: Persistent buffer for query parsing and execution
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e5d8a1ebd11ed96d3f02f74a088c2
+   name: read_buffer_size
+   defaultValue: 1M
+   type: int
+   blockSize: 4096
+   needRestart: false
+   range: 8200~2147479552
+   description: Each thread that does a sequential scan for a MyISAM table allocates a buffer of this size (in bytes) for each table it scans. The value of this variable should be a multiple of 4KB.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e5d8a1ebd11ed96d4f02f74a088c2
+   name: read_rnd_buffer_size
+   defaultValue: 262144
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 8200~2147483647
+   description: This variable is used for reads from MyISAM tables, and, for any storage engine, for Multi-Range Read optimization
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e5d8a1ebd11ed96d6f02f74a088c2
+   name: slow_launch_time
+   defaultValue: 2
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1024
+   description: If creating the thread takes longer than this value (in seconds), the Slow_launch_threads counter will be incremented
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e723e1ebd11ed96d6f02f74a088c2
+   name: sort_buffer_size
+   defaultValue: 2M
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 32768~4294967295
+   description: Each session that must perform a sort allocates a buffer of this size.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e723e1ebd11ed96d7f02f74a088c2
+   name: sql_mode
+   defaultValue: STRICT_TRANS_TABLES,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+   type: string
+   needRestart: false
+   range: EMPTY_STR|REAL_AS_FLOAT|PIPES_AS_CONCAT|ANSI_QUOTES|IGNORE_SPACE|ONLY_FULL_GROUP_BY|NO_UNSIGNED_SUBTRACTION|NO_DIR_IN_CREATE|POSTGRESQL|ORACLE|MSSQL|DB2|MAXDB|NO_KEY_OPTIONS|NO_TABLE_OPTIONS|NO_FIELD_OPTIONS|MYSQL323|MYSQL40|ANSI|NO_AUTO_VALUE_ON_ZERO|NO_BACKSLASH_ESCAPES|STRICT_TRANS_TABLES|STRICT_ALL_TABLES|NO_ZERO_IN_DATE|NO_ZERO_DATE|ALLOW_INVALID_DATES|ERROR_FOR_DIVISION_BY_ZERO|TRADITIONAL|HIGH_NOT_PRECEDENCE|NO_ENGINE_SUBSTITUTION|PAD_CHAR_TO_FULL_LENGTH
+   description: 'Syntax: sql-mode=mode[,mode[,mode...]]. See the manual for the complete list of valid sql modes'
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e86b21ebd11ed96daf02f74a088c2
+   name: tmp_table_size
+   defaultValue: 2097152
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 262144~67108864
+   description: If an internal in-memory temporary table exceeds this size, MySQL will automatically convert it to an on-disk MyISAM table
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e86b21ebd11ed96dbf02f74a088c2
+   name: transaction_isolation
+   defaultValue: READ-COMMITTED
+   type: string
+   needRestart: true
+   range: READ-UNCOMMITTED|READ-COMMITTED|REPEATABLE-READ|SERIALIZABLE
+   description: Default transaction isolation level
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e86b21ebd11ed96dcf02f74a088c2
+   name: wait_timeout
+   defaultValue: 86400
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~31536000
+   description: The number of seconds the server waits for activity on a connection before closing it
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e86b21ebd11ed96ddf02f74a088c2
+   name: explicit_defaults_for_timestamp
+   defaultValue: ON
+   type: string
+   needRestart: true
+   range: OFF|ON
+   description: 此系统变量确定服务器是否对列中的默认值和NULL-value处理，启用某些非标准行为TIMESTAMP.
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e86b21ebd11ed96def02f74a088c2
+   name: innodb_sort_buffer_size
+   defaultValue: 1048576
+   type: int
+   blockSize: 1
+   needRestart: true
+   range: 65536~67108864
+   description: 指定在创建InnoDB索引期间用于对数据进行排序的排序缓冲区的大小。指定的大小定义了读入内存以进行内部排序然后写出到磁盘的数据量。该过程称为“ 运行 ”。在合并阶段，将读取并合并指定大小的缓冲区对。设置越大，运行和合并的次数越少。
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e9b031ebd11ed96def02f74a088c2
+   name: sync_binlog
+   defaultValue: 1
+   type: int
+   blockSize: 1
+   needRestart: false
+   range: 1~1000
+   description: 控制MySQL二进制日志同步到磁盘的频率。参数sync_binlog=[N]，如果N为1，表示采用同步写磁盘的方式来写二进制日志，每次事务提交时就会刷新binlog到磁盘；如果N为0，表示刷新binlog时间点由操作系统自身来决定，操作系统自身会每隔一段时间就会刷新系统缓存到磁盘；如果N>1，表示每写入N次系统缓存就执行一次写入磁盘并刷新的操作。如果不设置1，有数据丢失风险。
+   engine: mariadb
+   version: 10.3.35
+ - uuid: 849e9b031ebd11ed96dff02f74a088c2
+   name: innodb_flush_log_at_trx_commit
+   defaultValue: 1
+   type: string
+   needRestart: false
+   range: 0|1|2
+   description: 控制MySQL将事务日志同步到磁盘的频率。参数innodb_flush_log_at_trx_commit=[N]，如果N为1，表示事务提交时，把事务日志从缓存区写到日志文件中，并且立刻写入到磁盘上。如果N为0，表示每秒写入一次日志并将其刷新到磁盘，未刷新日志的事务可能会在崩溃中丢失。如果N为2，表示事务提交时，把事务日志从缓存区写到日志文件中，但不是立刻写入到磁盘上，而是大约每秒一次磁盘IO缓存刷新操作，如果写入前系统崩溃，就会导致最后1秒的日志丢失。如果不设置1，有数据丢失风险。
+   engine: mariadb
+   version: 10.3.35

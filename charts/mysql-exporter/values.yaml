@@ -1,12 +1,12 @@
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 image:
   pullPolicy: IfNotPresent
   tag: v0.0.1
 
-replicaCount: 3
+replicaCount: 1
 
 nodeSelector:
   node-role.kubernetes.io/master: ""

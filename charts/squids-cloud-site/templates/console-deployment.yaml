@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: squids-console
-  namespace: squids
+  namespace: {{.Release.Namespace}}
   labels:
     app-name: squids-console
 spec:
@@ -33,11 +33,13 @@ spec:
             - containerPort: {{ .Values.containers.ssl.containerPort}}
               hostPort: {{ .Values.containers.ssl.containerPort}}
             {{ end }}
-            {{ if eq .Values.env "dev" }}
+            {{ if eq .Values.env "test" }}
             - containerPort: 8080
               hostPort: 8080
             {{ end }}
           volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
             - name: localtime
               mountPath: /etc/localtime
             - name: config-volume
@@ -51,18 +53,21 @@ spec:
             - name: passwd
               mountPath: /etc/nginx/passwd
             {{ end }}
-            {{ if ne .Values.env "dev" }}
+            {{ if ne .Values.env "test" }}
             - name: cert
               mountPath: /etc/nginx/cert
             {{ end }}
       volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
         - name: localtime
           hostPath:
             path: /etc/localtime
         {{ if .Values.nginx.auth }}
         - name: passwd
           hostPath:
-            path: /squids/nginx/passwd
+            path: /squids-data/install/nginx/passwd
         {{ end }}
         - name: config-volume
           configMap:
@@ -72,9 +77,21 @@ spec:
             name: squids-console-config
         - name: geoip
           hostPath:
-            path: /squids/nginx/GeoIP
-        {{ if ne .Values.env "dev" }}
+            path: /squids-data/install/nginx/GeoIP
+        {{ if ne .Values.env "test" }}
         - name: cert
-          hostPath:
-            path: /squids/nginx/cert
+          secret:
+            secretName: sslca
+            items:
+              - key: squids.crt
+                path: squids.crt
+              - key: squids.key
+                path: squids.key
         {{ end }}
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}

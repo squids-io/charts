@@ -1,232 +1,89 @@
-global:
-  registry: docker.io
-  repository: squids
+# Default values for monitor.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
 
-objectStorage:
-  type: S3
-  endpoint: "input these please"
-  bucket: "input these please"
-  accessKeyId: "input these please"
-  accessKeySecret: "input these please"
+replicaCount: 1
 
 image:
+  repository: registry.cn-hangzhou.aliyuncs.com/dbsinan/monitor
   pullPolicy: IfNotPresent
-  prometheusTag: v2.19.2
-  thanosTag: v0.16.0-rc.1
-  alertmanagerTag: v0.21.0
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "v1.0"
 
-serverEnabled: true
+imagePullSecrets:
+  - name: dbsinan-image-puller
+nameOverride: ""
+fullnameOverride: ""
 
-alertmanagerSts:
-  replicaCount: 1
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
 
-  smtp_from: xxx
-  smtp_auth_username: xxx
-  smtp_auth_password: xxx
-  smtp_receiver: xxx
+podAnnotations: {}
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: squids/cluster
-                operator: In
-                values:
-                  - squids-monitor
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - alertmanager
-          topologyKey: kubernetes.io/hostname
+podSecurityContext: {}
+  # fsGroup: 2000
 
-#  nodeSelector:
-#    node-role.kubernetes.io/master: ""
-#
-#  tolerations:
-#    - effect: NoSchedule
-#      key: node-role.kubernetes.io/master
-#      operator: Exists
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
 
-prometheusSts:
-  replicaCount: 1
+service:
+  type: ClusterIP
+  port: 9002
 
-  pvcSize: 200Gi
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
 
-  kubePKIPath: /etc/kubernetes/pki
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
 
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: squids/cluster
-                operator: In
-                values:
-                  - squids-monitor
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - prometheus
-          topologyKey: kubernetes.io/hostname
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
 
-#  nodeSelector:
-#    node-role.kubernetes.io/master: ""
-#
-#  tolerations:
-#  - effect: NoSchedule
-#    key: node-role.kubernetes.io/master
-#    operator: Exists
+nodeSelector: {}
 
-  prometheus:
-    resources: {}
-    storage:
-      retentionTime: 10d
-      minBlockDuration: 2h
-      maxBlockDuration: 2h
+tolerations: []
 
-  thanos:
-    resources: {}
+affinity: {}
 
-thanosQuery:
-  httpPort: 9090
-  grpcPort: 10901
-  replicaCount: 1
-
-#  nodeSelector:
-#    node-role.kubernetes.io/master: ""
-#
-#  tolerations:
-#  - effect: NoSchedule
-#    key: node-role.kubernetes.io/master
-#    operator: Exists
-
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: squids/cluster
-                operator: In
-                values:
-                  - squids-monitor
-    podAntiAffinity:
-      preferredDuringSchedulingIgnoredDuringExecution:
-        - podAffinityTerm:
-            labelSelector:
-              matchExpressions:
-                - key: app.kubernetes.io/name
-                  operator: In
-                  values:
-                    - thanos-query
-            topologyKey: kubernetes.io/hostname
-          weight: 100
-
-  resources: {}
-
-thanosStore:
-  replicaCount: 1
-  pvcSize: 10Gi
-
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: squids/cluster
-                operator: In
-                values:
-                  - squids-monitor
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: thanos-store
-          topologyKey: kubernetes.io/hostname
-
-#  nodeSelector:
-#    node-role.kubernetes.io/master: ""
-#
-#  tolerations:
-#  - effect: NoSchedule
-#    key: node-role.kubernetes.io/master
-#    operator: Exists
-
-  resources: {}
-
-thanosRule:
-  replicaCount: 1
-  pvcSize: 100Gi
-
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: squids/cluster
-                operator: In
-                values:
-                  - squids-monitor
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchLabels:
-              app.kubernetes.io/name: thanos-rule
-          topologyKey: kubernetes.io/hostname
-
-#  nodeSelector:
-#    node-role.kubernetes.io/master: ""
-#
-#  tolerations:
-#    - effect: NoSchedule
-#      key: node-role.kubernetes.io/master
-#      operator: Exists
-
-  resources: {}
-
-thanosCompact:
-  retention:
-    resolutionRaw: 90d
-    resolution5m: 180d
-    resolution1h: 360d
-  pvcSize: 100Gi
-
-  affinity:
-    nodeAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        nodeSelectorTerms:
-          - matchExpressions:
-              - key: squids/cluster
-                operator: In
-                values:
-                  - squids-monitor
-    podAntiAffinity:
-      requiredDuringSchedulingIgnoredDuringExecution:
-        - labelSelector:
-            matchExpressions:
-              - key: app.kubernetes.io/name
-                operator: In
-                values:
-                  - thanos-compact
-          topologyKey: kubernetes.io/hostname
-
-#  nodeSelector:
-#    node-role.kubernetes.io/master: ""
-#
-#  tolerations:
-#  - effect: NoSchedule
-#    key: node-role.kubernetes.io/master
-#    operator: Exists
-
-  resources: {}
-
-
+imageCredentials:
+  registry: registry.cn-hangzhou.aliyuncs.com/dbsinan
+  username: xxx
+  password: xxx
 

@@ -1,10 +1,10 @@
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 image:
   pullPolicy: IfNotPresent
-  tag: v0.1.0
+  tag: v1.0.0
 
 replicaCount: 1
 

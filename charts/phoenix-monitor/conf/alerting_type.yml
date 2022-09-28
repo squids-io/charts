@@ -1,0 +1,42 @@
+- name: MySQLCluster
+  aliasName: MySQLCluster
+  supportedTargetTypes:
+    - MySQL
+    - MariaDB
+
+- name: RedisCluster
+  aliasName: RedisCluster
+  supportedTargetTypes:
+    - Redis
+
+- name: SQLServerCluster
+  aliasName: SQLServerCluster
+  supportedTargetTypes:
+    - SQLServer
+
+- name: MongoCluster
+  aliasName: MongoCluster
+  supportedTargetTypes:
+    - MongoDB
+
+- name: ClickhouseCluster
+  aliasName: ClickhouseCluster
+  supportedTargetTypes:
+    - ClickHouse
+
+- name: ElasticSearchCluster
+  aliasName: ElasticSearchCluster
+  supportedTargetTypes:
+    - ElasticSearch
+
+- name: OS
+  aliasName: OS
+  supportedTargetTypes:
+    - MySQL
+    - Redis
+    - SQLServer
+    - MongoDB
+    - ClickHouse
+    - ElasticSearch
+    - MariaDB
+

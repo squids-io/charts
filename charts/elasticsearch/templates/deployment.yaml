@@ -4,17 +4,23 @@ metadata:
   name: {{ template "elasticsearch.name" . }}
   namespace: {{ .Release.Namespace }}
   labels:
-    {{- include "elasticsearch.labels" . | nindent 4 }}
+  {{- include "elasticsearch.labels" . | nindent 4 }}
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      {{- include "elasticsearch.selectorLabels" . | nindent 6 }}
+  {{- include "elasticsearch.selectorLabels" . | nindent 6 }}
   template:
     metadata:
       labels:
-        {{- include "elasticsearch.selectorLabels" . | nindent 8 }}
+    {{- include "elasticsearch.selectorLabels" . | nindent 8 }}
     spec:
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
       {{- with .Values.affinity }}
       affinity: {{ toYaml . | nindent 8 }}
       {{end}}
@@ -22,13 +28,13 @@ spec:
         - name: init-sysctl
           image: {{template "elasticsearch.initImage" . }}
           imagePullPolicy: {{ .Values.init.image.pullPolicy }}
-          command: ["/bin/sh","-c"," sysctl -w vm.max_map_count=262144 && chown -R 1000 /usr/share/elasticsearch/data"]
+          command: [ "/bin/sh","-c"," sysctl -w vm.max_map_count=262144 && chown -R 1000 /usr/share/elasticsearch/data" ]
           securityContext:
             privileged: true
           volumeMounts:
             - mountPath: /usr/share/elasticsearch/data
               name: storage
-      containers:  # specification of normal containers
+      containers: # specification of normal containers
         - name: es
           securityContext:
             capabilities:
@@ -75,7 +81,12 @@ spec:
             - mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
               name: config
               subPath: elasticsearch.yml
+            - name: localtime
+              mountPath: /etc/localtime
       volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
         - name: storage
           hostPath:
             path: {{ .Values.dataDirectory }}/{{ template "elasticsearch.name" . }}

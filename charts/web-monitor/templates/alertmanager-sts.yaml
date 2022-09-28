@@ -1,0 +1,157 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: alertmanager
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/instance: alertmanager
+    app.kubernetes.io/name: alertmanager
+spec:
+  podManagementPolicy: OrderedReady
+  replicas: {{ .Values.alertmanagerSts.replicaCount }}
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: alertmanager
+      app.kubernetes.io/name: alertmanager
+  serviceName: alertmanager-headless
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: alertmanager
+        app.kubernetes.io/name: alertmanager
+    spec:
+      containers:
+        - args:
+            - --storage.path=/alertmanager
+            - --config.file=/etc/alertmanager/alertmanager.yml
+          env:
+            - name: POD_IP
+              valueFrom:
+                fieldRef:
+                  apiVersion: v1
+                  fieldPath: status.podIP
+          name: alertmanager
+          image: {{.Values.alertmanagerSts.image.registry}}/{{.Values.alertmanagerSts.image.repository}}/{{.Values.alertmanagerSts.image.name}}:{{ .Values.alertmanagerSts.image.tag }}
+          imagePullPolicy: {{.Values.alertmanagerSts.image.pullPolicy}}
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          ports:
+            - containerPort: 9093
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: { }
+          securityContext:
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+          volumeMounts:
+            - mountPath: /etc/alertmanager
+              name: config
+            - mountPath: /alertmanager
+              name: storage
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext:
+        fsGroup: 65534
+      serviceAccountName: alertmanager
+      terminationGracePeriodSeconds: 30
+      volumes:
+        - configMap:
+            defaultMode: 420
+            name: alertmanager
+          name: config
+      {{- with .Values.alertmanagerSts.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+  updateStrategy:
+    rollingUpdate:
+      partition: 0
+    type: RollingUpdate
+  volumeClaimTemplates:
+    - apiVersion: v1
+      kind: PersistentVolumeClaim
+      metadata:
+        name: storage
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 50Mi
+        volumeMode: Filesystem
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/instance: alertmanager
+    app.kubernetes.io/name: alertmanager
+spec:
+  type: NodePort
+  ports:
+    - name: http
+      port: 9093
+      protocol: TCP
+      targetPort: http
+      nodePort: 30003
+  selector:
+    app.kubernetes.io/instance: alertmanager
+    app.kubernetes.io/name: alertmanager
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: alertmanager-headless
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/instance: alertmanager
+    app.kubernetes.io/name: alertmanager
+spec:
+  type: ClusterIP
+  clusterIP: None
+  ports:
+    - name: http
+      port: 9093
+      protocol: TCP
+      targetPort: http
+  selector:
+    app.kubernetes.io/instance: alertmanager
+    app.kubernetes.io/name: alertmanager
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: alertmanager
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/instance: alertmanager
+    app.kubernetes.io/name: alertmanager
