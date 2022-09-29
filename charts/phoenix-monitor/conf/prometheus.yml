@@ -490,6 +490,15 @@ scrape_configs:
     kubernetes_sd_configs:
       - role: pod
     relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_labelpresent_chproxy ]
+        regex: true
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_label_clickhouse_cluster ]
+        separator: ;
+        regex: (.*)
+        replacement: $1
+        target_label: clickhouse_cluster
+        action: replace
       - source_labels: [ __meta_kubernetes_pod_ip ]
         action: replace
         target_label: __address__
@@ -506,7 +515,7 @@ scrape_configs:
         target_label: namespace
         replacement: $1
         action: replace
-      - source_labels: [ app_name ]
+      - source_labels: [ __meta_kubernetes_pod_name ]
         separator: ;
         regex: (.*)
         target_label: alertingTargetName

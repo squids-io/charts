@@ -21,8 +21,7 @@
   "editable": true,
   "gnetId": null,
   "graphTooltip": 0,
-  "id": 27,
-  "iteration": 1664269781286,
+  "iteration": 1664355131322,
   "links": [],
   "panels": [
     {
@@ -84,21 +83,21 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum(rate(request_sum_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}[$interval])) ",
+          "expr": "rate(request_sum_total{job=~\"chproxy-exporter\",clickhosue_cluster=~\"$ckc\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "request_sum",
+          "legendFormat": "{{instance}}",
           "refId": "A",
           "step": 60
         },
         {
           "exemplar": true,
-          "expr": "sum(rate(request_success_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}[$interval])) ",
+          "expr": "rate(request_success_total{job=~\"chproxy-exporter\",clickhosue_cluster=~\"$ckc\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "request_success",
+          "legendFormat": "{{instance}}",
           "refId": "B",
           "step": 60
         }
@@ -192,11 +191,12 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "max(request_duration_seconds{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}) by (user, quantile)",
+          "exemplar": true,
+          "expr": "max(request_duration_seconds{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"}) by (instance)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 10,
-          "legendFormat": "{{user}} - {{quantile}}",
+          "legendFormat": "{{instance}}",
           "refId": "A",
           "step": 300
         }
@@ -296,7 +296,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(status_codes_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster=~\"$cluster\",cluster_node=~\"$cluster_node\"}[$interval])) by (code)",
+          "expr": "sum(rate(status_codes_total{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"}[$interval])) by (code)",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{code}}",
@@ -393,11 +393,11 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "60*sum(rate(request_duration_seconds_sum{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}[$interval]) ) by (user)",
+          "expr": "60*sum(rate(request_duration_seconds_sum{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"}[$interval])) by (instance)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 10,
-          "legendFormat": "{{user}}",
+          "legendFormat": "{{instance}}",
           "refId": "A",
           "step": 300
         }
@@ -486,10 +486,10 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(concurrent_limit_excess_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster=~\"$cluster\",cluster_node=~\"$cluster_node\"}[$interval])) by (cluster_node)",
+          "expr": "sum(rate(concurrent_limit_excess_total{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"}[$interval])) by (instance)",
           "format": "time_series",
           "intervalFactor": 2,
-          "legendFormat": "{{cluster_node}}",
+          "legendFormat": "{{instance}}",
           "refId": "A",
           "step": 60
         }
@@ -585,7 +585,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(request_body_bytes_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}[$interval]))",
+          "expr": "sum(rate(request_body_bytes_total{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"}[$interval]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "request",
@@ -593,7 +593,7 @@
           "step": 60
         },
         {
-          "expr": "sum(rate(response_body_bytes_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}[$interval]))",
+          "expr": "sum(rate(response_body_bytes_total{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"}[$interval]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "response",
@@ -707,7 +707,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum by (cluster_node) (increase(request_sum_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster_node=~\"$cluster_node\"}[$interval]))",
+          "expr": "sum by (cluster_node) (increase(request_sum_total{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\",cluster=~\"$cluster\"}[$interval]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -806,7 +806,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(concurrent_queries{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster=~\"$cluster\",cluster_node=~\"$cluster_node\"}) by (cluster_node)",
+          "expr": "sum(concurrent_queries{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\",cluster=~\"$cluster\"}) by (cluster_node)",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 4,
@@ -936,7 +936,7 @@
       "repeat": "cluster_node",
       "targets": [
         {
-          "expr": "sum(host_health{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster=~\"$cluster\",cluster_node=~\"$cluster_node\"})",
+          "expr": "sum(host_health{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\",cluster=~\"$cluster\",cluster_node=~\"$cluster_node\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{cluster_node}}",
@@ -958,22 +958,22 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "clickhouse-hdsj89umab8x5rko-proxy-0",
-          "value": "clickhouse-hdsj89umab8x5rko-proxy-0"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Prometheus",
-        "definition": "",
+        "definition": "label_values(host_health{job=~\"chproxy-exporter\"},clickhouse_cluster)",
         "description": null,
         "error": null,
         "hide": 2,
         "includeAll": true,
-        "label": "instance",
+        "label": "ckc",
         "multi": false,
-        "name": "instance",
+        "name": "ckc",
         "options": [],
         "query": {
-          "query": "label_values(up{job=~\"chproxy-exporter\"},instance)",
-          "refId": "Prometheus-instance-Variable-Query"
+          "query": "label_values(host_health{job=~\"chproxy-exporter\"},clickhouse_cluster)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -988,11 +988,11 @@
         "allValue": null,
         "current": {
           "selected": false,
-          "text": "prometheus-ha",
-          "value": "prometheus-ha"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": "Prometheus",
-        "definition": "label_values(host_health{job=\"chproxy-exporter\",instance=\"$instance\"},cluster)",
+        "definition": "label_values(host_health{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"},cluster)",
         "description": null,
         "error": null,
         "hide": 2,
@@ -1002,13 +1002,13 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(host_health{job=\"chproxy-exporter\",instance=\"$instance\"},cluster)",
+          "query": "label_values(host_health{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\"},cluster)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
-        "regex": "",
+        "regex": "^(?!.*prometheus).*$",
         "skipUrlSync": false,
-        "sort": 0,
+        "sort": 1,
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
@@ -1022,7 +1022,7 @@
           "value": "$__all"
         },
         "datasource": "Prometheus",
-        "definition": "",
+        "definition": "label_values(host_health{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\",cluster=~\"$cluster\"},cluster_node)",
         "description": null,
         "error": null,
         "hide": 2,
@@ -1032,13 +1032,13 @@
         "name": "cluster_node",
         "options": [],
         "query": {
-          "query": "label_values(request_sum_total{job=~\"chproxy-exporter\",instance=~\"$instance\",cluster=~\"$cluster\"},cluster_node)",
-          "refId": "Prometheus-cluster_node-Variable-Query"
+          "query": "label_values(host_health{job=~\"chproxy-exporter\",clickhouse_cluster=~\"$ckc\",cluster=~\"$cluster\"},cluster_node)",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
-        "sort": 3,
+        "sort": 1,
         "tagValuesQuery": "",
         "tagsQuery": "",
         "type": "query",
@@ -1109,7 +1109,7 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-30m",
     "to": "now"
   },
   "timepicker": {
@@ -1140,5 +1140,5 @@
   "timezone": "browser",
   "title": "ClickHouse Proxy overview",
   "uid": "UuZRyk4Vz",
-  "version": 3
+  "version": 1
 }
