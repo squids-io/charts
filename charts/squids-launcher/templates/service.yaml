@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squids-launcher
+  namespace: {{.Release.Namespace}}
+  labels:
+    app-name: squids-launcher
+spec:
+  ports:
+    - port: {{ .Values.service.port }}
+  selector:
+    app-name: squids-launcher

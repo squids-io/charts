@@ -1,11 +1,11 @@
 fullnameOverride: ""
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 image:
   pullPolicy: IfNotPresent
   name: fluent-bit
-  tag: 1.4.5
+  tag: 1.6.11
 nameOverride: ""
 resources:
   requests:
@@ -26,7 +26,6 @@ tolerations:
 - effect: NoSchedule
   key: node-role.kubernetes.io/master
   operator: Exists
-affinty: {}
 esHost: elasticsearch-logging
 esPort: 9200
 kubeletPodsDir: /var/lib/kubelet/pods

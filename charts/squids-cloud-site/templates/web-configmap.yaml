@@ -2,9 +2,9 @@ apiVersion: v1
 kind: ConfigMap
 metadata:
   name: squids-web-config
-  namespace: squids
+  namespace: {{.Release.Namespace}}
 data:
   base-url.json: |
     {
-      "console": "https://console.squids.io"
+      "console": "{{.Values.console.url}}"
     }

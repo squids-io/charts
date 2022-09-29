@@ -4,25 +4,33 @@
 
 replicaCount: 1
 
-#env: pro test dev
-env: dev
+#env: pro test
+env: test
 
 image:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
   console:
-    name: squids-console-release
-    tag: 1.1.0
+    name: squids-console
+    tag: 1.14.3
   web:
-    name: squids-web-release
-    tag: 1.1.0
+    name: squids-web
+    tag: 1.9.0
 
+dms:
+  ip: 127.0.0.1
 console:
-  domain: www.google.com
+  url: https://console.squids.cn
+  ip: 127.0.0.1
 web:
-  domain: www.google.com
+  url: https://squids.cn
+  ip: 127.0.0.1
+grafana:
+  url: https://chartlog.squids.cn:30001
+dbmotion:
+  url: https://dbmotion.squids.cn:3000
 
 nginx:
   auth: false
@@ -98,6 +106,17 @@ autoscaling:
 
 nodeSelector: {}
 
-tolerations: []
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
 
-affinity: {}
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"

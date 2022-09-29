@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: middleware-operator
+  namespace: {{.Release.Namespace}}
+  labels:
+    app.kubernetes.io/name: middleware-operator
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: middleware-operator
+      vendor: squids
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      name: middleware-operator
+      labels:
+        app.kubernetes.io/name: middleware-operator
+        app.kubernetes.io/instance: {{ .Release.Name }}
+        vendor: squids
+    spec:
+      terminationGracePeriodSeconds: 10
+      serviceAccountName: {{ .Values.serviceAccount }}
+      containers:
+      - command:
+        - /middleware-operator
+        image: {{ .Values.global.registry }}/{{.Values.global.repository}}/middleware-operator:{{include "operator.tag" .}}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: middleware-operator
+        securityContext:
+          allowPrivilegeEscalation: false
+        livenessProbe:
+          httpGet:
+            path: /healthz
+            port: 8081
+          initialDelaySeconds: 15
+          periodSeconds: 20
+        readinessProbe:
+          httpGet:
+            path: /readyz
+            port: 8081
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+        volumeMounts:
+          - name: localtime
+            mountPath: /etc/localtime
+          - name: logdir
+            mountPath: /var/log/operator
+      volumes:
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: logdir
+          hostPath:
+            path: /apps/logs/squids/operator/
+            type: DirectoryOrCreate
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

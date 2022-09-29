@@ -59,8 +59,14 @@ spec:
               subPath: limits
             - mountPath: /etc/localtime
               name: localtime
+            - mountPath: /var/pvcs
+              name: pvcs
+              readOnly: true
       terminationGracePeriodSeconds: 10
       volumes:
+        - name: pvcs
+          hostPath:
+            path: /squids-data/local-path-provisioner
         - name: varlog
           hostPath:
             path: /var/log
@@ -80,7 +86,7 @@ spec:
               - key: limits.conf
                 path: limits
         - hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
+            path: /etc/localtime
           name: localtime
       serviceAccountName: fluent-bit
 ---

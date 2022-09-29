@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squids-dbmotion-saas-server
+  namespace: {{.Release.Namespace}}
+  labels:
+    app-name: squids-dbmotion-saas-server
+spec:
+  type: NodePort
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 3000
+  selector:
+    app-name: squids-dbmotion-saas-server

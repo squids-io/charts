@@ -37,10 +37,17 @@ spec:
               value: "{{ .Values.disableTls }}"
             - name: CURRENT_RUNTIME_ENV
               value: "{{ .Values.currentRuntimeEnv }}"
+            - name: IMAGE_REPO_HOST
+              value: {{ .Values.global.registry }}
+            - name: IMAGE_REPO_ORGANIZATION
+              value: {{.Values.global.repository}}
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
       volumes:
         - name: localtime
           hostPath:
-            path: /usr/share/zoneinfo/Asia/Shanghai
+            path: /etc/localtime
         - name: logdir
           hostPath:
             path: /apps/logs/squids/operator/

@@ -4,15 +4,15 @@
 
 replicaCount: 1
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 tag: latest
 # current operator version
 image:
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
   operator:
-    operator: v1.0.0
+    operator: v1.0.3
 
 nodeSelector:
   node-role.kubernetes.io/master: ""
@@ -54,3 +54,5 @@ currentRuntimeEnv: "dev"
 imageVersion: "v0.0.1"
 
 backupJobImageName: "squids/qfb-backup-job"
+# prod 环境版本号
+jobImageVersion: "v1.0.0"

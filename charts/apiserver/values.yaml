@@ -5,15 +5,15 @@
 replicaCount: 1
 
 global:
-  registry: docker.io
+  registry: swr.cn-east-2.myhuaweicloud.com
   repository: squids
 
 image:
   pullPolicy: IfNotPresent
   apiserver:
-    tag: v1.0.0
-  qfbbackupjob:
-    tag: v1.0.0
+    tag: v1.0.3
+#  qfbbackupjob:
+#    tag: v1.0.0
 
 service:
   type: NodePort
