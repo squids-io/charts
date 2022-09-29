@@ -1,0 +1,79 @@
+# Default values for operator.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+global:
+  registry: swr.cn-east-2.myhuaweicloud.com
+  repository: squids
+
+tag: latest
+enablePMMClient: false
+image:
+  pullPolicy: IfNotPresent
+  qfbBackupTag: v1.0.0
+  leaderTag: v1.0.0
+  operator:
+    operator: v1.0.0
+  mysql56:
+    mysql: 5.6
+    qfb: v1.0.0
+    leader: v1.0.0 # default same with tag
+    pmmClient: v1.10.4
+  mysql57:
+    mysql: 5.7
+    qfb: v1.0.0
+    leader: v1.0.0 # default same with tag
+    pmmClient: v1.10.4
+  mysql8:
+    mysql: 8.0
+    qfb: v1.0.0
+    leader: v1.0.0 # default same with tag
+    pmmClient: v1.10.4
+config:
+  cpuOverRate: 2
+  memoryOverRate: 1
+  commonTolerate:
+    - key: squids/worker
+      operator: Exists
+  proxyServiceType: "nodeport"
+  mysqlStorageClass: csi-qcfs
+  proxyIngressVIP: ""
+  proxyReplicas: 2
+  clusterServiceType: "nodeport"
+  clusterIngressVIP: ""
+  proxyConfigJson: '{"configMapName": "haproxy-ingress-tcp", "configMapNs": "squids", "portStart": 20000, "portEnd": 29999}'
+  clusterForcedAntiAffinity: false
+  sysctls:
+#  - name: net.ipv4.tcp_retries2
+#    value: 7
+#  - name: net.ipv4.tcp_keepalive_time
+#    value: 90
+#  - name: net.ipv4.tcp_keepalive_intvl
+#    value: 10
+#  - name: net.ipv4.tcp_keepalive_probes
+#    value: 5
+
+nodeSelector:
+  node-role.kubernetes.io/master: ""
+
+tolerations:
+- effect: NoSchedule
+  key: squids/node
+  operator: Exists
+- effect: NoSchedule
+  key: node-role.kubernetes.io/master
+  operator: Exists
+affinity: 
+  podAntiAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      - labelSelector:
+          matchLabels:
+            app.kubernetes.io/name: mysql-operator
+        topologyKey: kubernetes.io/hostname
+
+## Deploy CRDs used by Logging Operator.
+##
+createCustomResource: true
+
+currentRuntimeEnv: "prod"

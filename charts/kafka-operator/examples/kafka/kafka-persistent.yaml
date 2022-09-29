@@ -1,0 +1,131 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: Kafka
+metadata:
+  name: lanjing-test
+spec:
+  kafka:
+    version: 3.1.0
+    replicas: 3
+    listeners:
+      - name: plain
+        port: 9092
+        tls: false
+        type: internal
+      - name: tls
+        port: 9093
+        tls: true
+        type: internal
+      - configuration:
+          bootstrap:
+            labels:
+              app-name: lanjing-test
+              squids.io/cluster-id: lanjing-test
+          brokers:
+            - broker: 0
+              labels:
+                app-name: lanjing-test
+                squids.io/cluster-id: lanjing-test
+            - broker: 1
+              labels:
+                app-name: lanjing-test
+                squids.io/cluster-id: lanjing-test
+            - broker: 2
+              labels:
+                app-name: lanjing-test
+                squids.io/cluster-id: lanjing-test
+        name: external
+        port: 9094
+        tls: false
+        type: nodeport
+        authentication:
+          type: scram-sha-512
+    authorization:
+      type: simple
+      superUsers:
+        - user_1
+    config:
+      offsets.topic.replication.factor: "3"
+      transaction.state.log.replication.factor: "3"
+      transaction.state.log.min.isr: "2"
+      default.replication.factor: "3"
+      min.insync.replicas: "2"
+      inter.broker.protocol.version: "3.1.0"
+    template:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: squids/cluster
+                      operator: In
+                      values:
+                        - lanjing-test
+                    - key: squids/class
+                      operator: In
+                      values:
+                        - kafka
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: squids.io/cluster-id
+                        operator: In
+                        values:
+                          - lanjing-test
+                  topologyKey: kubernetes.io/hostname
+                weight: 100
+        metadata:
+          labels:
+            app-name: lanjing-test
+            squids.io/class: kafka
+            squids.io/cluster-id: lanjing-test
+            squids.io/db-type: kafka
+            squids.io/db-version: 3.1.0
+    storage:
+      type: jbod
+      volumes:
+        - id: 1
+          type: persistent-claim
+          size: 20Gi
+          deleteClaim: false
+  zookeeper:
+    replicas: 1
+    storage:
+      type: persistent-claim
+      size: 20Gi
+      deleteClaim: false
+    template:
+      pod:
+        affinity:
+          nodeAffinity:
+            requiredDuringSchedulingIgnoredDuringExecution:
+              nodeSelectorTerms:
+                - matchExpressions:
+                    - key: squids/cluster
+                      operator: In
+                      values:
+                        - lanjing-test
+                    - key: squids/class
+                      operator: In
+                      values:
+                        - zookeeper
+          podAntiAffinity:
+            preferredDuringSchedulingIgnoredDuringExecution:
+              - podAffinityTerm:
+                  labelSelector:
+                    matchExpressions:
+                      - key: squids.io/cluster-id
+                        operator: In
+                        values:
+                          - lanjing-test
+                  topologyKey: kubernetes.io/hostname
+                weight: 100
+        metadata:
+          labels:
+            app-name: lanjing-test
+            squids.io/class: entity
+            squids.io/cluster-id: lanjing-test
+            squids.io/db-type: kafka
+            squids.io/db-version: 3.1.0

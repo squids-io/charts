@@ -1,0 +1,55 @@
+apiVersion: kafka.strimzi.io/v1beta2
+kind: KafkaUser
+metadata:
+  name: my-user
+  labels:
+    strimzi.io/cluster: lanjing-test
+spec:
+  authentication:
+    type: scram-sha-512
+    password:
+      valueFrom:
+        secretKeyRef:
+          name: my-secret
+          key: my-password
+  authorization:
+    type: simple
+    acls:
+      # Example ACL rules for consuming from my-topic using consumer group my-group
+      - resource:
+          type: topic
+          name: test
+          patternType: prefix
+        operation: Read
+        host: "*"
+      - resource:
+          type: topic
+          name: test
+          patternType: prefix
+        operation: Describe
+        host: "*"
+      - resource:
+          type: group
+          name: kotlin_example_group
+          patternType: prefix
+        operation: Read
+        host: "*"
+      # Example ACL rules for producing to topic my-topic
+      - resource:
+          type: topic
+          name: "*"
+          patternType: prefix
+        operation: Write
+        host: "*"
+      - resource:
+          type: topic
+          name: "*"
+          patternType: prefix
+        operation: Create
+        host: "*"
+      - resource:
+          type: topic
+          name: "*"
+          patternType: prefix
+        operation: Describe
+        host: "*"
