@@ -30,9 +30,13 @@ spec:
             - name: NODE_SELECTOR_KEY
               value: "squids/cluster"
             - name: NODE_SELECTOR_VALUE
+              {{ if .Values.enableDbmotionNode }}
               value: "squids-dbmotion"
-            - name: IMAGE_NAME
-              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}
+              {{ else }}
+              value: "squids-master"
+              {{ end }}
+            - name: DBMOTION_IMAGE
+              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}:{{ .Values.image.dbmotionSassServer.tag }}
             - name: MYSQL_HOST
               value: {{ .Values.mysql.host }}
             - name: MYSQL_PORT
@@ -47,6 +51,8 @@ spec:
               value: {{ .Values.es.url }}
             - name: PVC_CLAIM_NAME
               value: dbmotion-saas
+            - name: MASTER_TOLERATION
+              value: "y"
           ports:
             - name: dbmotion-saas
               containerPort: {{ .Values.image.dbmotionSassServer.containerPort }}
