@@ -4,19 +4,21 @@
 
 replicaCount: 1
 
+enableDbmotionNode: true
+
 image:
   pullPolicy: Always
   dbmotionSassServer:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: dbmotion
-    tag: dev
+    tag: latest
     containerPort: 3000
   dbmotion:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: dbmotion
-    tag: dev
+    tag: latest
 
 service:
   type: NodePort

@@ -20,7 +20,11 @@ spec:
       - key: squids/cluster
         operator: In
         values:
+        {{ if .Values.enableDbmotionNode }}
+          - "squids-dbmotion"
+        {{ else }}
           - "squids-master"
+        {{ end }}
     restoreImage: {{ .Values.image.repository }}/qfb-mysql-5.7:v1.0.0
     version: "5.7"
   databaseResource:
