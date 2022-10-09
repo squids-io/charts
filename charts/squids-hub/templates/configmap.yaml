@@ -18,6 +18,13 @@ data:
         port: 6379 # Redis服务器连接端口
         password: # Redis服务器连接密码（默认为空）
         timeout: 300ms # 连接超时时间（毫秒）
+    api:
+      server:
+        port: 8443
+      tower:
+        port: 8888
+      dbpool:
+        port: 9999
 
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/

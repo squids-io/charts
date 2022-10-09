@@ -35,6 +35,12 @@ phoenix:
   domain: phoenix.squids-monitor.svc.cluster.local
 dms:
   domain: woqu-adapter.bb-system.svc.cluster.local
+apiserver:
+  port: 8443
+tower:
+  port: 8888
+dbpool:
+  port: 9999
 
 imagePullSecrets: [ ]
 nameOverride: ""
