@@ -29,11 +29,11 @@ spec:
           ports:
             - containerPort: {{ .Values.containers.http.containerPort}}
               hostPort: {{ .Values.containers.http.containerPort}}
-            {{ if ne .Values.env "dev" }}
+            {{ if eq .Values.env "pro" }}
             - containerPort: {{ .Values.containers.ssl.containerPort}}
               hostPort: {{ .Values.containers.ssl.containerPort}}
             {{ end }}
-            {{ if eq .Values.env "test" }}
+            {{ if .Values.enableWeb }}
             - containerPort: 8080
               hostPort: 8080
             {{ end }}
@@ -53,7 +53,7 @@ spec:
             - name: passwd
               mountPath: /etc/nginx/passwd
             {{ end }}
-            {{ if ne .Values.env "test" }}
+            {{ if eq .Values.env "pro" }}
             - name: cert
               mountPath: /etc/nginx/cert
             {{ end }}
@@ -78,7 +78,7 @@ spec:
         - name: geoip
           hostPath:
             path: /squids-data/install/nginx/GeoIP
-        {{ if ne .Values.env "test" }}
+        {{ if eq .Values.env "pro" }}
         - name: cert
           secret:
             secretName: sslca
