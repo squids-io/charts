@@ -24,8 +24,8 @@ service:
 
 #squids config
 
-# env: test pro
-env: test
+# env: pro private
+env: pro
 server:
   host: localhost
 mysql:
@@ -34,9 +34,9 @@ mysql:
 phoenix:
   domain: phoenix.squids-monitor.svc.cluster.local
 dms:
-  domain: localhost
+  domain: woqu-adapter.bb-system.svc.cluster.local
 
-imagePullSecrets: []
+imagePullSecrets: [ ]
 nameOverride: ""
 fullnameOverride: ""
 
@@ -44,43 +44,43 @@ serviceAccount:
   # Specifies whether a service account should be created
   create: false
   # Annotations to add to the service account
-  annotations: {}
+  annotations: { }
   # The name of the service account to use.
   # If not set and create is true, a name is generated using the fullname template
   name: ""
 
-podAnnotations: {}
+podAnnotations: { }
 
-podSecurityContext: {}
-  # fsGroup: 2000
+podSecurityContext: { }
+# fsGroup: 2000
 
-securityContext: {}
+securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
   # readOnlyRootFilesystem: true
   # runAsNonRoot: true
-  # runAsUser: 1000
+# runAsUser: 1000
 
 
 ingress:
   enabled: false
-  annotations: {}
+  annotations: { }
     # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
       paths:
-      - path: /
-        backend:
-          serviceName: chart-example.local
-          servicePort: 80
-  tls: []
+        - path: /
+          backend:
+            serviceName: chart-example.local
+            servicePort: 80
+  tls: [ ]
   #  - secretName: chart-example-tls
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources: { }
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -90,7 +90,7 @@ resources: {}
   #   memory: 128Mi
   # requests:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 
 autoscaling:
   enabled: false
@@ -99,7 +99,7 @@ autoscaling:
   targetCPUUtilizationPercentage: 80
   # targetMemoryUtilizationPercentage: 80
 
-nodeSelector: {}
+nodeSelector: { }
 
 tolerations:
   - effect: NoSchedule

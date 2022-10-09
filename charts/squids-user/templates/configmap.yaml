@@ -10,7 +10,7 @@ data:
 
     spring:
       datasource:
-        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/userdb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
+        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/userdb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
       redis:
@@ -58,13 +58,17 @@ data:
       mailbox: {{ .Values.mail.mailbox }}
       host: {{ .Values.mail.host }}
       password: {{ .Values.mail.password }}
+      {{ if eq .Values.env "pro" }}
+      active-email-url: https://squids.cn/oauth?action=verify-email&code=
+      {{ else }}
+      active-email-url: http://{{ .Values.server.host }}/oauth?action=verify-email&code=
+      {{ end }}
+
 
       {{ if eq .Values.env "pro" }}
       reseturl: https://squids.cn/reset_password/
       activeurl: https://squids.cn/api/v1/sso/active/
-      {{ end }}
-
-      {{ if ne .Values.env "pro" }}
+      {{ else }}
       reseturl: http://{{.Values.server.host}}/reset_password/
       activeurl: http://{{.Values.server.host}}/api/v1/sso/active/
       {{ end }}
@@ -76,8 +80,7 @@ data:
       {{ if eq .Values.env "pro" }}
       register_url: https://squids.cn/login?action=join
       cookie-domain: squids.cn
-      {{ end }}
-      {{ if ne .Values.env "pro" }}
+      {{ else }}
       register_url: http://{{.Values.server.host}}/login?action=join
       cookie-domain: {{.Values.server.host}}
       {{ end }}
