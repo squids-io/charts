@@ -12,7 +12,7 @@ tag: latest
 image:
   pullPolicy: IfNotPresent
   operator:
-    tag: dev
+    tag: v0.0.1
 
 nodeSelector:
   node-role.kubernetes.io/master: ""
@@ -45,6 +45,6 @@ clusterRole: middleware-operator
 clusterRoleBinding: middleware-operator
 
 # dev | test | prod
-currentRuntimeEnv: "dev"
+currentRuntimeEnv: "prod"
 # prod 环境版本号
 jobImageVersion: "v1.0.0"
