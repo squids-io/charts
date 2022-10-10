@@ -11,17 +11,17 @@ spec:
       targetPort: {{ .Values.service.http.port }}
       protocol: TCP
       name: http
-    {{ if ne .Values.env "test" }}
+    {{ if eq .Values.env "pro" }}
     - port: {{ .Values.service.https.port }}
       targetPort: {{ .Values.service.https.port }}
       protocol: TCP
       name: https
     {{ end }}
-    {{ if eq .Values.env "test" }}
+    {{ if .Values.enableWeb }}
     - port: 8080
       targetPort: 8080
       protocol: TCP
-      name: dev
-  {{ end }}
+      name: console
+    {{ end }}
   selector:
     app-name: squids-console

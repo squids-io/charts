@@ -4,8 +4,10 @@
 
 replicaCount: 1
 
-#env: pro test
-env: test
+enableWeb: true
+
+#env: pro private
+env: pro
 
 image:
   registry: swr.cn-east-2.myhuaweicloud.com
@@ -14,13 +16,13 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   console:
     name: squids-console
-    tag: 1.14.3
+    tag: 1.25.0
   web:
     name: squids-web
-    tag: 1.9.0
+    tag: 1.9.7
 
 dms:
-  ip: 127.0.0.1
+  url: http://bb-nginx.bb-system.svc.cluster.local:8888
 console:
   url: https://console.squids.cn
   ip: 127.0.0.1
@@ -30,7 +32,7 @@ web:
 grafana:
   url: https://chartlog.squids.cn:30001
 dbmotion:
-  url: https://dbmotion.squids.cn:3000
+  url: https://squids-dbmotion-saas-server.squids.svc.cluster.local:3000
 
 nginx:
   auth: false

@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: conn-pool
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: conn-pool
+    app.kubernetes.io/name: conn-pool
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9006
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    app.kubernetes.io/instance: conn-pool
+    app.kubernetes.io/name: conn-pool

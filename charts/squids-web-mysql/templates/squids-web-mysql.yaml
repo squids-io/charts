@@ -2,17 +2,18 @@ apiVersion: mysql.squids.io/v1
 kind: MysqlCluster
 metadata:
   labels:
-    app-name: squids-dbmotion-mysql
+    app-name: {{ .Chart.Name }}
     squids.io/db-type: mysql
-  name: squids-dbmotion-mysql
-  namespace: squids
+  name: {{ .Chart.Name }}
+  namespace: {{.Release.Namespace}}
 spec:
   clusterSpec:
-    backupImage: swr.cn-east-2.myhuaweicloud.com/squids/qfb-mysql-5.7:v1.0.0
-    image: swr.cn-east-2.myhuaweicloud.com/squids/mysql:5.7.26
-    leaderImage: swr.cn-east-2.myhuaweicloud.com/squids/mysqlleader:v1.0.0
+    backupImage: {{ .Values.image.repository }}/qfb-mysql-5.7:v1.0.0
+    image: {{ .Values.image.repository }}/mysql:5.7.26
+    leaderImage: {{ .Values.image.repository }}/mysqlleader:v1.0.0
+    characterSet: utf8mb4
     matchLabels:
-      app-name: squids-dbmotion-mysql
+      app-name: {{ .Chart.Name }}
       squids.io/db-type: mysql
     mode: HACluster
     nodeAffinityStrategies:
@@ -20,7 +21,7 @@ spec:
         operator: In
         values:
           - "squids-master"
-    restoreImage: swr.cn-east-2.myhuaweicloud.com/squids/qfb-mysql-5.7:v1.0.0
+    restoreImage: {{ .Values.image.repository }}/qfb-mysql-5.7:v1.0.0
     version: "5.7"
   databaseResource:
     resources:
@@ -33,5 +34,5 @@ spec:
     storage:
       iops: -1
       size: 10737418240
-  replicas: 1
+  replicas: {{ .Values.replicaCount }}
   slaveReplicas: 0

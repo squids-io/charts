@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: inspect
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: inspect
+    app.kubernetes.io/name: inspect
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: inspect
+      app.kubernetes.io/name: inspect
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/instance: inspect
+        app.kubernetes.io/name: inspect
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: inspect
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/inspect:w1.5
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 9201
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /opt/devops/upload
+              name: v-pvc-bb-upload
+            - mountPath: /opt/devops/inspect/etc/inspect.yaml
+              name: v-inspect-cm
+              subPath: inspect-yaml
+      restartPolicy: Always
+      volumes:
+        - name: v-pvc-bb-upload
+          persistentVolumeClaim:
+            claimName: pvc-bb-upload
+        - name: v-inspect-cm
+          configMap:
+            name: inspect-cm

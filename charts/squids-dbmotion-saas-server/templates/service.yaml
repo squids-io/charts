@@ -6,9 +6,10 @@ metadata:
   labels:
     app-name: squids-dbmotion-saas-server
 spec:
-  type: NodePort
+  type: {{ .Values.service.type}}
   ports:
-    - port: {{ .Values.service.port }}
-      targetPort: 3000
+    - port: {{ .Values.image.dbmotionSassServer.containerPort }}
+      targetPort: {{ .Values.service.port }}
+      nodePort: {{ .Values.service.nodeport }}
   selector:
     app-name: squids-dbmotion-saas-server

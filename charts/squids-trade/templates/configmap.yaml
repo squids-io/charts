@@ -10,7 +10,7 @@ data:
 
     spring:
       datasource:
-        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/tradedb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=UTC
+        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/tradedb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
       redis:
@@ -35,7 +35,7 @@ data:
       logo_url: https://squis.cn/assets/logo.png
     {{ end }}
 
-    {{ if eq .Values.env "test" }}
+    {{ if eq .Values.env "private" }}
     paypal-config:
       clientId: {{ .Values.paypal.clientId }}
       clientSecret: {{ .Values.paypal.clientSecret }}
@@ -58,6 +58,7 @@ data:
     charging-config:
       discount: 0.7
       givemoney: 3000
+      validMonth: 1
       overdueTime: 7
       disableTime: 14
 

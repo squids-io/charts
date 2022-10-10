@@ -1,0 +1,77 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ssh-exporter-cm
+  namespace: bb-system
+data:
+  bbm-yaml: |
+    db:
+      project: "bbm"
+      driver: "postgres"
+      name: "bobing"
+      host: "postgres.bb-system.svc.cluster.local"
+      port: "5432"
+      user: "bobing"
+      password: "bobing"
+      charset: "utf8"
+      ssl: "disable"
+      debug: false
+    log:
+      level: "INFO"
+      path: "../logs/"
+      name: "bbm.log"
+      max_size: 128
+      max_age: 7
+      max_backups:  30
+      to_console: false
+    exporter_host: "http://127.0.0.1"
+    pushgateway_server: "http://127.0.0.1:9091"
+    upload_path: "./upload/images/"
+    bbc_server: "http://conn-pool.bb-system.svc.cluster.local:9006"
+    audit_bbc_server: http://conn-pool.bb-system.svc.cluster.local:9006
+    bomber_bbc_server: http://conn-pool.bb-system.svc.cluster.local:9006
+    bbm_server: "http://bbm.bb-system.svc.cluster.local:9000"
+    chronos_srever: "http://127.0.0.1:9008"
+    monitor_server: "http://monitor.bb-system.svc.cluster.local:9002"
+    notice_server: "http://notice.bb-system.svc.cluster.local:9003"
+    sql_exporter_server: "http://sql-exporter.bb-system.svc.cluster.local:9117"
+    ssh_exporter_server: "http://ssh-exporter.bb-system.svc.cluster.local:9115"
+    transformat: true
+    monitor_path: "./monitor/"
+    notice_path: "./notice/"
+    static_url: ""
+    alert_write_url: "http://bbm.bb-system.svc.cluster.local:9000/v1/write"
+    model: "INFO"
+    cmd_timeout: 100
+    support_mail: "service@zjbobingtech.com"
+
+    audit:
+      syncExec: false
+      get:
+        producer_queue_num: 1000
+        consumer_num: 4
+        consumer_timeout: 1
+      rule:
+        producer_queue_num: 1000
+        consumer_num: 5
+        consumer_timeout: 1
+
+    casbin:
+      model-path: './resource/rbac_model.conf'
+
+    script:
+      data_clean: "./script/data_clean.sql"
+
+    exporter_config_server: "http://bbm.bb-system.svc.cluster.local:9000"
+    telnet_ip_port:
+      oracle: true
+      mysql: true
+      db2: true
+      sqlserver: true
+      postgresql: true
+      informix: true
+      dm: true
+      shentong: true
+      oceanbase: true
+
+    test: x

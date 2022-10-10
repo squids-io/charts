@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: sql-exporter
+  namespace: bb-system
+  labels:
+    app.kubernetes.io/instance: sql-exporter
+    app.kubernetes.io/name: sql-exporter
+spec:
+  type: ClusterIP
+  ports:
+    - port: 9117
+      targetPort: sql-exporter
+      protocol: TCP
+      name: sql-exporter
+  selector:
+    app.kubernetes.io/instance: sql-exporter
+    app.kubernetes.io/name: sql-exporter
