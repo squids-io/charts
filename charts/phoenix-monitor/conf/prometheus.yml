@@ -519,3 +519,43 @@ scrape_configs:
       - source_labels: [ __meta_kubernetes_pod_label_target ]
         action: replace
         target_label: target
+  - job_name: 'chproxy-exporter'
+    scrape_interval: 1m
+    scrape_timeout: 50s
+    kubernetes_sd_configs:
+      - role: pod
+    relabel_configs:
+      - source_labels: [ __meta_kubernetes_pod_labelpresent_chproxy ]
+        regex: true
+        action: keep
+      - source_labels: [ __meta_kubernetes_pod_label_clickhouse_cluster ]
+        separator: ;
+        regex: (.*)
+        replacement: $1
+        target_label: clickhouse_cluster
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_ip ]
+        action: replace
+        target_label: __address__
+        replacement: $1:9090
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: instance
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_namespace ]
+        separator: ;
+        regex: (.*)
+        target_label: namespace
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_name ]
+        separator: ;
+        regex: (.*)
+        target_label: alertingTargetName
+        replacement: $1
+        action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
