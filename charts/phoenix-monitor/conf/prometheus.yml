@@ -516,3 +516,6 @@ scrape_configs:
         target_label: alertingTargetName
         replacement: $1
         action: replace
+      - source_labels: [ __meta_kubernetes_pod_label_target ]
+        action: replace
+        target_label: target
