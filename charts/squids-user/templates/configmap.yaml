@@ -84,3 +84,6 @@ data:
       register_url: http://{{.Values.server.host}}/login?action=join
       cookie-domain: {{.Values.server.host}}
       {{ end }}
+    sms:
+      credential:
+        keySecret: {{.Values.sms.credential.keySecret}}

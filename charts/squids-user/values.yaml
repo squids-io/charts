@@ -61,7 +61,7 @@ securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
+# readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
 
@@ -90,7 +90,7 @@ resources: { }
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-  # requests:
+# requests:
 #   cpu: 100m
 #   memory: 128Mi
 
@@ -117,3 +117,6 @@ affinity:
               operator: In
               values:
                 - "0"
+sms:
+  credential:
+    keySecret: squids123456
