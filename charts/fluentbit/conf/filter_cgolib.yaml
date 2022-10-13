@@ -29,8 +29,8 @@ parseConfig:
         key: logpath
         matchRegex: '.+slow-query\.log'
       - name: auditlog
-        key: tag
-        matchRegex: '.+audit\.log'
+        key: log
+        matchRegex: '.+\"command_class\".+'
       - name: maxscalelog
         key: tag
         matchRegex: '.*maxscale.*'
