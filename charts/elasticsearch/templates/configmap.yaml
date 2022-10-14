@@ -38,6 +38,7 @@ metadata:
   name: {{include "elasticsearch.name" . }}-cleaner-config
 data:
   config.yaml: |
+    excepts: 'mysql;mariadb'
     defaultExpire: {{.Values.cleaner.defaultExpire}}
     expires:
       auditlog: {{.Values.cleaner.auditlogExpire}}
