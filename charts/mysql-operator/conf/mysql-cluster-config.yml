@@ -922,7 +922,7 @@
     defaultValue: InnoDB
     type: string
     needRestart: true
-    range: InnoDB|innodb
+    range: InnoDB
     description: The default storage engine for new tables
     engine: mysql
     version: 5.7
@@ -2800,7 +2800,7 @@
     defaultValue: InnoDB
     type: string
     needRestart: true
-    range: InnoDB|innodb
+    range: InnoDB
     description: The default storage engine for new tables
     engine: mysql
     version: 8.0
