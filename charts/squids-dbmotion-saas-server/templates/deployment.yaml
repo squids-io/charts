@@ -36,7 +36,7 @@ spec:
               value: "squids-master"
               {{ end }}
             - name: DBMOTION_IMAGE
-              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}:{{ .Values.image.dbmotionSassServer.tag }}
+              value: {{ .Values.image.dbmotion.registry }}/{{ .Values.image.dbmotion.repository }}/{{ .Values.image.dbmotion.name }}:{{ .Values.image.dbmotion.tag }}
             - name: MYSQL_HOST
               value: {{ .Values.mysql.host }}
             - name: MYSQL_PORT
@@ -53,6 +53,14 @@ spec:
               value: dbmotion-saas
             - name: MASTER_TOLERATION
               value: "y"
+            - name: CPU_REQUEST
+              value: "500m"
+            - name: CPU_LIMIT
+              value: "4"
+            - name: MEMORY_REQUEST
+              value: "100Mi"
+            - name: MEMORY_LIMIT
+              value: "8Gi"
           ports:
             - name: dbmotion-saas
               containerPort: {{ .Values.image.dbmotionSassServer.containerPort }}
