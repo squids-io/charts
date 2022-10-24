@@ -42,6 +42,15 @@ mail:
   mailbox: abc@squids.cn
   host: abc
   password: abc
+sms:
+  credential:
+    keySecret: squids123456
+qiwei:
+  client:
+    id: squids123456
+    secret: squids123456
+dms:
+  domain: woqu-adapter.bb-system.svc.cluster.local
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -60,7 +69,7 @@ podSecurityContext: { }
 securityContext: { }
   # capabilities:
   #   drop:
-  #   - ALL
+#   - ALL
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
@@ -89,7 +98,7 @@ resources: { }
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
@@ -117,6 +126,3 @@ affinity:
               operator: In
               values:
                 - "0"
-sms:
-  credential:
-    keySecret: squids123456
