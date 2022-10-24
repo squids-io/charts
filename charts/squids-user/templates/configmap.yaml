@@ -84,6 +84,13 @@ data:
       register_url: http://{{.Values.server.host}}/login?action=join
       cookie-domain: {{.Values.server.host}}
       {{ end }}
+    moduleService:
+      TradeModuleGatewayUrl: http://squids-trade:29528/api/v1/
+      QwModuleGatewayUrl: https://qw-openapi-tx.dustess.com/
+      DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8999/bbm/dms/v1/
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
+    qiwei:
+      client-id: {{.Values.qiwei.client.id}}
+      client-secret: {{.Values.qiwei.client.secret}}
