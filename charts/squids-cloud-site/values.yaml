@@ -37,6 +37,8 @@ dbmotion:
 nginx:
   auth: false
 
+enableLauncher: true
+
 containers:
   http:
     containerPort: 80
