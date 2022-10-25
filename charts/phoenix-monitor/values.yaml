@@ -57,6 +57,9 @@ alertmanager:
     pullPolicy: IfNotPresent
     tag: v0.23.0
 
+usefilesystem: false
+localThanosDir: /squids-data/thanos
+
 objectStorage:
   type: "input these please"
   endpoint: "input these please"
