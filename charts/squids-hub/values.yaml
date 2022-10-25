@@ -41,6 +41,9 @@ tower:
   port: 8888
 dbpool:
   port: 9999
+elasticsearch:
+  host: http://elasticsearch-logging.squids-logging.svc.cluster.local
+  port: 9200
 
 imagePullSecrets: [ ]
 nameOverride: ""
@@ -64,7 +67,7 @@ securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
+# readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
 
@@ -94,7 +97,7 @@ resources: { }
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-  # requests:
+# requests:
 #   cpu: 100m
 #   memory: 128Mi
 
