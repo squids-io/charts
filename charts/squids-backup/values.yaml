@@ -27,6 +27,13 @@ mysql:
   username: squidsRoot9527
   password:
 
+apiserver:
+  port: 8443
+tower:
+  port: 8888
+dbpool:
+  port: 9999
+
 imagePullSecrets: [ ]
 nameOverride: ""
 fullnameOverride: ""
