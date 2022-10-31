@@ -9,7 +9,7 @@ image:
   repository: squids
   name: license-server
   pullPolicy: Always
-  tag: v1.0.0-alpha
+  tag: v1.0.0
   containerPort: 29532
 service:
   type: ClusterIP
