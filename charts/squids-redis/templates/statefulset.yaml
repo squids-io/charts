@@ -21,7 +21,7 @@ spec:
       containers:
         - name: squids-redis
           imagePullPolicy: {{ .Values.image.pullPolicy}}
-          image: redis:{{ .Values.image.tag }}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
           command:
             - redis-server
           args:
