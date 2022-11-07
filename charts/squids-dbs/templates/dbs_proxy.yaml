@@ -1,0 +1,53 @@
+---
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dbs-proxy
+  namespace: {{.Release.Namespace}}-task
+  labels:
+    k8s-app: dbs-proxy
+spec:
+  selector:
+    matchLabels:
+      name: dbs-proxy
+  template:
+    metadata:
+      labels:
+        name: dbs-proxy
+      annotations:
+        process.cri/httpProtocol: https
+    spec:
+      nodeSelector:
+        woquproxy: "yes"
+      hostNetwork: true
+      restartPolicy: Always
+      dnsPolicy: ClusterFirst
+      tolerations:
+        - key: dbs.woqutech.com/windows
+          operator: Exists
+          effect: NoSchedule
+        - key: "dbs"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - effect: NoExecute
+          key: dbs/os
+          value: windows
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoExecute"
+        - key: "node.kubernetes.io/not-ready"
+          operator: "Exists"
+          effect: "NoSchedule"
+      containers:
+        - image: {{.Values.dbsInstallServer}}/install_files/gost-2.0.0.exe:2.0.0
+          name: dbs-proxy
+          resources: {}
+          command:
+            - gost-2.0.0.exe
+          args:
+            - -L
+            - :7890
+          env:
+            - name: x
+              value: "yyy"
+      terminationGracePeriodSeconds: 30
