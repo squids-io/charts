@@ -1,0 +1,80 @@
+---
+# define configmap for db.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dbs-api-server-conf
+  namespace: {{.Release.Namespace}}
+data:
+  db.conf: |
+    user: root
+    password: letsg0
+    ip: qfusion-cmdb0.qfusion
+    port: 3306
+    db: qpc
+---
+# define service for apiserver
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbs-api-server
+  namespace: {{.Release.Namespace}}
+spec:
+  type: ClusterIP
+  selector:
+    app: apis-erver
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+---
+# define deployment for apiserver
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-api-server
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: apis-erver
+  template:
+    metadata:
+      labels:
+        app: apis-erver
+    spec:
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        - effect: NoSchedule
+          key: qfusion/master
+          operator: Exists
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchLabels:
+                  app: apis-erver
+              topologyKey: kubernetes.io/hostname
+      serviceAccountName: {{.Values.rbac.server.serviceAccount}}
+      containers:
+        - name: apiserver
+          imagePullPolicy: Always
+          image: {{.Values.images.dbsApiServer.registry}}/{{.Values.images.dbsApiServer.repository}}/{{.Values.images.dbsApiServer.name}}:{{.Values.images.dbsApiServer.tag}}
+          command: ["./apiserver"]
+          args: ["-db-config", "/woqutech/conf/db.conf", "-port", "8080"]
+          volumeMounts:
+            - name: dbs-api-server-conf
+              mountPath: /woqutech/conf/
+            - mountPath: /etc/localtime
+              name: localtime
+      volumes:
+        - name: dbs-api-server-conf
+          configMap:
+            name: dbs-api-server-conf
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+            type: DirectoryOrCreate

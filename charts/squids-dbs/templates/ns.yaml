@@ -3,7 +3,17 @@ kind: Namespace
 metadata:
   labels:
     kubernetes.io/metadata.name: dbs
-  name: {{ .Values.nameSpace }}
+  name: {{.Release.Namespace}}
+spec:
+  finalizers:
+    - kubernetes
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    kubernetes.io/metadata.name: dbs
+  name: {{.Release.Namespace}}-task
 spec:
   finalizers:
     - kubernetes

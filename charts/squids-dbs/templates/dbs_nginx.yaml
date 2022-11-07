@@ -1,0 +1,449 @@
+---
+# define configmap for /etc/nginx/conf.d/dbs.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dbs-nginx-conf
+  namespace: {{.Release.Namespace}}
+data:
+  dbs.conf: |
+    server {
+      listen 62443 ssl;
+      server_name 47.98.208.46;
+
+      ssl_certificate      ssl/nginx-selfsigned.crt;
+      ssl_certificate_key  ssl/nginx-selfsigned.key;
+
+      ssl_session_timeout  5m;
+      ssl_protocols TLSv1.2;
+      ssl_session_cache shared:SSL:50m;
+      ssl_prefer_server_ciphers on;
+      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+      ssl_stapling on;
+
+      #rewrite "/auth_file.txt" /auth_file_dbs.txt;
+
+      location /auth_file.txt {
+        root /usr/share/nginx/static/dbs;
+      }
+
+      resolver 10.96.0.10 valid=60s;
+
+      location ^~/agentapi/ {
+        rewrite ^/agentapi/(.*)$ /$1 break;
+        proxy_pass http://dbs-api-server.dbs:8080/agentapi;
+      }
+
+      set $auth http://dbs-auth.dbs.svc.cluster.local;
+      set $dbsui http://dbs-ui.dbs.svc.cluster.local;
+      location / {
+        proxy_pass $dbsui;
+      }
+
+      location /install_files {
+        root /var/woqutech/dbs/;
+      }
+    }
+
+  qplus.conf: |
+    server {
+      listen 61443 ssl;
+      server_name 47.98.208.46;
+
+      ssl_certificate      ssl/7682221_qplus.woqutech.com.pem;
+      ssl_certificate_key  ssl/7682221_qplus.woqutech.com.key;
+
+      ssl_session_timeout  5m;
+      ssl_protocols TLSv1.2;
+      ssl_session_cache shared:SSL:50m;
+      ssl_prefer_server_ciphers on;
+      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+      ssl_stapling on;
+
+      #rewrite "/auth_file.txt" /auth_file_qplus.txt;
+
+      location /auth_file.txt {
+        root /usr/share/nginx/static/qplus;
+      }
+
+      resolver 10.96.0.10 valid=60s;
+
+      location ^~/agentapi/ {
+        rewrite ^/agentapi/(.*)$ /$1 break;
+        proxy_pass http://dbs-api-server.dbs:8080/agentapi;
+      }
+
+      set $auth http://dbs-auth.dbs.svc.cluster.local;
+      location / {
+        proxy_pass $auth:9095;
+      }
+
+      location /install_files {
+        root /var/woqutech/dbs/;
+      }
+    }
+
+  api.conf: |
+    server {
+      listen 61443 ssl;
+      server_name produceapi.qpc.woqutech.com;
+
+      ssl_certificate      ssl/7682106_produceapi.qpc.woqutech.com.pem;
+      ssl_certificate_key  ssl/7682106_produceapi.qpc.woqutech.com.key;
+
+      ssl_session_timeout  5m;
+      ssl_protocols TLSv1.2;
+      ssl_session_cache shared:SSL:50m;
+      ssl_prefer_server_ciphers on;
+      ssl_ciphers "ECDHE-RSA-AES256-GCM-SHA384:ECDHE-RSA-AES128-GCM-SHA256:DHE-RSA-AES256-GCM-SHA384:DHE-RSA-AES128-GCM-SHA256:ECDHE-RSA-AES256-SHA384:ECDHE-RSA-AES128-SHA256:ECDHE-RSA-AES256-SHA:ECDHE-RSA-AES128-SHA:DHE-RSA-AES256-SHA256:DHE-RSA-AES128-SHA256:DHE-RSA-AES256-SHA:DHE-RSA-AES128-SHA:ECDHE-RSA-DES-CBC3-SHA:EDH-RSA-DES-CBC3-SHA:AES256-GCM-SHA384:AES128-GCM-SHA256:AES256-SHA256:AES128-SHA256:AES256-SHA:AES128-SHA:DES-CBC3-SHA:HIGH:!aNULL:!eNULL:!EXPORT:!DES:!MD5:!PSK:!RC4";
+      ssl_stapling on;
+
+      location /auth_file.txt {
+        root /usr/share/nginx/static;
+      }
+
+      resolver 10.96.0.10 valid=60s;
+      location / {
+        proxy_pass http://dbs-api-server.dbs:8080;
+      }
+    }
+
+---
+# define configmap for ssl pem and key
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dbs-nginx-ssl-pem
+  namespace: {{.Release.Namespace}}
+data:
+  nginx-selfsigned.crt: |
+    -----BEGIN CERTIFICATE-----
+    MIIDkzCCAnugAwIBAgIUAyPj5glKkcHoH80ecTjSZC9YjNAwDQYJKoZIhvcNAQEL
+    BQAwWTELMAkGA1UEBhMCQ04xEDAOBgNVBAgMB1NoYW5ueGkxDjAMBgNVBAcMBVhJ
+    J0FOMREwDwYDVQQKDAh3b3F1dGVjaDEVMBMGA1UEAwwMNDcuOTguMjA4LjQ2MB4X
+    DTIyMTAyNzA3MzI0OFoXDTIzMTAyNzA3MzI0OFowWTELMAkGA1UEBhMCQ04xEDAO
+    BgNVBAgMB1NoYW5ueGkxDjAMBgNVBAcMBVhJJ0FOMREwDwYDVQQKDAh3b3F1dGVj
+    aDEVMBMGA1UEAwwMNDcuOTguMjA4LjQ2MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8A
+    MIIBCgKCAQEAwBt1vb2RcwTdrdQdNyZYj+VOF/dSdhNwUwxnIjPuDQH31gkBumaB
+    6yfT1XbXCQYUucziRVTyruqsCSM6ubVWu2Lr3n0FjvGzPbgJJ32L9tkDdxJ9ize3
+    copNaakM8fbKBboRabd/4YOK95nvZ4Df9f+1t+hyyWBcoqqchsydRVWtB7x3X3Su
+    gktdazemQhwyS2AcXqw+BDCt5yi3jb3gNr/gyp8UDRul+HdAUFCv5JU1JnCZifNS
+    /NFMOtnxWiwN/5EUDQEDqW7zgtdyXd62jOGaP4+Jf+7bDRA7qK/dzyrAkE+psmTH
+    zhgDjF7grurC4cYdHHbangCmI8HSxeGHPwIDAQABo1MwUTAdBgNVHQ4EFgQU9Kai
+    Yu2F9PfbL+Ve/OLLOGMZpN4wHwYDVR0jBBgwFoAU9KaiYu2F9PfbL+Ve/OLLOGMZ
+    pN4wDwYDVR0TAQH/BAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAY8AW3aGnaeo0
+    cbii+Te7tCtC1XorMCRZwHNQq/1g60YQ1kYDyk8nKMBKHFGGZL7WRfOpdbddE1Vv
+    BF7zTjwmNJzYUI4xwoFPoaymeZjdTtpxyMNl/J7NorJzBTnNJcdk4pxGzx//ctah
+    wYHTy1NVQVi3ngCnqV0AlvD5MNkMooQEnIhuys2ZNWGTV6tG0GetWh4p/Ll0U/tN
+    /8F/3vcepHKhZ82GgjrCb3/xfgn+O/qb69aifDe9I36HZ4SXcUIceGRU7R6/rKxX
+    qjkYjqnLjnkd7w19mQc1IOlrMTO64A2TavdL4bE69KxjfpdXeIb3pnrMiOjGBp5F
+    ABxtS+WLNA==
+    -----END CERTIFICATE-----
+
+  nginx-selfsigned.key: |
+    -----BEGIN PRIVATE KEY-----
+    MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDAG3W9vZFzBN2t
+    1B03JliP5U4X91J2E3BTDGciM+4NAffWCQG6ZoHrJ9PVdtcJBhS5zOJFVPKu6qwJ
+    Izq5tVa7YuvefQWO8bM9uAknfYv22QN3En2LN7dyik1pqQzx9soFuhFpt3/hg4r3
+    me9ngN/1/7W36HLJYFyiqpyGzJ1FVa0HvHdfdK6CS11rN6ZCHDJLYBxerD4EMK3n
+    KLeNveA2v+DKnxQNG6X4d0BQUK/klTUmcJmJ81L80Uw62fFaLA3/kRQNAQOpbvOC
+    13Jd3raM4Zo/j4l/7tsNEDuor93PKsCQT6myZMfOGAOMXuCu6sLhxh0cdtqeAKYj
+    wdLF4Yc/AgMBAAECggEAaoIO+l6SuJFXElwKwpvY+BarAHCX4G0QlorG11ixP7b6
+    oEkoEx9oImdXc/9KY29iqEymmsfpMP9c2EgW9AVNC+FhYl4wabsppCtXr/RUWEyj
+    Ni4jOr9uTuvM1arrSW+JPDmYE+Ov2+khb/uBlwIFqY7XQhp3IZzyXyF2XOouu9Q4
+    ZmSBT5d+TFUhZ51UKBA4BDIUvCkZn+QKJJUHXVZ4X/Ej+Tr1Zc2L73uGUxXIDOtY
+    oUwF8NQAEDSQiruvHJJg3Piq9EEhWgiF74P96cPFMB5c+jwGyKFRV1WW6rQ30uAb
+    fADQJz3CuMZekGMdYGKukemJDxQw9Un+QUZotPOJUQKBgQD0UdfA8SOBAtRAKRbc
+    OnjvJ/ns8DcdSbPt93dWcRRgKXtXjjs/XwPBIXZk/UcdCS2jEINmkYM6jV8bxrwN
+    GZ0MhkQ7KpEl1dARZ2TXI+xNJTqK9hqpz7Rz8wwP6FlXgc5u9hEhf4v6ehcGxebG
+    utZCtDFHcxg8w9kFKS2tjf7DRwKBgQDJSpq+VdlrE8VkZiWU7ovALgQgNh2NnhMx
+    b4pKgA4JABMniFzStX+kNfleYaDDXFek0oDLbE8zV0EXM0LKTTdMuZDhKeDUn77B
+    7EHR6Jgdx1zKusNVN7TOJS1LQ5Td8OxrOCdvhIbKybhhcZuXasMN8cORZJii7bpI
+    /fvrXWFoSQKBgQChVsKRaSw277VWQUwVVo+x7sY+T0s2DgvB459s9/OqpPoMkaJS
+    cN471WsnuZISfJMkka0UOJdePSlHYG+ifv2U3b2FDNEZGR7zv0F6SQCs2R7V0Ts+
+    VCkoQKIAh0EoZlH6OIiLhHzdhW5bTKjfJ1aCahf4xOqGhhZ0MAM4DwLj1QKBgFpd
+    OJzL04AjbxEEXki+0lQjFE0VnizOUxV1WmLZm/NkajTsHaemPTgN1vYM4+vwD5R5
+    v8ISzHdi62Cr7Yb+JR43jBfZAgrR8AQEuQOv5GIx9rE4KKqgCHYm8G+CVllQaAI2
+    QlXo684rwq9UHiJallgzObWSsIcsK93Kz4Y49JqpAoGBAJuXn8w1pNBU7ol4tSfQ
+    YW6dzs9oAHf3Qfz52JjIamA8rypynBX9YpC04zM5SQwZWlFsp30dilfxrYnfL0Ou
+    AzHV6XiRvguN9YxB8jwyNcTwcYgYsZr7lJL2NjHMnflr/Odl20GEG7D15V8jv8IA
+    SpVR5WDnwCA6AJtByevMGnpH
+    -----END PRIVATE KEY-----
+
+  7682221_qplus.woqutech.com.pem: |
+    -----BEGIN CERTIFICATE-----
+    MIIF+TCCBOGgAwIBAgIQB9ammnFHitfBdrVMT7XHvjANBgkqhkiG9w0BAQsFADBu
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+    d3cuZGlnaWNlcnQuY29tMS0wKwYDVQQDEyRFbmNyeXB0aW9uIEV2ZXJ5d2hlcmUg
+    RFYgVExTIENBIC0gRzEwHhcNMjIwNDI3MDAwMDAwWhcNMjMwNDI4MjM1OTU5WjAd
+    MRswGQYDVQQDExJxcGx1cy53b3F1dGVjaC5jb20wggEiMA0GCSqGSIb3DQEBAQUA
+    A4IBDwAwggEKAoIBAQDUYkhuK7Q7ubswIB7VLTA+NbxiaxSjGNPHpFjdp3HkR2il
+    2cCST1Vws3Z3VEde7+YwNymEFf+gzySRL9Ig+YgAM+DPeAB8LQQbp7eRfgK+OyQA
+    nA4OJy38kYZ0PztQNIlfJDlHOf/gBEMI9GbfDYbAndmwwlf3fkRVl87Ujfsr7zBG
+    GQJsLFNaH7XNnIq0K6hf2b+6z2DEYO5eNTzz5kfPhOlA13QEzk90+cd6IwggRPzG
+    SctZBPu32/H0tQ6ofPAenubm+PbZxca8gFRJifDCWJIngFmTusyLPs/B5GZVSY86
+    tTYLGrw24hiQ8Scbzd42i30l5WpLtbNQizJztkf/AgMBAAGjggLiMIIC3jAfBgNV
+    HSMEGDAWgBRVdE+yck/1YLpQ0dfmUVyaAYca1zAdBgNVHQ4EFgQUTRZ1auuxmwwr
+    8NEwlI8pUUSuuxYwHQYDVR0RBBYwFIIScXBsdXMud29xdXRlY2guY29tMA4GA1Ud
+    DwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwPgYDVR0g
+    BDcwNTAzBgZngQwBAgEwKTAnBggrBgEFBQcCARYbaHR0cDovL3d3dy5kaWdpY2Vy
+    dC5jb20vQ1BTMIGABggrBgEFBQcBAQR0MHIwJAYIKwYBBQUHMAGGGGh0dHA6Ly9v
+    Y3NwLmRpZ2ljZXJ0LmNvbTBKBggrBgEFBQcwAoY+aHR0cDovL2NhY2VydHMuZGln
+    aWNlcnQuY29tL0VuY3J5cHRpb25FdmVyeXdoZXJlRFZUTFNDQS1HMS5jcnQwCQYD
+    VR0TBAIwADCCAX4GCisGAQQB1nkCBAIEggFuBIIBagFoAHYA6D7Q2j71BjUy51co
+    vIlryQPTy9ERa+zraeF3fW0GvW4AAAGAaQL23wAABAMARzBFAiEAjhrBmBE1UsIq
+    nKIolQOnj0p1X8oPM35FuJcT/5egZr8CIHAr520kwmvRTZeDju5JEDxFFredWMpA
+    ti9l+phwG/BBAHYANc8ZG7+xbFe/D61MbULLu7YnICZR6j/hKu+oA8M71kwAAAGA
+    aQL2PwAABAMARzBFAiB1cJZ386tvcEF/07/tE/EYRwGSzYh7VUQsbAZeil+T1AIh
+    AJsFBzuDD5/Qtydekj/Feq0zmU9MLwKSA9vW0hEFj0OjAHYAs3N3B+GEUPhjhtYF
+    qdwRCUp5LbFnDAuH3PADDnk2pZoAAAGAaQL2egAABAMARzBFAiEAoWIlf+Yr30ur
+    KSQGq5bvMwaAcslySqLHoYgh6PtOtrgCIBk2yTS3Swes9X2yjkVrNxX/NlslAVv1
+    RGS0s4cZ+bVmMA0GCSqGSIb3DQEBCwUAA4IBAQCDIkkZaMb6yZg8g5QbI+O1t+fp
+    wJM7LIFPuUceuMG9sYxQqeIYsMMBBOjefoen4JcfYgLrevxbJUw91Yzqa1QRa4j/
+    inRZjAlxHZxoR70z/qU8GIXfeC2P7/ueIM3KqACPLU9oZynvqL+d2OxC/bCN8sJ2
+    sB2uwaUSFIhWyfjIG4iZi1L10XZqXEnmsgiK0jW407rwKoJ5/9k77R1b7OlF2O6s
+    Ei/6vP2OaJPfBBd+UXQaKammY4fnomrunuU3pCgCE2OF8wvfI0x8RH56cMz1ZwgP
+    Ik7XL4o3530l/HaxN8QjwHKSk1l33T4JF9AEYvG9U8+JOuvq/DvrYiw4DeT1
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIEqjCCA5KgAwIBAgIQAnmsRYvBskWr+YBTzSybsTANBgkqhkiG9w0BAQsFADBh
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+    d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD
+    QTAeFw0xNzExMjcxMjQ2MTBaFw0yNzExMjcxMjQ2MTBaMG4xCzAJBgNVBAYTAlVT
+    MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j
+    b20xLTArBgNVBAMTJEVuY3J5cHRpb24gRXZlcnl3aGVyZSBEViBUTFMgQ0EgLSBH
+    MTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALPeP6wkab41dyQh6mKc
+    oHqt3jRIxW5MDvf9QyiOR7VfFwK656es0UFiIb74N9pRntzF1UgYzDGu3ppZVMdo
+    lbxhm6dWS9OK/lFehKNT0OYI9aqk6F+U7cA6jxSC+iDBPXwdF4rs3KRyp3aQn6pj
+    pp1yr7IB6Y4zv72Ee/PlZ/6rK6InC6WpK0nPVOYR7n9iDuPe1E4IxUMBH/T33+3h
+    yuH3dvfgiWUOUkjdpMbyxX+XNle5uEIiyBsi4IvbcTCh8ruifCIi5mDXkZrnMT8n
+    wfYCV6v6kDdXkbgGRLKsR4pucbJtbKqIkUGxuZI2t7pfewKRc5nWecvDBZf3+p1M
+    pA8CAwEAAaOCAU8wggFLMB0GA1UdDgQWBBRVdE+yck/1YLpQ0dfmUVyaAYca1zAf
+    BgNVHSMEGDAWgBQD3lA1VtFMu2bwo+IbG8OXsj3RVTAOBgNVHQ8BAf8EBAMCAYYw
+    HQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/wQIMAYBAf8C
+    AQAwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdp
+    Y2VydC5jb20wQgYDVR0fBDswOTA3oDWgM4YxaHR0cDovL2NybDMuZGlnaWNlcnQu
+    Y29tL0RpZ2lDZXJ0R2xvYmFsUm9vdENBLmNybDBMBgNVHSAERTBDMDcGCWCGSAGG
+    /WwBAjAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BT
+    MAgGBmeBDAECATANBgkqhkiG9w0BAQsFAAOCAQEAK3Gp6/aGq7aBZsxf/oQ+TD/B
+    SwW3AU4ETK+GQf2kFzYZkby5SFrHdPomunx2HBzViUchGoofGgg7gHW0W3MlQAXW
+    M0r5LUvStcr82QDWYNPaUy4taCQmyaJ+VB+6wxHstSigOlSNF2a6vg4rgexixeiV
+    4YSB03Yqp2t3TeZHM9ESfkus74nQyW7pRGezj+TC44xCagCQQOzzNmzEAP2SnCrJ
+    sNE2DpRVMnL8J6xBRdjmOsC3N6cQuKuRXbzByVBjCqAA8t1L0I+9wXJerLPyErjy
+    rMKWaBFLmfK/AHNF4ZihwPGOc7w6UHczBZXH5RFzJNnww+WnKuTPI0HfnVH8lg==
+    -----END CERTIFICATE-----
+
+
+  7682221_qplus.woqutech.com.key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEowIBAAKCAQEA1GJIbiu0O7m7MCAe1S0wPjW8YmsUoxjTx6RY3adx5EdopdnA
+    kk9VcLN2d1RHXu/mMDcphBX/oM8kkS/SIPmIADPgz3gAfC0EG6e3kX4CvjskAJwO
+    Dict/JGGdD87UDSJXyQ5Rzn/4ARDCPRm3w2GwJ3ZsMJX935EVZfO1I37K+8wRhkC
+    bCxTWh+1zZyKtCuoX9m/us9gxGDuXjU88+ZHz4TpQNd0BM5PdPnHeiMIIET8xknL
+    WQT7t9vx9LUOqHzwHp7m5vj22cXGvIBUSYnwwliSJ4BZk7rMiz7PweRmVUmPOrU2
+    Cxq8NuIYkPEnG83eNot9JeVqS7WzUIsyc7ZH/wIDAQABAoIBAA/EnZSzC/Y54OA+
+    0kCI0qxxDY56XWrf0gFgKJ+JlKwacnY1x4AAAduUh2Fupr8xV8lmnwoec/8lbJVB
+    k/vnatB7tDTTDP4rKBiW3XXLgY/2u20204L7fQTjwl6+abyXr0dFXOH2jWe9Xpi7
+    RH6foMyLgPkIRMMBjeM+RRiE02FnMFtf5poVEFax/J9xLvms3e3AqdOjzGtdatXq
+    lQvwnkoK6YN8S8HzcJKBAW7iDHw5ro8h7H+b9XvweQnPk03zPwPkylPPh7FNi2/U
+    rZ41Cd1xYslqZEdWItBGEaGsE6NENWYN3vKsea/iZ9p8mpiEInZR37iY8IpJZzno
+    QBjy0CECgYEA+pJb3L1yKxDvryp/tblVedsoB82sUNcwe8d8fEPJudpGfkQgPrle
+    xyNhv/jreQVkC4e7VIYUyutqz9C1vy088Nqj9Wi5Cdksu8IcqoxfYh/PEygpk1za
+    TDlD4Z4wA6DsqtSPkTFqd0a0ATr6PLcBht0upo4+w61+IbqswzHzYQ8CgYEA2Pwj
+    msQfl3iTRf8S4jF5sL1Gdik0zrHVDB115n1W7QxrEzlxFD2JCkJ2n35eOmZ5vlL/
+    bWVI+tcJfGAerfuZG9hKYM8xw4i7TtjrySe+ian1vsII557oPr4AgyMbLRc/1QEm
+    YWN/CgJ3lqqPghKB2+3JC206LAi6N1q5RYqZyhECgYBNV8HdJ+jGnEqvcdnLuPJG
+    U7xOdFC8/z8q5c9p9+6bXGGn9dVSJxu3MhepDud4Co7v9CyBkYV3gSUOEmkXIpqN
+    6Z70UCfVf2CMcAUzK3MBsbnUOvBiWSXUo1RtnstJQ3Hp5QSPl4Y6XOuQ+ahl90MU
+    Ys9Uf9GlyraFKL7M3W03RwKBgQDFtlmq9/HhTxjCuv015ecASDcgC8P2YsvB0kZP
+    0v2V2a7nQXvr+XYZRx5XjgnGJQHhjjb4M0YgajhWgC70UUDdwmNjeufZR4mE+ts9
+    210eiyNEwgDjLERqhy5oT2C/4WNkbzvNmZ90O3NEcf15g+uXvj9mjgxnezxSm/Qd
+    jYE8QQKBgE8Rg/qSW0scJT1vXrOk5swTk7GaDU9cL736k7LkXSHR7HS+XPZdXE6B
+    Jo9M7CAxl3Nobc7qPYyTf8aN37Lrza/qS2cDI3fmbTz9DTZncaqn+PZkpYcU+csu
+    LLIak7FAxYTq5xDxYZIp8vdU0TgjI3PiYi1p9PD3+UVQuHxVPBgv
+    -----END RSA PRIVATE KEY-----
+
+
+  7682106_produceapi.qpc.woqutech.com.pem: |
+    -----BEGIN CERTIFICATE-----
+    MIIGCjCCBPKgAwIBAgIQCqbdZs2ZT8Loff7eFNkYtTANBgkqhkiG9w0BAQsFADBu
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+    d3cuZGlnaWNlcnQuY29tMS0wKwYDVQQDEyRFbmNyeXB0aW9uIEV2ZXJ5d2hlcmUg
+    RFYgVExTIENBIC0gRzEwHhcNMjIwNDI3MDAwMDAwWhcNMjMwNDI4MjM1OTU5WjAm
+    MSQwIgYDVQQDExtwcm9kdWNlYXBpLnFwYy53b3F1dGVjaC5jb20wggEiMA0GCSqG
+    SIb3DQEBAQUAA4IBDwAwggEKAoIBAQDruhdZiBKaxG7LaB6gkOCIkz+xq0UY5YOF
+    ANyS6vL+IFRh8OPIwIC2Vo1UayoNr6keWcHeIlSp+cDWR3MV+yVZZ5OuAd0o1Arl
+    O0MPkf6Uvb3FzSagsw5q7C7WhBBQKPa7ZURqv6dVayR/huj+/vatVZSf/jg2h06z
+    CcIv8pWPm8aDKH4dN5sKEbGhB/QzW44qGh9O4LeHe9wgFOFh9OF7NUrDmWikvGUk
+    D/PIwS2bISF14knPqIU3qKtL2mvdVO4aeon8h6DStpGuYY99N6fcGXcH9R0s0BPX
+    jy0Tog7PTGhpyMerUl/Kig32ywIFkCjfBI1JZRItmV+RMA5uhrtfAgMBAAGjggLq
+    MIIC5jAfBgNVHSMEGDAWgBRVdE+yck/1YLpQ0dfmUVyaAYca1zAdBgNVHQ4EFgQU
+    8f7Ali08FCH+JY4X9urfGDjyxyswJgYDVR0RBB8wHYIbcHJvZHVjZWFwaS5xcGMu
+    d29xdXRlY2guY29tMA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcD
+    AQYIKwYBBQUHAwIwPgYDVR0gBDcwNTAzBgZngQwBAgEwKTAnBggrBgEFBQcCARYb
+    aHR0cDovL3d3dy5kaWdpY2VydC5jb20vQ1BTMIGABggrBgEFBQcBAQR0MHIwJAYI
+    KwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBKBggrBgEFBQcwAoY+
+    aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL0VuY3J5cHRpb25FdmVyeXdoZXJl
+    RFZUTFNDQS1HMS5jcnQwCQYDVR0TBAIwADCCAX0GCisGAQQB1nkCBAIEggFtBIIB
+    aQFnAHUA6D7Q2j71BjUy51covIlryQPTy9ERa+zraeF3fW0GvW4AAAGAaPjkOAAA
+    BAMARjBEAiA7fThCWx9fmTM3Pp1TAIuNT23cQYE3PTw1qbOwltKCCAIge0Tv66Nl
+    LCJFuqb2v69RNdtBQSMGHQ6FdId1FflmOJ4AdQA1zxkbv7FsV78PrUxtQsu7ticg
+    JlHqP+Eq76gDwzvWTAAAAYBo+ORQAAAEAwBGMEQCIBgYIrwp7eB3i2/Vrk18PZ99
+    vhG0PK61qoeunMiukEPkAiAjvqOFD8lXfTRMaJ4P7ksfzIkymFugQSWsb8TcF/9w
+    ZwB3ALNzdwfhhFD4Y4bWBancEQlKeS2xZwwLh9zwAw55NqWaAAABgGj45H0AAAQD
+    AEgwRgIhANIGy9MvQ/aKIHRNL/dXALshRlKu0EtWZEId/9SpixZlAiEA43kbcsvl
+    PYW1/UxLi6dAHTpZ4u+4ZXy+wFOJ4wuMul4wDQYJKoZIhvcNAQELBQADggEBAJEz
+    pqFG7j4UwViRc6NF8SE2aeUo0StmNZAkGqQ2C335nEAO6uXZkub2gsppXQrW/P16
+    UvKAjKAXF4BEcpshYBL5jwQWN/OBWDqRobaEIMCtynj7BfLwjf8/ezDjIyKO6lDu
+    /P6ND/BLVmcNuFFPVwlO7cy/kJPJUvUPL6NHMDQCOc2+dNZNEqrCiM9Lzgke3D/Q
+    lhI59xf99NsxtblegKJHKYbNv372cz/eqO8/z8DcdjyBmJ/pgjPaPa+pAA/8Dt28
+    V2/SKfUwbK8BAOrS8mX/ETN9cdJRqtEGlilSmkxcZyS2A2GaiSRAYWKfx4Y7IZ1l
+    CY5bITDgCT0HO+tz2fM=
+    -----END CERTIFICATE-----
+    -----BEGIN CERTIFICATE-----
+    MIIEqjCCA5KgAwIBAgIQAnmsRYvBskWr+YBTzSybsTANBgkqhkiG9w0BAQsFADBh
+    MQswCQYDVQQGEwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMRkwFwYDVQQLExB3
+    d3cuZGlnaWNlcnQuY29tMSAwHgYDVQQDExdEaWdpQ2VydCBHbG9iYWwgUm9vdCBD
+    QTAeFw0xNzExMjcxMjQ2MTBaFw0yNzExMjcxMjQ2MTBaMG4xCzAJBgNVBAYTAlVT
+    MRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5j
+    b20xLTArBgNVBAMTJEVuY3J5cHRpb24gRXZlcnl3aGVyZSBEViBUTFMgQ0EgLSBH
+    MTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBALPeP6wkab41dyQh6mKc
+    oHqt3jRIxW5MDvf9QyiOR7VfFwK656es0UFiIb74N9pRntzF1UgYzDGu3ppZVMdo
+    lbxhm6dWS9OK/lFehKNT0OYI9aqk6F+U7cA6jxSC+iDBPXwdF4rs3KRyp3aQn6pj
+    pp1yr7IB6Y4zv72Ee/PlZ/6rK6InC6WpK0nPVOYR7n9iDuPe1E4IxUMBH/T33+3h
+    yuH3dvfgiWUOUkjdpMbyxX+XNle5uEIiyBsi4IvbcTCh8ruifCIi5mDXkZrnMT8n
+    wfYCV6v6kDdXkbgGRLKsR4pucbJtbKqIkUGxuZI2t7pfewKRc5nWecvDBZf3+p1M
+    pA8CAwEAAaOCAU8wggFLMB0GA1UdDgQWBBRVdE+yck/1YLpQ0dfmUVyaAYca1zAf
+    BgNVHSMEGDAWgBQD3lA1VtFMu2bwo+IbG8OXsj3RVTAOBgNVHQ8BAf8EBAMCAYYw
+    HQYDVR0lBBYwFAYIKwYBBQUHAwEGCCsGAQUFBwMCMBIGA1UdEwEB/wQIMAYBAf8C
+    AQAwNAYIKwYBBQUHAQEEKDAmMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdp
+    Y2VydC5jb20wQgYDVR0fBDswOTA3oDWgM4YxaHR0cDovL2NybDMuZGlnaWNlcnQu
+    Y29tL0RpZ2lDZXJ0R2xvYmFsUm9vdENBLmNybDBMBgNVHSAERTBDMDcGCWCGSAGG
+    /WwBAjAqMCgGCCsGAQUFBwIBFhxodHRwczovL3d3dy5kaWdpY2VydC5jb20vQ1BT
+    MAgGBmeBDAECATANBgkqhkiG9w0BAQsFAAOCAQEAK3Gp6/aGq7aBZsxf/oQ+TD/B
+    SwW3AU4ETK+GQf2kFzYZkby5SFrHdPomunx2HBzViUchGoofGgg7gHW0W3MlQAXW
+    M0r5LUvStcr82QDWYNPaUy4taCQmyaJ+VB+6wxHstSigOlSNF2a6vg4rgexixeiV
+    4YSB03Yqp2t3TeZHM9ESfkus74nQyW7pRGezj+TC44xCagCQQOzzNmzEAP2SnCrJ
+    sNE2DpRVMnL8J6xBRdjmOsC3N6cQuKuRXbzByVBjCqAA8t1L0I+9wXJerLPyErjy
+    rMKWaBFLmfK/AHNF4ZihwPGOc7w6UHczBZXH5RFzJNnww+WnKuTPI0HfnVH8lg==
+    -----END CERTIFICATE-----
+
+  7682106_produceapi.qpc.woqutech.com.key: |
+    -----BEGIN RSA PRIVATE KEY-----
+    MIIEpAIBAAKCAQEA67oXWYgSmsRuy2geoJDgiJM/satFGOWDhQDckury/iBUYfDj
+    yMCAtlaNVGsqDa+pHlnB3iJUqfnA1kdzFfslWWeTrgHdKNQK5TtDD5H+lL29xc0m
+    oLMOauwu1oQQUCj2u2VEar+nVWskf4bo/v72rVWUn/44NodOswnCL/KVj5vGgyh+
+    HTebChGxoQf0M1uOKhofTuC3h3vcIBThYfThezVKw5lopLxlJA/zyMEtmyEhdeJJ
+    z6iFN6irS9pr3VTuGnqJ/Ieg0raRrmGPfTen3Bl3B/UdLNAT148tE6IOz0xoacjH
+    q1JfyooN9ssCBZAo3wSNSWUSLZlfkTAOboa7XwIDAQABAoIBABTf1EyB37/j0Dnj
+    /P5UBgYiH/xQQdysCmL/SgkalC0L2N0Zc1pmLZ+392j32m/+07eT1DajDKNGshxn
+    lFnodQy/PtUkZhzE9jgJcO1SjNxIFyOKgLavVIIEaztk03r9vaenlpDratqGE+PV
+    IxHdqyN7Vh966Chv//ibzx3m2fau9bgkkmNPuZiwie2p8QIBsVT5Pl1cKf29hEnV
+    6dhS0RN3iT8I/NxkkAZjzoFhssbfsxylG/8PYt09S5Lkv5MuxOVfQ8IrIdnza3Z8
+    n1vHkK5Zzkxl3LakPbEFVh1OdsuMPbqRGJxyORh0HK7vABmn+mLtSQooKXCQIavH
+    Yp7hkFECgYEA+gOydTviEqEU1Okhv8WeCXI5i4x8k2YroqdJWz8KbzmBopxORIje
+    ogYaGW4T1kTroB+3GWhCPIFux6y9NodMAxdTWhKRGL2Uv9b4nsfO5ik9hVhyxlkP
+    uxX42chGvCliZH4jjKlW40NUwusQmtBiFdm1dll+827gyNGhi3Jvj68CgYEA8V7T
+    8kGaIUgYx4k2kWroiLmdxxmvqpBGaJEzpAiNWpQTIFqKYRNxwl6GUnYEY0mpDjDc
+    4qDQy0w93g4gyGJZSQ0oxPgPt9+c9dF+yD2mff3TsE26tWEsmm0oLGdodqoaZKpC
+    FR1AHy5K7HgZ/aodmMrgPUW7Cog35+Udb85+S1ECgYEA6D6s9ShGjsWhw1I5bpqV
+    fvLjr9U2F/quCC9b/m4mNEH4QWTvc8ys+1etwPe3Z7CoLRupC+oEtY4KqWO2dMPk
+    AW8Wl7JtpMzfNAHu/BhiAv5GTutl2wj6ivETNMNNqhbLdsySG2Vm+EAgqdyQlS+E
+    HgYaAjGKs3nJR+MsLIyGQ7MCgYEA3147VACjy1L2I4n2psJB6W2k9oDt0TFtBw4A
+    tTd44K8RuCoxzz54U0C4m4096Ehdm5VahJwAPXMT+fAnJGnnaLQ123oYybe1gMNb
+    yaFL92KzyX9VXs9LwKltuRIFWXN3s1rghruoAHMNwSIwI1CPzTtKI0npmwiOfBrK
+    kBKPS9ECgYATlaaycxJsN/KfsyK4Mqxn+ijocbN5aZqfOH31zCr9S2vz3grmD0i+
+    S3CxT7hh2lOxhi4i+4g2xBoidBXjdaFetdcP5vBDCNa3ZpGVYL8Airagl6lZxf8z
+    VHTLI4TiwbXCMx0sQC9qX8My8lpt2pwxE7Xm3snm2Xi/fQuGTJMRWg==
+    -----END RSA PRIVATE KEY-----
+
+---
+# define daemonset for nginx
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dbs-nginx
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: nginx
+spec:
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      hostNetwork: true
+      dnsPolicy: ClusterFirstWithHostNet
+      restartPolicy: Always
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          operator: Exists
+          effect: NoSchedule
+        - key: qfusion/master
+          operator: Exists
+          effect: NoSchedule
+      initContainers:
+        - image: swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-setup:2.0.0
+          name: dbs-setup
+          command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+          volumeMounts:
+            - mountPath: /install_files
+              name: installfiles
+        - image: swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent:2.0.0
+          name: dbs-agent
+          command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+          volumeMounts:
+            - mountPath: /install_files
+              name: installfiles
+        - image: swr.cn-east-2.myhuaweicloud.com/squids/dbs-s3fs:2.0.0
+          name: dbs-s3fs
+          command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+          volumeMounts:
+            - mountPath: /install_files
+              name: installfiles
+        - image: swr.cn-east-2.myhuaweicloud.com/squids/dbs-qfb:2.0.0
+          name: dbs-qfb
+          command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+          volumeMounts:
+            - mountPath: /install_files
+              name: installfiles
+        - image: swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy:2.0.0
+          name: dbs-proxy
+          command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+          volumeMounts:
+            - mountPath: /install_files
+              name: installfiles
+      containers:
+        - image: swr.cn-east-2.myhuaweicloud.com/squids/nginx:alpine
+          name: nginx
+          volumeMounts:
+            - name: dbs-nginx-ssl-pem
+              mountPath: /etc/nginx/ssl/
+            - name: dbs-nginx-conf
+              mountPath: /etc/nginx/conf.d/
+            - name: installfiles
+              mountPath: /var/woqutech/dbs/install_files
+            - mountPath: /etc/localtime
+              name: localtime
+      volumes:
+        - name: dbs-nginx-ssl-pem
+          configMap:
+            name: dbs-nginx-ssl-pem
+        - name: dbs-nginx-conf
+          configMap:
+            name: dbs-nginx-conf
+        - name: installfiles
+          hostPath:
+            path: /var/woqutech/dbs/install_files
+            type: DirectoryOrCreate
+        - name: localtime
+          hostPath:
+            path: /usr/share/zoneinfo/Asia/Shanghai
+            type: ""
+
+

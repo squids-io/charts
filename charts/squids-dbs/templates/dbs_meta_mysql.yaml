@@ -1,28 +1,36 @@
 ---
-# Source: squids-dbmotion-saas-server/templates/ns.yaml
 apiVersion: v1
-kind: Namespace
+kind: Service
 metadata:
-  labels:
-    kubernetes.io/metadata.name: dbs
-  name: dbs
+  name: dbs-meta-mysql
+  namespace: {{.Release.Namespace}}
 spec:
-  finalizers:
-    - kubernetes
+  internalTrafficPolicy: Cluster
+  ipFamilies:
+    - IPv4
+  ipFamilyPolicy: SingleStack
+  ports:
+    - name: tcp
+      port: 3306
+      protocol: TCP
+      targetPort: 3306
+  selector:
+    app: dbs-meta-mysql
+  sessionAffinity: None
+  type: ClusterIP
 ---
-# Source: squids-dbmotion-saas-server/templates/dbs_mysql_deploy.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: dbs-mysql
-  namespace: dbs
+  name: dbs-meta-mysql
+  namespace: {{.Release.Namespace}}
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: dbs-mysql
+      app: dbs-meta-mysql
   strategy:
     rollingUpdate:
       maxSurge: 25%
@@ -31,7 +39,7 @@ spec:
   template:
     metadata:
       labels:
-        app: dbs-mysql
+        app: dbs-meta-mysql
     spec:
       containers:
       - args:
@@ -47,7 +55,7 @@ spec:
         name: mysqld
         ports:
         - containerPort: 3306
-          name: dbs-mysql
+          name: mysqld-port
           protocol: TCP
         resources: {}
         terminationMessagePath: /dev/termination-log
