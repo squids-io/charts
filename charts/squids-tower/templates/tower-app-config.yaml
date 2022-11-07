@@ -2,9 +2,9 @@ apiVersion: v1
 data:
   zookeeper: "swr.cn-east-2.myhuaweicloud.com/squids/zookeeper:3.6.3"
   clickhouse: "swr.cn-east-2.myhuaweicloud.com/squids/clickhouse-server"
-  slow-log-dao: "slow-log-swr.cn-east-2.myhuaweicloud.com/squids/slow-log-dao:{{ .Values.image.squidstower.tag }}"
-  backup-trigger: "swr.cn-east-2.myhuaweicloud.com/squids/chi:{{ .Values.image.squidstower.tag }}"
-  init-container: "swr.cn-east-2.myhuaweicloud.com/squids/chi:{{ .Values.image.squidstower.tag }}"
+  slow-log-dao: "slow-log-swr.cn-east-2.myhuaweicloud.com/squids/slow-log-dao:v1.0.1"
+  backup-trigger: "swr.cn-east-2.myhuaweicloud.com/squids/chi:v1.0.0"
+  init-container: "swr.cn-east-2.myhuaweicloud.com/squids/chi:v1.0.0"
 
 kind: ConfigMap
 metadata:
