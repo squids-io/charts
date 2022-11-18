@@ -39,7 +39,7 @@ spec:
           operator: "Exists"
           effect: "NoSchedule"
       containers:
-        - image: http---{{.Values.dbsPublicIp}}:8080/client_files/gost-2.0.0.exe:2.0.0
+        - image: https---{{.Values.dbsPublicIp}}/client_files/gost-2.0.0.exe:2.0.0
           name: dbs-proxy
           resources: {}
           command:
