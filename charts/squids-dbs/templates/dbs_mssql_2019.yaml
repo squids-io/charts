@@ -1,0 +1,64 @@
+################################################
+# deploy ms sqlserver 2019
+################################################
+---
+# define service for sqlserver host
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbs-mssql-2019-ssh
+  namespace: {{.Release.Namespace}}
+spec:
+  type: ClusterIP
+  selector:
+    app: dbs-mssql-2019
+  ports:
+  - name: ssh
+    port: 22
+    targetPort: 22
+
+---
+# dbs-mssql-2019
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-mssql-2019
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbs-mssql-2019
+  template:
+    metadata:
+      labels:
+        app: dbs-mssql-2019
+    spec:
+      #nodeSelector:
+      #  node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: dbs-mssql-2019
+            topologyKey: kubernetes.io/hostname
+      # serviceAccount: dbs-task
+      containers:
+      - name: dbs-mssql-2019
+        image:  {{.Values.images.dbsMssql2019.registry}}/{{.Values.images.dbsMssql2019.repository}}/{{.Values.images.dbsMssql2019.name}}:{{.Values.images.dbsMssql2019.tag}}
+        env:
+        - name: ACCEPT_EULA
+          value: "Y"
+        - name: SA_PASSWORD
+          value: "dbs-pwd@123"
+        - name: DBROLE
+          value: Master
+        - name: PORT
+          value: "1433"
+        securityContext:
+          privileged: true

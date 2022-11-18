@@ -5,11 +5,11 @@ kind: ConfigMap
 data:
   qpcserver.ini: |
     [qpcserver]
-    db_host=qfusion-cmdb0.qfusion
+    db_host=dbs-meta-mysql.dbs
     db_port=3306
     db_name=qpc
-    db_user=qpc1
-    db_password=password
+    db_user=root
+    db_password=dbs-pwd
 metadata:
   name: dbs-server-conf
   namespace: {{.Release.Namespace}}
@@ -31,8 +31,8 @@ spec:
         app: dbs-server
     spec:
       serviceAccountName:  {{.Values.rbac.server.serviceAccount}}
-      nodeSelector:
-        node-role.kubernetes.io/master: ""
+      #nodeSelector:
+      #  node-role.kubernetes.io/master: ""
       tolerations:
         - key: node-role.kubernetes.io/master
           operator: Exists

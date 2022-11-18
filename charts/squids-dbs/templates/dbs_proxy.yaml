@@ -15,7 +15,7 @@ spec:
       labels:
         name: dbs-proxy
       annotations:
-        process.cri/httpProtocol: https
+        process.cri/httpProtocol: http
     spec:
       nodeSelector:
         woquproxy: "yes"
@@ -39,7 +39,7 @@ spec:
           operator: "Exists"
           effect: "NoSchedule"
       containers:
-        - image: {{.Values.dbsInstallServer}}/install_files/gost-2.0.0.exe:2.0.0
+        - image: http---{{.Values.dbsPublicIp}}:8080/client_files/gost-2.0.0.exe:2.0.0
           name: dbs-proxy
           resources: {}
           command:

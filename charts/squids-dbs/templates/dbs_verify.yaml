@@ -1,0 +1,86 @@
+############################################
+# deploy dbs-verify
+############################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-verify
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbs-verify
+  template:
+    metadata:
+      labels:
+        app: dbs-verify
+    spec:
+      #nodeSelector:
+      #  node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: dbs-verify
+            topologyKey: kubernetes.io/hostname
+      serviceAccount: dbs-agent
+      restartPolicy: Always
+      containers:
+      - name: dbs-verify
+        image: {{.Values.images.dbsVerify.registry}}/{{.Values.images.dbsVerify.repository}}/{{.Values.images.dbsVerify.name}}:{{.Values.images.dbsVerify.tag}}
+        # command: ["./verify"]
+        args: 
+        - -dababaseip=dbs-meta-mysql.dbs
+        - -port=3306
+        - -username=root
+        - -password=dbs-pwd
+        - -s3fs=juicefs
+        - -s3fs-rsa-passphrase=qplus
+        - -pollingnum=3
+        - -verbackupidnum=10
+        - -verifynum=3
+        - -SshUser=root
+        - -SshType=key
+        - -SshKeyPath=./id_rsa
+        - -SshPort=22
+        - -SshProxy=
+        - -ConDbCmd=/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P "dbs-pwd@123" -Q @dbs-mssql-2019-ssh.dbs
+        imagePullPolicy: Always
+
+
+
+
+
+
+
+
+
+
+
+#dababaseip mysql数据库ip
+##port mysql数据库端口
+##password mysql数据库密码
+##username mysql数据库用户名
+##verbackupidnum 单次验证个数
+##s3fs juicefs程序名称
+##pollingnum 下次循环时间
+##SshUser sql server用户名
+##SshType sql server密钥方式登录
+##SshKeyPath sql server密钥
+##SshPort sql server用户名端口
+##ConDbCmd 登录sql server @后面是mssql数据库，分发需要 /opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P zwcn4qiFei -Q @sql-2019-8596500-headless.qfusion-admin,/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U sa -P ovtbXiqg6i #-Q @sql-2019-85965-200-headless.qfusion-admin
+##AesKey AES加密密钥固定324KjlkdweSDwLJwer8hwe7d，apiserver给出
+##verifynum 验证次数
+##SshProxy 代理可以直接访问不用配置，加密密码JFS_RSA_PASSPHRASE=qplus
+
+
+
+
+
+

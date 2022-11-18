@@ -14,17 +14,67 @@ images:
     repository: squids
     name: dbs-api-server
     tag: 2.0.0
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-verify:2.0.0
+  dbsVerify:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-verify
+    tag: 2.0.0
+  # ms sqlserver for verify use
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-mssql-2019:2.0.0
+  dbsMssql2019:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-mssql-2019
+    tag: 2.0.0
+  # dbs agent and proxy setup
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-setup:2.0.0
+  dbsAgentSetup:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-agent-setup
+    tag: 2.0.0
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent:2.0.0
+  dbsAgent:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-agent
+    tag: 2.0.0
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-s3fs:2.0.0
+  dbsS3fs:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-s3fs
+    tag: 2.0.0
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-qfb:2.0.0
+  dbsQfb:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-qfb
+    tag: 2.0.0
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy:2.0.0
+  dbsProxy:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-proxy
+    tag: 2.0.0
 
 rbac:
   # used by dbs-apiServer and dbs-server
   server:
-    serviceAccount: server
-    clusterRole: server
-    clusterRoleBinding: server
+    serviceAccount: dbs-admin
+    clusterRole: dbs-admin
+    clusterRoleBinding: dbs-admin
   # used by dbs-agent
   agent:
-    serviceAccount: agent
-    clusterRole: agent
-    clusterRoleBinding: agent
+    serviceAccount: dbs-agent
+    clusterRole: dbs-agent
+    clusterRoleBinding: dbs-agent
 
 dbsInstallServer: http://121.40.140.155:8080
+
+dbsPublicIp: squids.cn
+
+squids:
+  webApi: http://squids.cn:8080/api/v1
+  appId: dataCommunication
