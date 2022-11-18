@@ -13,7 +13,7 @@ data:
     app:
       eventNamespace: {{.Release.Namespace}}-task
       clientFilePath: /var/woqutech/dbs/install_files
-      imageRepo: http---{{.Values.dbsPublicIp}}:8080/client_files
+      imageRepo: https---squids.cn/client_files
       defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
       squids:
         enable: true
