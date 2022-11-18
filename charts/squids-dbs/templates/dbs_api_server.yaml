@@ -9,7 +9,7 @@ data:
   config.yaml: |
     server:
       port: 8080
-      runMode: debug
+      runMode: release
     app:
       eventNamespace: {{.Release.Namespace}}-task
       clientFilePath: /var/woqutech/dbs/install_files
@@ -31,7 +31,7 @@ data:
       host: dbs-meta-mysql.dbs
       port: 3306
       database: qpc
-      debug: true
+      debug: false
 ---
 # define service for apiserver
 apiVersion: v1

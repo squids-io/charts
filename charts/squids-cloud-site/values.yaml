@@ -35,6 +35,8 @@ grafana:
     dts: https://chartlog.squids.cn:31004
 dbmotion:
   url: https://squids-dbmotion-saas-server.squids.svc.cluster.local:3000
+dbs:
+  url: https://dbs-api-server.squids.svc.cluster.local:8080
 
 enableLauncher: true
 enableLicenseServer: true
