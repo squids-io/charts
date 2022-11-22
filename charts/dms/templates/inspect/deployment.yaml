@@ -26,7 +26,7 @@ spec:
         node-role.kubernetes.io/master: ""
       containers:
         - name: inspect
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/inspect:w1.5
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/inspect:w1.8
           imagePullPolicy: Always
           ports:
             - name: http

@@ -26,7 +26,7 @@ spec:
       {{- end }}
       containers:
         - name: sql-exporter
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/sql-exporter:v1.0
+          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/sql-exporter:w1.7
           imagePullPolicy: Always
           ports:
             - name: sql-exporter
