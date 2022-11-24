@@ -9,15 +9,15 @@ data:
   config.yaml: |
     server:
       port: 8080
-      runMode: release
+      runMode: {{if .Values.verTag}}debug{{else}}release{{end}}
     app:
       eventNamespace: {{.Release.Namespace}}-task
-      clientFilePath: /var/woqutech/dbs/install_files
-      imageRepo: https---{{.Values.dbsPublicIp}}/client_files
+      clientFilePath: {{.Values.clientFilePath}}
+      imageRepo: {{if eq .Values.verTag "-dev"}}{{.Values.clientImage.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.clientImage.test}}{{else}}{{.Values.clientImage.prod}}{{end}}
       defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
       squids:
         enable: true
-        baseUrl: {{.Values.squids.webApi}}
+        baseUrl: {{if eq .Values.verTag "-dev"}}{{.Values.squids.webApi.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.squids.webApi.test}}{{else}}{{.Values.squids.webApi.prod}}{{end}}
         appId: dataCommunication
         appSecret: sCvh4X:MsC4A
         credentialKey: 96ff3a77d4a987b193d3c648f1f91453
@@ -26,11 +26,11 @@ data:
         format: json
 
     database:
-      username: root
-      password: dbs-pwd
-      host: dbs-meta-mysql.dbs
+      username: {{.Values.metaDb.user}}
+      password: {{.Values.metaDb.pwd | quote}}
+      host: dbs-meta-mysql
       port: 3306
-      database: qpc
+      database: {{.Values.metaDb.name}}
       debug: false
 ---
 # define service for apiserver
@@ -47,7 +47,7 @@ spec:
   - name: http
     port: 8080
     targetPort: 8080
-    nodePort: 30080
+    nodePort: {{.Values.apiServer.webPort}}
 ---
 # define deployment for apiserver
 apiVersion: apps/v1
@@ -90,7 +90,7 @@ spec:
         - /woqutech/conf/config.yaml
         command:
         - ./apiserver
-        image: {{.Values.images.dbsApiServer.registry}}/{{.Values.images.dbsApiServer.repository}}/{{.Values.images.dbsApiServer.name}}:{{.Values.images.dbsApiServer.tag}}
+        image: {{.Values.images.dbsApiServer.registry}}/{{.Values.images.dbsApiServer.repository}}/{{.Values.images.dbsApiServer.name}}:{{.Values.images.dbsApiServer.tag}}{{.Values.verTag}}
         imagePullPolicy: Always
         name: apiserver
         ports:
