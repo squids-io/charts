@@ -1,0 +1,100 @@
+#
+# download and update client files in /var/woqutech/dbs/install_files/
+#
+# deployment for download client files
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-client-files
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: dbs-client-files
+  template:
+    metadata:
+      labels:
+        app: dbs-client-files
+    spec:
+      #nodeSelector:
+      #  node-role.kubernetes.io/master: ""
+      tolerations:
+      - key: node-role.kubernetes.io/master
+        operator: Exists
+        effect: NoSchedule
+      - effect: NoSchedule
+        key: qfusion/master
+        operator: Exists
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: dbs-client-files
+            topologyKey: kubernetes.io/hostname
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - apiserver
+            topologyKey: kubernetes.io/hostname
+      # restartPolicy: Never
+      initContainers:
+      - image: {{.Values.images.dbsAgentSetup.registry}}/{{.Values.images.dbsAgentSetup.repository}}/{{.Values.images.dbsAgentSetup.name}}:{{.Values.images.dbsAgentSetup.tag}}{{.Values.verTag}}
+        name: dbs-setup
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsAgent.registry}}/{{.Values.images.dbsAgent.repository}}/{{.Values.images.dbsAgent.name}}:{{.Values.images.dbsAgent.tag}}{{.Values.verTag}}
+        name: dbs-agent
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsS3fs.registry}}/{{.Values.images.dbsS3fs.repository}}/{{.Values.images.dbsS3fs.name}}:{{.Values.images.dbsS3fs.tag}}{{.Values.verTag}}
+        name: dbs-s3fs
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsQfb.registry}}/{{.Values.images.dbsQfb.repository}}/{{.Values.images.dbsQfb.name}}:{{.Values.images.dbsQfb.tag}}{{.Values.verTag}}
+        name: dbs-qfb
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+      
+      - image: {{.Values.images.dbsProxy.registry}}/{{.Values.images.dbsProxy.repository}}/{{.Values.images.dbsProxy.name}}:{{.Values.images.dbsProxy.tag}}{{.Values.verTag}}
+        name: dbs-proxy
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      containers:
+      - image: {{.Values.images.dbsProxy.registry}}/{{.Values.images.dbsProxy.repository}}/{{.Values.images.dbsProxy.name}}:{{.Values.images.dbsProxy.tag}}{{.Values.verTag}}
+        name: show-client-files
+        command: ["/bin/sh", "-c", "sleep 360000"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: IfNotPresent
+
+      volumes:
+      - name: installfiles
+        hostPath:
+          path: {{.Values.clientFilePath}}
+          type: DirectoryOrCreate

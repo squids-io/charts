@@ -71,10 +71,38 @@ rbac:
     clusterRole: dbs-agent
     clusterRoleBinding: dbs-agent
 
-dbsInstallServer: http://121.40.140.155:8080
-
-dbsPublicIp: squids.cn
-
 squids:
-  webApi: https://squids.cn/api/v1/
+  webApi:
+    prod: https://squids.cn/api/v1/
+    test: http://121.40.102.13/api/v1/
+    dev: http://121.40.140.155/api/v1/
   appId: dataCommunication
+
+metaDb:
+  name: qpc
+  user: root
+  pwd: dbs-pwd
+
+sqlserver:
+  user: sa
+  pwd: dbs-pwd@123
+
+apiServer:
+  # ui access dbs-api-server from node:30080
+  webPort: 30080
+  # dba-agent connect to dbs-api-server with node:30081
+  grpcport: 30081
+
+# verTag: -dev|-test
+# empty for product env
+# e.g. --set verTag=-dev
+verTag: ""
+
+# local path of client files
+clientFilePath: /var/woqutech/dbs/install_files
+
+# download dbsagent/qfb/s3fs from this url
+clientImage:
+  prod: https---squids.cn/client_files
+  test: http---121.40.102.13/client_files
+  dev: http---121.40.140.155/client_files

@@ -1,7 +1,6 @@
 ################################################
 # deploy ms sqlserver 2019
 ################################################
----
 # define service for sqlserver host
 apiVersion: v1
 kind: Service
@@ -55,7 +54,7 @@ spec:
         - name: ACCEPT_EULA
           value: "Y"
         - name: SA_PASSWORD
-          value: "dbs-pwd@123"
+          value: {{.Values.sqlserver.pwd | quote}}
         - name: DBROLE
           value: Master
         - name: PORT

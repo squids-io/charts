@@ -5,11 +5,11 @@ kind: ConfigMap
 data:
   qpcserver.ini: |
     [qpcserver]
-    db_host=dbs-meta-mysql.dbs
+    db_host=dbs-meta-mysql
     db_port=3306
-    db_name=qpc
-    db_user=root
-    db_password=dbs-pwd
+    db_name={{.Values.metaDb.name}}
+    db_user={{.Values.metaDb.user}}
+    db_password={{.Values.metaDb.pwd | quote}}
 metadata:
   name: dbs-server-conf
   namespace: {{.Release.Namespace}}
@@ -39,7 +39,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: dbs-server
-          image: {{.Values.images.dbsServer.registry}}/{{.Values.images.dbsServer.repository}}/{{.Values.images.dbsServer.name}}:{{.Values.images.dbsServer.tag}}
+          image: {{.Values.images.dbsServer.registry}}/{{.Values.images.dbsServer.repository}}/{{.Values.images.dbsServer.name}}:{{.Values.images.dbsServer.tag}}{{.Values.verTag}}
           imagePullPolicy: Always
           command: ["./qpcserver"]
           args: ["-config", "/woqutech/conf/qpcserver.ini"]
