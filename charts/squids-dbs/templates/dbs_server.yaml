@@ -5,7 +5,7 @@ kind: ConfigMap
 data:
   qpcserver.ini: |
     [qpcserver]
-    db_host=dbs-meta-mysql
+    db_host={{ .Values.metaDb.host }}
     db_port=3306
     db_name={{.Values.metaDb.name}}
     db_user={{.Values.metaDb.user}}
