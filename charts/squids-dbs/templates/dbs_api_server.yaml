@@ -28,7 +28,7 @@ data:
     database:
       username: {{.Values.metaDb.user}}
       password: {{.Values.metaDb.pwd | quote}}
-      host: dbs-meta-mysql
+      host: {{ .Values.metaDb.host }}
       port: 3306
       database: {{.Values.metaDb.name}}
       debug: false

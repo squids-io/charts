@@ -52,7 +52,7 @@ spec:
         image: {{.Values.images.dbsVerify.registry}}/{{.Values.images.dbsVerify.repository}}/{{.Values.images.dbsVerify.name}}:{{.Values.images.dbsVerify.tag}}{{.Values.verTag}}
         # command: ["./verify"]
         args: 
-        - -dababaseip=dbs-meta-mysql
+        - -dababaseip={{ .Values.metaDb.host }}
         - -port=3306
         - -username={{.Values.metaDb.user}}
         - -password={{.Values.metaDb.pwd | quote}}

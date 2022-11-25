@@ -79,9 +79,10 @@ squids:
   appId: dataCommunication
 
 metaDb:
+  host: squids-dbmotion-mysql-primary-headless.squids.svc.cluster.local
   name: qpc
-  user: root
-  pwd: dbs-pwd
+  user: squidsRoot9527
+  pwd: password_placeholder
 
 sqlserver:
   user: sa
