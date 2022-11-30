@@ -31,3 +31,9 @@ rules:
       - pods/log
     verbs:
       - get
+  - apiGroups:
+      - ""
+    resources:
+      - namespaces
+    verbs:
+      - get
