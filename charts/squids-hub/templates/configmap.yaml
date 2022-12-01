@@ -35,6 +35,8 @@ data:
       BackupEndpointUrl: http://squids-backup:29531/api/v1/
       phoenixEndpoint: http://{{ .Values.phoenix.domain}}:9091/phoenix/api/v2/
       DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8999/bbm/dms/v1/
+      LicenseServerModuleGatewayUrl: https://squids.cn/api/v1/
+
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
