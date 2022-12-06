@@ -180,7 +180,7 @@ data:
           proxy_pass {{.Values.dbmotion.url}};
         }
   
-        location ~* (^/api/v1/(credentials|backup_data_sources|backup_data_source_agents|backup_plans|backup_sets)|(^/client_files)){
+        location ~* (^/api/v1/(vendor|credentials|backup_data_sources|backup_data_source_agents|backup_plans|backup_sets)|(^/client_files)){
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
@@ -313,7 +313,7 @@ data:
         proxy_pass {{.Values.dbmotion.url}};
       }
   
-      location ~* (^/api/v1/(credentials|backup_data_sources|backup_data_source_agents|backup_plans|backup_sets)|(^/client_files)){
+      location ~* (^/api/v1/(vendor|credentials|backup_data_sources|backup_data_source_agents|backup_plans|backup_sets)|(^/client_files)){
         auth_basic off;
         add_header Access-Control-Allow-Origin  '$allow_origin';
         add_header Access-Control-Allow-Credentials 'true';
