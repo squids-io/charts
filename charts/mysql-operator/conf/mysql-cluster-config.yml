@@ -561,15 +561,6 @@
     description: On-disk internal temporary table engine.
     engine: mysql
     version: 5.7
-  - uuid: 386605a11ebd11eda480f02f74a088c2
-    name: binlog_rows_query_log_events
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: The binlog_rows_query_log_events system variable affects row-based logging only. When enabled, it causes the MySQL Server to write informational log events such as row query log events into its binary log. This information can be used for debugging and related purposes.such as obtaining the original query issued on the master when it cannot be reconstructed from the row updates.
-    engine: mysql
-    version: 5.7
   - uuid: 38661a3a1ebd11eda480f02f74a088c2
     name: innodb_stats_persistent_sample_pages
     defaultValue: 20
@@ -2535,15 +2526,6 @@
     needRestart: false
     range: 0~70
     description: Specifies the maximum percentage that can be reserved as free space within each compressed page, allowing room to reorganize the data and modification log within the page when a compressed table or index is updated and the data might be recompressed. Only applies when innodb_compression_failure_threshold_pct is set to a nonzero value, and the rate of compression failures passes the cutoff point.
-    engine: mysql
-    version: 8.0
-  - uuid: 0643f53d1ebd11ed89bff02f74a088c2
-    name: binlog_rows_query_log_events
-    defaultValue: OFF
-    type: string
-    needRestart: false
-    range: ON|OFF
-    description: The binlog_rows_query_log_events system variable affects row-based logging only. When enabled, it causes the MySQL Server to write informational log events such as row query log events into its binary log. This information can be used for debugging and related purposes.such as obtaining the original query issued on the master when it cannot be reconstructed from the row updates.
     engine: mysql
     version: 8.0
   - uuid: 064409911ebd11ed89bff02f74a088c2
