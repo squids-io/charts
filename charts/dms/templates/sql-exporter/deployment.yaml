@@ -26,7 +26,7 @@ spec:
       {{- end }}
       containers:
         - name: sql-exporter
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/sql-exporter:w1.7
+          image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.sqlExporter.image.name }}:{{.Values.sqlExporter.image.tag}}
           imagePullPolicy: Always
           ports:
             - name: sql-exporter
