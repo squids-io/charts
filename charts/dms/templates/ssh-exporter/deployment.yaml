@@ -26,7 +26,7 @@ spec:
       {{- end }}
       containers:
         - name: ssh-exporter
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/ssh-exporter:v1.0
+          image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.sshExporter.image.name }}:{{.Values.sshExporter.image.tag}}
           imagePullPolicy: Always
           ports:
             - name: ssh-exporter

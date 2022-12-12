@@ -26,7 +26,7 @@ spec:
       {{- end }}
       containers:
         - name: bbm
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/bbm:w1.8
+          image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.bbm.image.name }}:{{.Values.bbm.image.tag}}
           imagePullPolicy: Always
           ports:
             - name: http
