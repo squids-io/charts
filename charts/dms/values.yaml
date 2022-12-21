@@ -10,14 +10,29 @@ global:
   registry: registry.cn-hangzhou.aliyuncs.com
   repository: dbsinan
 
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"
+
 bbNginx:
   image:
     name: nginx
-    tag: w1.8
+    tag: w1.9
 bbm:
   image:
     name: bbm
-    tag: w1.8
+    tag: w1.9
 bbmFile:
   image:
     name: bbm-file
@@ -25,7 +40,7 @@ bbmFile:
 connPool:
   image:
     name: conn-pool
-    tag: w1.8
+    tag: w1.9
 inspect:
   image:
     name: inspect

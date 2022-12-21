@@ -44,6 +44,8 @@ spec:
             - mountPath: /opt/devops/bbm.yaml
               name: v-bbm-cm
               subPath: bbm-yaml
+            - mountPath: /opt/devops/client
+              name: v-bb-client
       restartPolicy: Always
       volumes:
         - name: v-pvc-bb-upload
@@ -55,3 +57,14 @@ spec:
         - name: v-bbm-cm
           configMap:
             name: bbm-cm
+        - hostPath:
+            path: /squids-data/dms/client
+            type: ""
+          name: v-bb-client
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
