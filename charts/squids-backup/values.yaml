@@ -13,7 +13,7 @@ image:
   containerPort: 29531
   backup:
     name: backup
-    tag: v1.0.0
+    tag: v1.40.0
 
 service:
   type: ClusterIP
@@ -56,7 +56,7 @@ securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
+# readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
 
@@ -86,7 +86,7 @@ resources: { }
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-  # requests:
+# requests:
 #   cpu: 100m
 #   memory: 128Mi
 

@@ -13,7 +13,7 @@ image:
   containerPort: 29527
   hub:
     name: hub
-    tag: v1.39.0
+    tag: v1.40.0
   terraformProvider:
     name: hub-terraform-provider
     tag: v1.0.0
@@ -35,6 +35,9 @@ phoenix:
   domain: phoenix.squids-monitor.svc.cluster.local
 dms:
   domain: woqu-adapter.bb-system.svc.cluster.local
+licenseServer:
+  url: https://squids.cn/api/v1/
+
 apiserver:
   port: 8443
 tower:
@@ -69,7 +72,7 @@ podSecurityContext: { }
 securityContext: { }
   # capabilities:
   #   drop:
-  #   - ALL
+#   - ALL
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
@@ -99,7 +102,7 @@ resources: { }
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
   #   cpu: 100m
-  #   memory: 128Mi
+#   memory: 128Mi
 # requests:
 #   cpu: 100m
 #   memory: 128Mi
