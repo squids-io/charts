@@ -88,7 +88,7 @@ data:
       TradeModuleGatewayUrl: http://squids-trade:29528/api/v1/
       QwModuleGatewayUrl: https://qw-openapi-tx.dustess.com/
       DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8999/bbm/dms/v1/
-      LicenseServerModuleGatewayUrl: https://squids.cn/api/v1/
+      LicenseServerModuleGatewayUrl: {{ .Values.licenseServer.url }}
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}

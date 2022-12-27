@@ -9,7 +9,7 @@ image:
   repository: squids
   name: user
   pullPolicy: IfNotPresent
-  tag: v1.34.0
+  tag: v1.40.0
   containerPort: 29529
 service:
   type: ClusterIP
@@ -51,6 +51,8 @@ qiwei:
     secret: squids123456
 dms:
   domain: woqu-adapter.bb-system.svc.cluster.local
+licenseServer:
+  url: https://squids.cn/api/v1/
 
 serviceAccount:
   # Specifies whether a service account should be created
