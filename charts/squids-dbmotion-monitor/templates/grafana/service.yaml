@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: grafana
+  namespace: {{.Release.Namespace}}
+  annotations:
+    prometheus.io/scrape: 'true'
+  labels:
+    app.kubernetes.io/name: grafana
+spec:
+  selector:
+    app.kubernetes.io/name: grafana
+  ports:
+    - name: grafana
+      protocol: TCP
+      port: 3000
+      nodePort: {{ .Values.nodeExporter.grafana }}
+  {{- with .Values.nodeExporter.nodePort }}
+  type: NodePort
+  {{- end }}

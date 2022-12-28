@@ -111,10 +111,6 @@ data:
         }
        {{ end }}
 
-        {{ if .Values.nginx.auth }}
-        auth_basic "Please input password";
-        auth_basic_user_file /etc/nginx/passwd/passwd;
-        {{ end }}
         location / {
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
@@ -165,19 +161,6 @@ data:
           proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
           proxy_set_header X-Forwarded-Proto $scheme;
           proxy_pass http://squids-trade:29528;
-        }
-
-        location ~* ^/api/(init|version|(v2/(migrate_task|license))){
-          auth_basic off;
-          add_header Access-Control-Allow-Origin  '$allow_origin';
-          add_header Access-Control-Allow-Credentials 'true';
-          add_header Access-Control-Allow-Methods 'GET, POST, OPTIONS';
-          add_header Access-Control-Allow-Headers 'DNT,X-Mx-ReqToken,Keep-Alive,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control';
-          proxy_set_header Host $http_host;
-          proxy_set_header X-Real-IP $remote_addr;
-          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-          proxy_set_header X-Forwarded-Proto $scheme;
-          proxy_pass {{.Values.dbmotion.url}};
         }
 
         {{ if .Values.enableLauncher }}
@@ -303,7 +286,7 @@ data:
         proxy_pass http://squids-trade:29528;
       }
 
-      location ~* ^/api/(init|version|(v2/(migrate_task|license))){
+      location ~* ^/api/(init|version|(v2/(migrate_task|license|alert|vendor_res|client_files))){
         auth_basic off;
         add_header Access-Control-Allow-Origin  '$allow_origin';
         add_header Access-Control-Allow-Credentials 'true';

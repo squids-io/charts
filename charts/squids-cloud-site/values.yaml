@@ -30,12 +30,11 @@ web:
   url: https://squids.cn
   ip: 127.0.0.1
 grafana:
-  url: https://chartlog.squids.cn:30001
+  url:
+    rds: https://chartlog.squids.cn:30001
+    dts: https://chartlog.squids.cn:31004
 dbmotion:
   url: https://squids-dbmotion-saas-server.squids.svc.cluster.local:3000
-
-nginx:
-  auth: false
 
 enableLauncher: true
 enableLicenseServer: true
@@ -69,7 +68,7 @@ securityContext: { }
   # capabilities:
   #   drop:
   #   - ALL
-  # readOnlyRootFilesystem: true
+# readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
 
@@ -98,7 +97,7 @@ resources: { }
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
-  # requests:
+# requests:
 #   cpu: 100m
 #   memory: 128Mi
 

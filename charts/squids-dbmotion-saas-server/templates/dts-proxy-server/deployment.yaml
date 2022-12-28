@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: squids-dts-proxy-server
+  namespace: {{.Release.Namespace}}
+  labels:
+    app-name: squids-dts-proxy-server
+    app: dts-proxy-server
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app-name: squids-dts-proxy-server
+  template:
+    metadata:
+      labels:
+        app-name: squids-dts-proxy-server
+        app: dts-proxy-server
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: dts-proxy-server
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: {{ .Values.image.dbmotionProxyServer.registry }}/{{ .Values.image.dbmotionProxyServer.repository }}/{{ .Values.image.dbmotionProxyServer.name }}:{{ .Values.image.dbmotionProxyServer.tag }}
+          command:
+            - ./gost
+            - -L
+            - 'forward+ssh://:{{ .Values.image.dbmotionProxyServer.containerPort }}'
+          ports:
+            - containerPort: {{ .Values.image.dbmotionProxyServer.containerPort }}
+              name: proxy
+          volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
+            - name: localtime
+              mountPath: /etc/localtime
+      volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
