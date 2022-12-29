@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: operation-log
+  namespace: {{.Release.Namespace}}
+  labels:
+    app: operation-log
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: operation-log
+  template:
+    metadata:
+      labels:
+        app: operation-log
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+        - name: operation-log
+          imagePullPolicy: {{ .Values.image.pullPolicy}}
+          image: {{ .Values.image.registry }}/{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ .Values.image.tag }}
+          ports:
+            - containerPort: {{ .Values.image.containerPort }}
+          volumeMounts:
+            - name: timezone
+              mountPath: /etc/timezone
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: config-volume
+              mountPath: /config
+      volumes:
+        - name: timezone
+          hostPath:
+            path: /etc/timezone
+        - name: localtime
+          hostPath:
+            path: /etc/localtime
+        - name: config-volume
+          configMap:
+            name: operation-log
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
