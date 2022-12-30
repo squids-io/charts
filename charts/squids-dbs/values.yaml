@@ -4,60 +4,55 @@
 
 images:
   pullPolicy: Always
-  dbsServer:
-    registry: swr.cn-east-2.myhuaweicloud.com
-    repository: squids
-    name: dbs-server
-    tag: 2.0.0
   dbsApiServer:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: dbs-api-server
-    tag: 2.0.0
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-verify:2.0.0
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-verify
   dbsVerify:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: dbs-verify
-    tag: 2.0.0
+    tag: 2212.01
   # ms sqlserver for verify use
   # swr.cn-east-2.myhuaweicloud.com/squids/dbs-mssql-2019:2.0.0
   dbsMssql2019:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: dbs-mssql-2019
-    tag: 2.0.0
+    tag: 2212.01
   # dbs agent and proxy setup
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-setup:2.0.0
-  dbsAgentSetup:
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-sqlserver-win64
+  dbsAgentSetupWin:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbs-agent-setup
-    tag: 2.0.0
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent:2.0.0
-  dbsAgent:
+    name: dbs-agent-sqlserver-win64
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-linux
+  dbsAgentSetupLinux:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbs-agent
-    tag: 2.0.0
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-s3fs:2.0.0
-  dbsS3fs:
+    name: dbs-agent-linux
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy-linux
+  dbsProxySetupLinux:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbs-s3fs
-    tag: 2.0.0
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-qfb:2.0.0
-  dbsQfb:
+    name: dbs-proxy-linux
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy-win64
+  dbsProxySetupWin:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbs-qfb
-    tag: 2.0.0
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy:2.0.0
-  dbsProxy:
+    name: dbs-proxy-win64
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-xtrabackup-linux
+  dbsXtrabackupLinux:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbs-proxy
-    tag: 2.0.0
+    name: dbs-xtrabackup-linux
+    tag: 2212.01
 
 rbac:
   # used by dbs-apiServer and dbs-server
