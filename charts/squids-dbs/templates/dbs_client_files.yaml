@@ -44,40 +44,40 @@ spec:
             topologyKey: kubernetes.io/hostname
       # restartPolicy: Never
       initContainers:
-      - image: {{.Values.images.dbsAgentSetup.registry}}/{{.Values.images.dbsAgentSetup.repository}}/{{.Values.images.dbsAgentSetup.name}}:{{.Values.images.dbsAgentSetup.tag}}{{.Values.verTag}}
-        name: dbs-setup
+      - image: {{.Values.images.dbsAgentSetupWin.registry}}/{{.Values.images.dbsAgentSetupWin.repository}}/{{.Values.images.dbsAgentSetupWin.name}}:{{.Values.images.dbsAgentSetupWin.tag}}{{.Values.verTag}}
+        name: dbs-setup-sqlserver-win64
         command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
         volumeMounts:
         - mountPath: /install_files
           name: installfiles
         imagePullPolicy: Always
 
-      - image: {{.Values.images.dbsAgent.registry}}/{{.Values.images.dbsAgent.repository}}/{{.Values.images.dbsAgent.name}}:{{.Values.images.dbsAgent.tag}}{{.Values.verTag}}
-        name: dbs-agent
+      - image: {{.Values.images.dbsAgentSetupLinux.registry}}/{{.Values.images.dbsAgentSetupLinux.repository}}/{{.Values.images.dbsAgentSetupLinux.name}}:{{.Values.images.dbsAgentSetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-agent-setup-linux
         command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
         volumeMounts:
         - mountPath: /install_files
           name: installfiles
         imagePullPolicy: Always
 
-      - image: {{.Values.images.dbsS3fs.registry}}/{{.Values.images.dbsS3fs.repository}}/{{.Values.images.dbsS3fs.name}}:{{.Values.images.dbsS3fs.tag}}{{.Values.verTag}}
-        name: dbs-s3fs
+      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-linux
         command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
         volumeMounts:
         - mountPath: /install_files
           name: installfiles
         imagePullPolicy: Always
 
-      - image: {{.Values.images.dbsQfb.registry}}/{{.Values.images.dbsQfb.repository}}/{{.Values.images.dbsQfb.name}}:{{.Values.images.dbsQfb.tag}}{{.Values.verTag}}
-        name: dbs-qfb
+      - image: {{.Values.images.dbsProxySetupWin.registry}}/{{.Values.images.dbsProxySetupWin.repository}}/{{.Values.images.dbsProxySetupWin.name}}:{{.Values.images.dbsProxySetupWin.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-win64
         command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
         volumeMounts:
         - mountPath: /install_files
           name: installfiles
         imagePullPolicy: Always
       
-      - image: {{.Values.images.dbsProxy.registry}}/{{.Values.images.dbsProxy.repository}}/{{.Values.images.dbsProxy.name}}:{{.Values.images.dbsProxy.tag}}{{.Values.verTag}}
-        name: dbs-proxy
+      - image: {{.Values.images.dbsXtrabackupLinux.registry}}/{{.Values.images.dbsXtrabackupLinux.repository}}/{{.Values.images.dbsXtrabackupLinux.name}}:{{.Values.images.dbsXtrabackupLinux.tag}}{{.Values.verTag}}
+        name: dbs-xtrabackup-linux
         command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
         volumeMounts:
         - mountPath: /install_files
@@ -85,7 +85,7 @@ spec:
         imagePullPolicy: Always
 
       containers:
-      - image: {{.Values.images.dbsProxy.registry}}/{{.Values.images.dbsProxy.repository}}/{{.Values.images.dbsProxy.name}}:{{.Values.images.dbsProxy.tag}}{{.Values.verTag}}
+      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
         name: show-client-files
         command: ["/bin/sh", "-c", "sleep 360000"]
         volumeMounts:
