@@ -37,6 +37,8 @@ spec:
               value: "{{ .Values.disableTls }}"
             - name: CURRENT_RUNTIME_ENV
               value: "{{ .Values.currentRuntimeEnv }}"
+            - name: IMAGE_REPO_HOST
+              value: swr.cn-east-2.myhuaweicloud.com
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
