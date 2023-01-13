@@ -28,6 +28,13 @@ data:
         port: {{ .Values.tower.port }}
       dbpool:
         port: {{ .Values.dbpool.port }}
+    pool:
+      init:
+        auto: {{.Values.pool.autoInit}}
+      expand:
+        auto: {{.Values.pool.autoExpand}}
+      charge:
+        type: {{.Values.pool.chargeType}}
 
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
@@ -41,3 +48,6 @@ data:
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
+
+    notification:
+      consoleUrl: {{.Values.console.url}}
