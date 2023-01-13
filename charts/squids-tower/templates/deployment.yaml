@@ -24,6 +24,13 @@ spec:
         - name: squids-tower
           image: {{ .Values.global.registry }}/{{.Values.global.repository}}/squids-tower:{{ .Values.image.squidstower.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "500Mi"
+            requests:
+              cpu: "0.5"
+              memory: "500Mi"
           command:
             - /squids-tower
           env:
