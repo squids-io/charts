@@ -8,19 +8,23 @@ metadata:
 data:
   config.yaml: |
     server:
-      port: 8080
+      httpPort: 8080
+      grpcPort: 8081
       runMode: {{if .Values.verTag}}debug{{else}}release{{end}}
     app:
       eventNamespace: {{.Release.Namespace}}-task
       clientFilePath: {{.Values.clientFilePath}}
       imageRepo: {{if eq .Values.verTag "-dev"}}{{.Values.clientImage.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.clientImage.test}}{{else}}{{.Values.clientImage.prod}}{{end}}
       defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
+      passwordKey: 324KjlkdweSDwLJwer8hwe7d
+      deleteBackupCron: '0 */1 * * *'
       squids:
         enable: true
         baseUrl: {{if eq .Values.verTag "-dev"}}{{.Values.squids.webApi.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.squids.webApi.test}}{{else}}{{.Values.squids.webApi.prod}}{{end}}
         appId: dataCommunication
         appSecret: sCvh4X:MsC4A
         credentialKey: 96ff3a77d4a987b193d3c648f1f91453
+        tokenKey: squids_secret_xz98fj9r1wq
       logger:
         level: info
         format: json
@@ -32,6 +36,7 @@ data:
       port: 3306
       database: {{.Values.metaDb.name}}
       debug: false
+      migrateScriptDir: migrations
 ---
 # define service for apiserver
 apiVersion: v1
@@ -48,6 +53,10 @@ spec:
     port: 8080
     targetPort: 8080
     nodePort: {{.Values.apiServer.webPort}}
+  - name: grpc
+    port: 8081
+    targetPort: 8081
+    nodePort: {{.Values.apiServer.grpcPort}}
 ---
 # define deployment for apiserver
 apiVersion: apps/v1
@@ -96,6 +105,8 @@ spec:
         ports:
         - containerPort: 8080
           #hostPort: 18080
+          protocol: TCP
+        - containerPort: 8081
           protocol: TCP
         resources: {}
         terminationMessagePath: /dev/termination-log

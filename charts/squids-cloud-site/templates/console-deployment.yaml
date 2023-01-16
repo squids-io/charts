@@ -36,6 +36,8 @@ spec:
             {{ if .Values.enableWeb }}
             - containerPort: 8080
               hostPort: 8080
+            - containerPort: 18081
+              hostPort: 18081
             {{ end }}
           volumeMounts:
             - name: timezone
@@ -57,6 +59,8 @@ spec:
             - name: cert
               mountPath: /etc/nginx/cert
             {{ end }}
+            - name: dbs-cert
+              mountPath: /etc/nginx/dbs-cert
       volumes:
         - name: timezone
           hostPath:
@@ -88,6 +92,10 @@ spec:
               - key: squids.key
                 path: squids.key
         {{ end }}
+        - configMap:
+            defaultMode: 420
+            name: dbs-gserver-cert
+          name: dbs-cert
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
