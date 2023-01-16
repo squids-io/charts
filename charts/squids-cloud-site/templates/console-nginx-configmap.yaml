@@ -392,12 +392,11 @@ data:
       server {
         listen 18081 http2;
 
+        ssl_certificate     /etc/nginx/dbs-cert/server.pem;
+        ssl_certificate_key /etc/nginx/dbs-cert/server.key;
+
         location / {
           grpc_pass {{.Values.dbs.grpcUrl}}
-          proxy_ssl_certificate     /etc/nginx/dbs-cert/server.pem;
-          proxy_ssl_certificate_key /etc/nginx/dbs-cert/server.key;
-          proxy_ssl_verify       off;
-          proxy_ssl_session_reuse on;
         }
       }
     }
