@@ -37,6 +37,12 @@ dms:
   domain: woqu-adapter.bb-system.svc.cluster.local
 licenseServer:
   url: https://squids.cn/api/v1/
+console:
+  url: https://console.squids.cn
+pool:
+  autoInit: false
+  autoExpand: true
+  chargeType: demand
 
 apiserver:
   port: 8443
@@ -71,7 +77,7 @@ podSecurityContext: { }
 
 securityContext: { }
   # capabilities:
-  #   drop:
+#   drop:
 #   - ALL
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
@@ -101,7 +107,7 @@ resources: { }
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-  #   cpu: 100m
+#   cpu: 100m
 #   memory: 128Mi
 # requests:
 #   cpu: 100m
