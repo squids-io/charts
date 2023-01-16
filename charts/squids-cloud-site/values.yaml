@@ -37,6 +37,10 @@ dbmotion:
   url: https://squids-dbmotion-saas-server.squids.svc.cluster.local:3000
 dbs:
   url: https://dbs-api-server.squids.svc.cluster.local:8080
+  grpcUrl: grpcs://dbs-api-server.squids.svc.cluster.local:8081
+  gserver:
+    key: abc
+    pem: abc
 
 enableLauncher: true
 enableLicenseServer: true

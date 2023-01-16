@@ -46,7 +46,6 @@ spec:
               matchLabels:
                 app: dbs-mssql-2019
             topologyKey: kubernetes.io/hostname
-      # serviceAccount: dbs-task
       containers:
       - name: dbs-mssql-2019
         image:  {{.Values.images.dbsMssql2019.registry}}/{{.Values.images.dbsMssql2019.repository}}/{{.Values.images.dbsMssql2019.name}}:{{.Values.images.dbsMssql2019.tag}}

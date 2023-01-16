@@ -8,19 +8,23 @@ metadata:
 data:
   config.yaml: |
     server:
-      port: 8080
+      httpPort: 8080
+      grpcPort: 8081
       runMode: {{if .Values.verTag}}debug{{else}}release{{end}}
     app:
       eventNamespace: {{.Release.Namespace}}-task
       clientFilePath: {{.Values.clientFilePath}}
-      imageRepo: {{if eq .Values.verTag "-dev"}}{{.Values.clientImage.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.clientImage.test}}{{else}}{{.Values.clientImage.prod}}{{end}}
+      imageRepo: {{ .Values.clientImage.baseUrl }}/client_files
       defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
+      passwordKey: 324KjlkdweSDwLJwer8hwe7d
+      deleteBackupCron: '0 */1 * * *'
       squids:
         enable: true
-        baseUrl: {{if eq .Values.verTag "-dev"}}{{.Values.squids.webApi.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.squids.webApi.test}}{{else}}{{.Values.squids.webApi.prod}}{{end}}
+        baseUrl: {{ .Values.squids.webApi.baseUrl }}
         appId: dataCommunication
         appSecret: sCvh4X:MsC4A
         credentialKey: 96ff3a77d4a987b193d3c648f1f91453
+        tokenKey: squids_secret_xz98fj9r1wq
       logger:
         level: info
         format: json
@@ -32,6 +36,7 @@ data:
       port: 3306
       database: {{.Values.metaDb.name}}
       debug: false
+      migrateScriptDir: migrations
 ---
 # define service for apiserver
 apiVersion: v1
@@ -45,9 +50,15 @@ spec:
     app: apiserver
   ports:
   - name: http
+    nodePort: 30080
     port: 8080
     targetPort: 8080
     nodePort: {{.Values.apiServer.webPort}}
+  - name: grpc
+    nodePort: 30081
+    port: 8081
+    targetPort: 8081
+    nodePort: {{.Values.apiServer.grpcPort}}
 ---
 # define deployment for apiserver
 apiVersion: apps/v1
@@ -70,8 +81,6 @@ spec:
       #  node-role.kubernetes.io/master: ""
       restartPolicy: Always
       securityContext: {}
-      serviceAccount: {{.Values.rbac.server.serviceAccount}}
-      serviceAccountName: {{.Values.rbac.server.serviceAccount}}
       terminationGracePeriodSeconds: 30
       tolerations:
       - effect: NoSchedule
@@ -84,6 +93,46 @@ spec:
               matchLabels:
                 app: apiserver
             topologyKey: kubernetes.io/hostname
+      initContainers:
+      - image: {{.Values.images.dbsAgentSetupWin.registry}}/{{.Values.images.dbsAgentSetupWin.repository}}/{{.Values.images.dbsAgentSetupWin.name}}:{{.Values.images.dbsAgentSetupWin.tag}}{{.Values.verTag}}
+        name: dbs-setup-sqlserver-win64
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsAgentSetupLinux.registry}}/{{.Values.images.dbsAgentSetupLinux.repository}}/{{.Values.images.dbsAgentSetupLinux.name}}:{{.Values.images.dbsAgentSetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-agent-setup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsProxySetupWin.registry}}/{{.Values.images.dbsProxySetupWin.repository}}/{{.Values.images.dbsProxySetupWin.name}}:{{.Values.images.dbsProxySetupWin.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-win64
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+      
+      - image: {{.Values.images.dbsXtrabackupLinux.registry}}/{{.Values.images.dbsXtrabackupLinux.repository}}/{{.Values.images.dbsXtrabackupLinux.name}}:{{.Values.images.dbsXtrabackupLinux.tag}}{{.Values.verTag}}
+        name: dbs-xtrabackup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
       containers:
       - args:
         - -config
@@ -95,7 +144,8 @@ spec:
         name: apiserver
         ports:
         - containerPort: 8080
-          #hostPort: 18080
+          protocol: TCP
+        - containerPort: 8081
           protocol: TCP
         resources: {}
         terminationMessagePath: /dev/termination-log

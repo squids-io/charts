@@ -45,7 +45,6 @@ spec:
               matchLabels:
                 app: dbs-verify
             topologyKey: kubernetes.io/hostname
-      serviceAccount: dbs-agent
       restartPolicy: Always
       containers:
       - name: dbs-verify
@@ -59,7 +58,7 @@ spec:
         - -s3fs=juicefs
         - -s3fs-rsa-passphrase=qplus
         - -pollingnum=3
-        - -verbackupidnum=100
+        - -verbackupidnum=10
         - -verifynum=3
         - -SshUser=root
         - -SshType=key
