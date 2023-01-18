@@ -45,17 +45,16 @@ spec:
               matchLabels:
                 app: dbs-verify
             topologyKey: kubernetes.io/hostname
-      serviceAccount: dbs-agent
       restartPolicy: Always
       containers:
       - name: dbs-verify
         image: {{.Values.images.dbsVerify.registry}}/{{.Values.images.dbsVerify.repository}}/{{.Values.images.dbsVerify.name}}:{{.Values.images.dbsVerify.tag}}{{.Values.verTag}}
         # command: ["./verify"]
         args: 
-        - -dababaseip={{ .Values.metaDb.host }}
-        - -port=3306
-        - -username={{.Values.metaDb.user}}
-        - -password={{.Values.metaDb.pwd | quote}}
+        - -dababaseip={{if eq .Values.verTag ""}} {{.Values.metaDb.host}}{{else}}{{.Values.metaDb.devtest.host}}{{end}}
+        - -port={{if eq .Values.verTag ""}} {{.Values.metaDb.port}}{{else}}{{.Values.metaDb.devtest.port}}{{end}}
+        - -username={{if eq .Values.verTag ""}} {{.Values.metaDb.user}}{{else}}{{.Values.metaDb.devtest.user}}{{end}}
+        - -password={{if eq .Values.verTag ""}}{{.Values.metaDb.pwd | quote}}{{else}}{{.Values.metaDb.devtest.pwd | quote}}{{end}}
         - -s3fs=juicefs
         - -s3fs-rsa-passphrase=qplus
         - -pollingnum=3

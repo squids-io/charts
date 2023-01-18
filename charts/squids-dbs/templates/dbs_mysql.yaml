@@ -1,0 +1,7 @@
+{{if eq .Values.verTag "-dev"}}
+  {{- include "mysql.meta.service" . | indent 0 }}
+{{else if eq .Values.verTag "-test"}}
+  {{- include "mysql.meta.service" . | indent 0 }}
+{{else}}
+
+{{end}}

@@ -1,0 +1,63 @@
+{{/* mysql service for squids dev/test env */}}
+
+{{- define "mysql.meta.service" -}}
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{.Values.metaDb.devtest.host}}
+  namespace: {{.Release.Namespace}}
+spec:
+  ports:
+  - name: tcp
+    port: {{.Values.metaDb.devtest.port}}
+    protocol: TCP
+    targetPort: 3306
+  selector:
+    app: dbs-meta-mysql
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-meta-mysql
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbs-meta-mysql
+  template:
+    metadata:
+      labels:
+        app: dbs-meta-mysql
+    spec:
+      containers:
+      - args:
+        - mysqld
+        - --character-set-server=utf8mb4
+        - --collation-server=utf8mb4_unicode_ci
+        - --default-time-zone=UTC
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: {{.Values.metaDb.devtest.pwd}}
+        image: mysql
+        imagePullPolicy: Always
+        name: mysqld
+        ports:
+        - containerPort: 3306
+          name: mysqld-port
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+
+{{- end -}}

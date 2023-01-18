@@ -69,15 +69,22 @@ rbac:
 squids:
   webApi:
     prod: https://squids.cn/api/v1/
-    test: http://121.40.102.13/api/v1/
-    dev: http://121.40.140.155/api/v1/
+    test: http://47.96.72.128/api/v1/
+    dev: http://47.98.201.224/api/v1/
   appId: dataCommunication
 
 metaDb:
   host: squids-dbmotion-mysql-primary-headless.squids.svc.cluster.local
+  port: 3306
   name: qpc
   user: squidsRoot9527
   pwd: password_placeholder
+  devtest:
+    host: dbs-meta-mysql
+    port: 3306
+    user: root
+    pwd: dbs-pwd
+    name: qpc
 
 sqlserver:
   user: sa
@@ -96,9 +103,3 @@ verTag: ""
 
 # local path of client files
 clientFilePath: /var/woqutech/dbs/install_files
-
-# download dbsagent/qfb/s3fs from this url
-clientImage:
-  prod: https---squids.cn/client_files
-  test: http---121.40.102.13/client_files
-  dev: http---121.40.140.155/client_files

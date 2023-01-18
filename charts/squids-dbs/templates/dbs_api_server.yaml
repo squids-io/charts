@@ -14,7 +14,7 @@ data:
     app:
       eventNamespace: {{.Release.Namespace}}-task
       clientFilePath: {{.Values.clientFilePath}}
-      imageRepo: {{if eq .Values.verTag "-dev"}}{{.Values.clientImage.dev}}{{else if eq .Values.verTag "-test"}}{{.Values.clientImage.test}}{{else}}{{.Values.clientImage.prod}}{{end}}
+      imageRepo: ""
       defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
       passwordKey: 324KjlkdweSDwLJwer8hwe7d
       deleteBackupCron: '0 */1 * * *'
@@ -30,11 +30,11 @@ data:
         format: json
 
     database:
-      username: {{.Values.metaDb.user}}
-      password: {{.Values.metaDb.pwd | quote}}
-      host: {{ .Values.metaDb.host }}
-      port: 3306
-      database: {{.Values.metaDb.name}}
+      username: {{if eq .Values.verTag ""}} {{.Values.metaDb.user}}{{else}}{{.Values.metaDb.devtest.user}}{{end}}
+      password: {{if eq .Values.verTag ""}} {{.Values.metaDb.pwd | quote}}{{else}}{{.Values.metaDb.devtest.pwd | quote}}{{end}}
+      host: {{if eq .Values.verTag ""}}{{.Values.metaDb.host }}{{else}}{{.Values.metaDb.devtest.host}}{{end}}
+      port: {{if eq .Values.verTag ""}}{{.Values.metaDb.port }}{{else}}{{.Values.metaDb.devtest.port}}{{end}}
+      database: {{if eq .Values.verTag ""}}{{.Values.metaDb.name}}{{else}}{{.Values.metaDb.devtest.name}}{{end}}
       debug: false
       migrateScriptDir: migrations
 ---
@@ -75,8 +75,8 @@ spec:
         app: apiserver
     spec:
       dnsPolicy: ClusterFirst
-      #nodeSelector:
-      #  node-role.kubernetes.io/master: ""
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
       restartPolicy: Always
       securityContext: {}
       serviceAccount: {{.Values.rbac.server.serviceAccount}}
