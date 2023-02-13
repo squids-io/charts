@@ -5,25 +5,42 @@
 replicaCount: 1
 
 enableDbmotionNode: true
+enableMonitor: true
 
 image:
   pullPolicy: Always
-  dbmotionSassServer:
-    registry: swr.cn-east-2.myhuaweicloud.com
-    repository: squids
-    name: dbmotion-enterprise
-    tag: 2210.01
-    containerPort: 3000
   dbmotion:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
     name: dbmotion-enterprise
-    tag: 2210.01
+    tag: 2301.01
+  dbmotionApiServer:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbmotion-enterprise
+    tag: 2301.01
+    httpPort: 3000
+    grpcPort: 3001
+  dbmotionProxyFile:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbmotion-proxy-linux
+    tag: 2301.01
+  dbmotionProxyServer:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbmotion-proxy-server
+    tag: 2301.01
+    containerPort: 3002
 
 service:
   type: NodePort
-  port: 3000
-  nodeport: 32117
+  httpServer:
+    nodeport: 31000
+  grpcServer:
+    nodeport: 31001
+  proxyServer:
+    nodeport: 31002
 
 
 mysql:
@@ -39,6 +56,15 @@ mysql:
   # !!!!!!! helm upgrade 的时候再填写真实密码，不要提交真实密码到 git 仓库 !!!!!!!!
 es:
   url: http://elasticsearch-logging.squids-logging.svc.cluster.local:9200
+phoenix:
+  endpoint: http://phoenix.dts.svc.cluster.local:9091/phoenix/api/v2/
+otherSys:
+  endpoint: https://squids.cn/api/v1
+
+# backend elb ip
+dbmotion:
+  public:
+    ip: 127.0.0.1
 
 serviceAccount:
   # Specifies whether a service account should be created
@@ -55,18 +81,18 @@ podSecurityContext: { }
 # fsGroup: 2000
 
 securityContext: { }
-  # capabilities:
-  #   drop:
-  #   - ALL
-  # readOnlyRootFilesystem: true
-  # runAsNonRoot: true
+# capabilities:
+#   drop:
+#   - ALL
+# readOnlyRootFilesystem: true
+# runAsNonRoot: true
 # runAsUser: 1000
 
 
 ingress:
   enabled: false
   annotations: { }
-    # kubernetes.io/ingress.class: nginx
+  # kubernetes.io/ingress.class: nginx
   # kubernetes.io/tls-acme: "true"
   hosts:
     - host: chart-example.local
@@ -81,15 +107,15 @@ ingress:
   #      - chart-example.local
 
 resources: { }
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
-  # requests:
-  #   cpu: 100m
+# We usually recommend not to specify default resources and to leave this as a conscious
+# choice for the user. This also increases chances charts run on environments with little
+# resources, such as Minikube. If you do want to specify resources, uncomment the following
+# lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# limits:
+#   cpu: 100m
+#   memory: 128Mi
+# requests:
+#   cpu: 100m
 #   memory: 128Mi
 
 autoscaling:

@@ -1,27 +1,34 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: squids-dbmotion-saas-server
+  name: squids-dts-api-server
   namespace: {{.Release.Namespace}}
   labels:
-    app-name: squids-dbmotion-saas-server
+    app-name: squids-dts-api-server
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app-name: squids-dbmotion-saas-server
+      app-name: squids-dts-api-server
   template:
     metadata:
       labels:
-        app-name: squids-dbmotion-saas-server
+        app-name: squids-dts-api-server
     spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       nodeSelector:
         node-role.kubernetes.io/master: ""
+      initContainers:
+        - name: dts-proxy-files
+          image: {{ .Values.image.dbmotionProxyFile.registry }}/{{ .Values.image.dbmotionProxyFile.repository }}/{{ .Values.image.dbmotionProxyFile.name }}:{{ .Values.image.dbmotionProxyFile.tag }}
+          command: [ sh, -c, 'cp -r . /client_files/' ]
+          volumeMounts:
+            - name: dts-proxy-files
+              mountPath: /client_files
       containers:
-        - name: dbmotion-saas
+        - name: dts-api-server
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-          image: {{ .Values.image.dbmotionSassServer.registry }}/{{ .Values.image.dbmotionSassServer.repository }}/{{ .Values.image.dbmotionSassServer.name }}:{{ .Values.image.dbmotionSassServer.tag }}
+          image: {{ .Values.image.dbmotionApiServer.registry }}/{{ .Values.image.dbmotionApiServer.repository }}/{{ .Values.image.dbmotionApiServer.name }}:{{ .Values.image.dbmotionApiServer.tag }}
           env:
             - name: SERVER_MODE
               value: "SAAS"
@@ -54,16 +61,28 @@ spec:
             - name: MASTER_TOLERATION
               value: "y"
             - name: CPU_REQUEST
-              value: "500m"
+              value: "200m"
             - name: CPU_LIMIT
               value: "4"
             - name: MEMORY_REQUEST
               value: "100Mi"
             - name: MEMORY_LIMIT
               value: "8Gi"
+            - name: DBMOTION_WEB_ADDR
+              value: "http://squids-dts-api-server.{{.Release.Namespace}}.svc.cluster.local:{{.Values.image.dbmotionApiServer.httpPort}}"
+            - name: DBMOTION_PUB_IP
+              value: {{ .Values.dbmotion.public.ip }}
+            {{ if .Values.enableMonitor }}
+            - name: PHOENIX_ENDPOINT
+              value: {{ .Values.phoenix.endpoint }}
+            - name: OTHER_SYS_ENDPOINT
+              value: {{ .Values.otherSys.endpoint }}
+            {{ end }}
           ports:
-            - name: dbmotion-saas
-              containerPort: {{ .Values.image.dbmotionSassServer.containerPort }}
+            - name: http
+              containerPort: {{ .Values.image.dbmotionApiServer.httpPort }}
+            - name: grpc
+              containerPort: {{ .Values.image.dbmotionApiServer.grpcPort }}
           volumeMounts:
             - name: timezone
               mountPath: /etc/timezone
@@ -71,6 +90,8 @@ spec:
               mountPath: /etc/localtime
             - mountPath: /dbmotion/log
               name: log-volume
+            - name: dts-proxy-files
+              mountPath: /client_files
       volumes:
         - name: timezone
           hostPath:
@@ -81,6 +102,8 @@ spec:
         - name: log-volume
           persistentVolumeClaim:
             claimName: dbmotion-sass-log
+        - name: dts-proxy-files
+          emptyDir: { }
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
