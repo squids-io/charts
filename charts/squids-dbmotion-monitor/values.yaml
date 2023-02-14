@@ -101,3 +101,11 @@ affinity:
               operator: In
               values:
                 - "0"
+    preferredDuringSchedulingIgnoredDuringExecution:
+      - weight: 80
+        preference:
+          matchExpressions:
+            - key: squids/cluster
+              operator: In
+              values:
+                - squids-monitor
