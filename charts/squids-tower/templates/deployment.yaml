@@ -24,6 +24,13 @@ spec:
         - name: squids-tower
           image: {{ .Values.global.registry }}/{{.Values.global.repository}}/squids-tower:{{ .Values.image.squidstower.tag }}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            limits:
+              cpu: "0.5"
+              memory: "500Mi"
+            requests:
+              cpu: "0.5"
+              memory: "500Mi"
           command:
             - /squids-tower
           env:
@@ -37,6 +44,8 @@ spec:
               value: "{{ .Values.disableTls }}"
             - name: CURRENT_RUNTIME_ENV
               value: "{{ .Values.currentRuntimeEnv }}"
+            - name: IMAGE_REPO_HOST
+              value: swr.cn-east-2.myhuaweicloud.com
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
