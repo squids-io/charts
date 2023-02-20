@@ -433,7 +433,7 @@ data:
         ssl_certificate_key /etc/nginx/dbs-cert/server.key;
 
         location / {
-          grpc_pass {{.Values.dbs.grpcUrl}}
+          grpc_pass {{.Values.dbs.grpcUrl}};
         }
       }
     }
