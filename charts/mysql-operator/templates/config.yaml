@@ -91,6 +91,18 @@ data:
             image: squids/mongo4.4-qfb:dev
           - name: exporter
             image: squids/mongo-exporter:v1.0.0
+      - name: oracle
+        version: 19.3.0.0.0-ee
+        storageClass: csi-localpv
+        images:
+          - name: database
+            image: swr.cn-east-2.myhuaweicloud.com/squids/qfom:v0.0.12
+      - name: oracle
+        version: 11.2.0.4.0
+        storageClass: csi-localpv
+        images:
+          - name: database
+            image: swr.cn-east-2.myhuaweicloud.com/squids/qfom:v0.0.12
 kind: ConfigMap
 metadata:
   name: app-config
