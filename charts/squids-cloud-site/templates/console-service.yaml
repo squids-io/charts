@@ -22,6 +22,10 @@ spec:
       targetPort: 8080
       protocol: TCP
       name: console
+    - port: 18081
+      targetPort: 18081
+      protocol: TCP
+      name: grpc
     {{ end }}
   selector:
     app-name: squids-console

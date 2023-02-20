@@ -1,0 +1,172 @@
+---
+# define configmap for db.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-server-conf
+  namespace: {{.Release.Namespace}}
+data:
+  config.yaml: |
+    server:
+      httpPort: 8080
+      grpcPort: 8081
+      runMode: {{if .Values.verTag}}debug{{else}}release{{end}}
+    app:
+      eventNamespace: {{.Release.Namespace}}-task
+      clientFilePath: {{.Values.clientFilePath}}
+      imageRepo: {{ .Values.clientImage.baseUrl }}/client_files
+      defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
+      passwordKey: 324KjlkdweSDwLJwer8hwe7d
+      deleteBackupCron: '0 */1 * * *'
+      squids:
+        enable: true
+        baseUrl: {{ .Values.squids.webApi.baseUrl }}
+        appId: dataCommunication
+        appSecret: sCvh4X:MsC4A
+        credentialKey: 96ff3a77d4a987b193d3c648f1f91453
+        tokenKey: squids_secret_xz98fj9r1wq
+      logger:
+        level: info
+        format: json
+
+    database:
+      username: {{.Values.metaDb.user}}
+      password: {{.Values.metaDb.pwd | quote}}
+      host: {{ .Values.metaDb.host }}
+      port: 3306
+      database: {{.Values.metaDb.name}}
+      debug: false
+      migrateScriptDir: migrations
+---
+# define service for apiserver
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbs-api-server
+  namespace: {{.Release.Namespace}}
+spec:
+  type: NodePort
+  selector:
+    app: apiserver
+  ports:
+  - name: http
+    nodePort: 30080
+    port: 8080
+    targetPort: 8080
+    nodePort: {{.Values.apiServer.webPort}}
+  - name: grpc
+    nodePort: 30081
+    port: 8081
+    targetPort: 8081
+    nodePort: {{.Values.apiServer.grpcPort}}
+---
+# define deployment for apiserver
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-api-server
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiserver
+  template:
+    metadata:
+      labels:
+        app: apiserver
+    spec:
+      dnsPolicy: ClusterFirst
+      #nodeSelector:
+      #  node-role.kubernetes.io/master: ""
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      tolerations:
+      - effect: NoSchedule
+        key: node-role.kubernetes.io/master
+        operator: Exists
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: apiserver
+            topologyKey: kubernetes.io/hostname
+      initContainers:
+      - image: {{.Values.images.dbsAgentSetupWin.registry}}/{{.Values.images.dbsAgentSetupWin.repository}}/{{.Values.images.dbsAgentSetupWin.name}}:{{.Values.images.dbsAgentSetupWin.tag}}{{.Values.verTag}}
+        name: dbs-setup-sqlserver-win64
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsAgentSetupLinux.registry}}/{{.Values.images.dbsAgentSetupLinux.repository}}/{{.Values.images.dbsAgentSetupLinux.name}}:{{.Values.images.dbsAgentSetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-agent-setup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsProxySetupWin.registry}}/{{.Values.images.dbsProxySetupWin.repository}}/{{.Values.images.dbsProxySetupWin.name}}:{{.Values.images.dbsProxySetupWin.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-win64
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+      
+      - image: {{.Values.images.dbsXtrabackupLinux.registry}}/{{.Values.images.dbsXtrabackupLinux.repository}}/{{.Values.images.dbsXtrabackupLinux.name}}:{{.Values.images.dbsXtrabackupLinux.tag}}{{.Values.verTag}}
+        name: dbs-xtrabackup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: install-files
+        imagePullPolicy: Always
+      containers:
+      - args:
+        - -config
+        - /woqutech/conf/config.yaml
+        command:
+        - ./apiserver
+        image: {{.Values.images.dbsApiServer.registry}}/{{.Values.images.dbsApiServer.repository}}/{{.Values.images.dbsApiServer.name}}:{{.Values.images.dbsApiServer.tag}}{{.Values.verTag}}
+        imagePullPolicy: Always
+        name: apiserver
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8081
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /woqutech/conf/
+          name: api-server-conf
+        - mountPath: /etc/localtime
+          name: localtime
+        - mountPath: /var/woqutech/dbs/install_files
+          name: install-files
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: api-server-conf
+        name: api-server-conf
+      - hostPath:
+          path: /etc/localtime
+          type: ""
+        name: localtime
+      - hostPath:
+          path: /var/woqutech/dbs/install_files
+          type: ""
+        name: install-files

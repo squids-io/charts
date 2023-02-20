@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: dbs-gserver-cert
+  namespace: {{ .Release.Namespace }}
+data:
+  server.key: {{- .Values.dbs.gserver.key | toYaml | indent 2 }}
+  server.pem: {{- .Values.dbs.gserver.pem | toYaml | indent 2 }}
