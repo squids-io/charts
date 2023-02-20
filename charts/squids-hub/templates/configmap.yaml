@@ -11,6 +11,8 @@ data:
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
         driver-class-name: com.mysql.cj.jdbc.Driver
+      jackson:
+        time-zone: GMT+8
 
       redis:
         host: squids-redis-headless # Redis服务器地址
@@ -48,6 +50,3 @@ data:
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
-
-    notification:
-      consoleUrl: {{.Values.console.url}}

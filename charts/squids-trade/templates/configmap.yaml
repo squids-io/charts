@@ -13,6 +13,8 @@ data:
         url: jdbc:mysql://squids-web-mysql-primary-headless:3306/tradedb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
+      jackson:
+        time-zone: GMT+8
       redis:
         host: squids-redis-headless # Redis服务器地址
         database: 0 # Redis数据库索引（默认为0）
@@ -26,6 +28,16 @@ data:
       clientSecret: {{ .Values.paypal.clientSecret }}
       cancelUrl: https://squids.cn
       returnUrl: http://squids.cn/api/v1/tradeRechargeOrder/paySuccess
+      active: Live
+    alipay-config:
+      appId: {{  .Values.alipay.appId }}
+      merchantPrivateKey: {{ .Values.alipay.merchantPrivateKey }}
+      alipayPublicKey: {{ .Values.alipay.alipayPublicKey }}
+      notifyUrl: https://squids.cn/api/v1/rechargeOrders/aliPayCallback
+      returnUrl: https://console.squids.cn/billing/account
+      signType: RSA2
+      charset: utf-8
+      gatewayUrl: https://openapi.alipay.com/gateway.do
 
     pay:
       success: https://squids.cn/
@@ -33,6 +45,20 @@ data:
 
     pdf:
       logo_url: https://squis.cn/assets/logo.png
+
+    credential-config:
+      aws:
+        keyId:
+        keySecret:
+      aliYun:
+        keyId: {{ .Values.credential.aliYun.keyId }}
+        keySecret: {{ .Values.credential.aliYun.keySecret }}
+      tencent:
+        keyId:
+        keySecret:
+      huawei:
+        keyId:
+        keySecret:
     {{ end }}
 
     {{ if eq .Values.env "private" }}
@@ -58,7 +84,7 @@ data:
 
     charging-config:
       discount: 0.7
-      givemoney: 20000000
+      givemoney: 0
       validMonth: 1
       overdueTime: 1
       disableTime: 14
