@@ -45,23 +45,7 @@ data:
 
     pdf:
       logo_url: https://squis.cn/assets/logo.png
-
-    credential-config:
-      aws:
-        keyId:
-        keySecret:
-      aliYun:
-        keyId: {{ .Values.credential.aliYun.keyId }}
-        keySecret: {{ .Values.credential.aliYun.keySecret }}
-      tencent:
-        keyId:
-        keySecret:
-      huawei:
-        keyId:
-        keySecret:
-    {{ end }}
-
-    {{ if eq .Values.env "private" }}
+    {{ else }}
     paypal-config:
       clientId: {{ .Values.paypal.clientId }}
       clientSecret: {{ .Values.paypal.clientSecret }}
@@ -76,6 +60,19 @@ data:
       logo_url: http://{{.Values.server.host}}/assets/logo.png
     {{ end }}
 
+    credential-config:
+      aws:
+        keyId:
+        keySecret:
+      aliYun:
+        keyId: {{ .Values.credential.aliYun.keyId }}
+        keySecret: {{ .Values.credential.aliYun.keySecret }}
+      tencent:
+        keyId:
+        keySecret:
+      huawei:
+        keyId:
+        keySecret:
 
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
