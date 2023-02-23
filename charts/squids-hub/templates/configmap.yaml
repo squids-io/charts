@@ -28,13 +28,26 @@ data:
         port: {{ .Values.tower.port }}
       dbpool:
         port: {{ .Values.dbpool.port }}
+    pool:
+      init:
+        auto: {{.Values.pool.autoInit}}
+      expand:
+        auto: {{.Values.pool.autoExpand}}
+      charge:
+        type: {{.Values.pool.chargeType}}
 
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
       TradeModuleGatewayUrl: http://squids-trade:29528/api/v1/
       BackupEndpointUrl: http://squids-backup:29531/api/v1/
+      OperationLogGatewayUrl: http://operation-log:29533/api/v1/
       phoenixEndpoint: http://{{ .Values.phoenix.domain}}:9091/phoenix/api/v2/
       DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8999/bbm/dms/v1/
+      LicenseServerModuleGatewayUrl: {{ .Values.licenseServer.url }}
+
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
+
+    notification:
+      consoleUrl: {{.Values.console.url}}

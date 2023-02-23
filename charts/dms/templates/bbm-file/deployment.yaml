@@ -26,7 +26,7 @@ spec:
         node-role.kubernetes.io/master: ""
       containers:
         - name: bbm-file
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/bbm-file:w1.4
+          image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.bbmFile.image.name }}:{{.Values.bbmFile.image.tag}}
           imagePullPolicy: Always
           ports:
             - name: http

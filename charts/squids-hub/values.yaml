@@ -13,7 +13,7 @@ image:
   containerPort: 29527
   hub:
     name: hub
-    tag: v1.35.0
+    tag: v1.41.0
   terraformProvider:
     name: hub-terraform-provider
     tag: v1.0.0
@@ -35,6 +35,15 @@ phoenix:
   domain: phoenix.squids-monitor.svc.cluster.local
 dms:
   domain: woqu-adapter.bb-system.svc.cluster.local
+licenseServer:
+  url: https://squids.cn/api/v1/
+console:
+  url: https://console.squids.cn
+pool:
+  autoInit: false
+  autoExpand: true
+  chargeType: demand
+
 apiserver:
   port: 8443
 tower:
@@ -68,8 +77,8 @@ podSecurityContext: { }
 
 securityContext: { }
   # capabilities:
-  #   drop:
-  #   - ALL
+#   drop:
+#   - ALL
 # readOnlyRootFilesystem: true
 # runAsNonRoot: true
 # runAsUser: 1000
@@ -98,8 +107,8 @@ resources: { }
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   # limits:
-  #   cpu: 100m
-  #   memory: 128Mi
+#   cpu: 100m
+#   memory: 128Mi
 # requests:
 #   cpu: 100m
 #   memory: 128Mi

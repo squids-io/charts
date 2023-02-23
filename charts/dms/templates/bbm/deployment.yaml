@@ -26,7 +26,7 @@ spec:
       {{- end }}
       containers:
         - name: bbm
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/bbm:w1.5
+          image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.bbm.image.name }}:{{.Values.bbm.image.tag}}
           imagePullPolicy: Always
           ports:
             - name: http
@@ -44,6 +44,8 @@ spec:
             - mountPath: /opt/devops/bbm.yaml
               name: v-bbm-cm
               subPath: bbm-yaml
+            - mountPath: /opt/devops/client
+              name: v-bb-client
       restartPolicy: Always
       volumes:
         - name: v-pvc-bb-upload
@@ -55,3 +57,14 @@ spec:
         - name: v-bbm-cm
           configMap:
             name: bbm-cm
+        - hostPath:
+            path: /squids-data/dms/client
+            type: ""
+          name: v-bb-client
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}

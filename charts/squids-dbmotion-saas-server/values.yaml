@@ -11,14 +11,14 @@ image:
   dbmotionSassServer:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbmotion
-    tag: 2209.05
+    name: dbmotion-enterprise
+    tag: 2210.01
     containerPort: 3000
   dbmotion:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
-    name: dbmotion
-    tag: 2209.05
+    name: dbmotion-enterprise
+    tag: 2210.01
 
 service:
   type: NodePort

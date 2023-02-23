@@ -5,3 +5,67 @@ imageCredentials:
   registry: registry.cn-hangzhou.aliyuncs.com/dbsinan
   username: xxx
   password: xxx
+
+global:
+  registry: registry.cn-hangzhou.aliyuncs.com
+  repository: dbsinan
+
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"
+
+bbNginx:
+  image:
+    name: nginx
+    tag: w1.9
+bbm:
+  image:
+    name: bbm
+    tag: w1.9
+bbmFile:
+  image:
+    name: bbm-file
+    tag: w1.4
+connPool:
+  image:
+    name: conn-pool
+    tag: w1.9
+inspect:
+  image:
+    name: inspect
+    tag: w1.8
+monitor:
+  image:
+    name: monitor
+    tag: v1.0
+notice:
+  image:
+    name: notice
+    tag: v1.0
+postgres:
+  image:
+    name: postgres
+    tag: 9.6-bb
+sqlExporter:
+  image:
+    name: sql-exporter
+    tag: w1.7
+sshExporter:
+  image:
+    name: ssh-exporter
+    tag: v1.0
+woquAdapter:
+  image:
+    name: woqu-adapter
+    tag: w1.4

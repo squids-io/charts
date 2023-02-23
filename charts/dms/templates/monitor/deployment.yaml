@@ -26,7 +26,7 @@ spec:
       {{- end }}
       containers:
         - name: monitor
-          image: registry.cn-hangzhou.aliyuncs.com/dbsinan/monitor:v1.0
+          image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.monitor.image.name }}:{{.Values.monitor.image.tag}}
           imagePullPolicy: Always
           ports:
             - name: http
