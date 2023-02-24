@@ -8,8 +8,8 @@ roleRef:
   name: oracle-operator
 subjects:
   - kind: ServiceAccount
-    name: dboperator
-    namespace: squids
+    name: oracle-operator
+    namespace: {{.Release.Namespace}}
   - kind: ServiceAccount
     name: dboperator
-    namespace: squids-user
+    namespace: {{.Release.Namespace}}-user

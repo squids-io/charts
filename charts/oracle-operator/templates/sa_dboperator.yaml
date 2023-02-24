@@ -2,16 +2,11 @@
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  name: dboperator
+  name: oracle-operator
   namespace: {{.Release.Namespace}}
-secrets:
-  - name: dboperator-token-w247w
-
 ---
 apiVersion: v1
 kind: ServiceAccount
 metadata:
   name: dboperator
   namespace: {{.Release.Namespace}}-user
-secrets:
-  - name: dboperator-token-gwxdf
