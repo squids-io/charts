@@ -12,19 +12,17 @@ data:
       grpcPort: 8081
       runMode: {{if .Values.verTag}}debug{{else}}release{{end}}
     app:
-      eventNamespace: {{.Release.Namespace}}-task
-      clientFilePath: {{.Values.clientFilePath}}
-      imageRepo: {{ .Values.clientImage.baseUrl }}/client_files
-      defaultProjectId: jcjhyisj2tzzlcwk23vexphb7khnpbtc
-      passwordKey: 324KjlkdweSDwLJwer8hwe7d
+      clientFilePath: {{.Values.clientFilePath }}
+      defaultProjectId: {{.Values.app.defProjId }}
+      passwordKey: {{.Values.app.passwordKey }}
       deleteBackupCron: '0 */1 * * *'
       squids:
         enable: true
         baseUrl: {{ .Values.squids.webApi.baseUrl }}
-        appId: dataCommunication
-        appSecret: sCvh4X:MsC4A
-        credentialKey: 96ff3a77d4a987b193d3c648f1f91453
-        tokenKey: squids_secret_xz98fj9r1wq
+        appId: {{.Values.squids.appId }}
+        appSecret: {{.Values.squids.appSecret }}
+        credentialKey: {{.Values.squids.credentialKey }}
+        tokenKey: {{.Values.squids.tokenKey }}
       logger:
         level: info
         format: json
@@ -93,46 +91,6 @@ spec:
               matchLabels:
                 app: apiserver
             topologyKey: kubernetes.io/hostname
-      initContainers:
-      - image: {{.Values.images.dbsAgentSetupWin.registry}}/{{.Values.images.dbsAgentSetupWin.repository}}/{{.Values.images.dbsAgentSetupWin.name}}:{{.Values.images.dbsAgentSetupWin.tag}}{{.Values.verTag}}
-        name: dbs-setup-sqlserver-win64
-        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
-        volumeMounts:
-        - mountPath: /install_files
-          name: install-files
-        imagePullPolicy: Always
-
-      - image: {{.Values.images.dbsAgentSetupLinux.registry}}/{{.Values.images.dbsAgentSetupLinux.repository}}/{{.Values.images.dbsAgentSetupLinux.name}}:{{.Values.images.dbsAgentSetupLinux.tag}}{{.Values.verTag}}
-        name: dbs-agent-setup-linux
-        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
-        volumeMounts:
-        - mountPath: /install_files
-          name: install-files
-        imagePullPolicy: Always
-
-      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
-        name: dbs-proxy-setup-linux
-        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
-        volumeMounts:
-        - mountPath: /install_files
-          name: install-files
-        imagePullPolicy: Always
-
-      - image: {{.Values.images.dbsProxySetupWin.registry}}/{{.Values.images.dbsProxySetupWin.repository}}/{{.Values.images.dbsProxySetupWin.name}}:{{.Values.images.dbsProxySetupWin.tag}}{{.Values.verTag}}
-        name: dbs-proxy-setup-win64
-        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
-        volumeMounts:
-        - mountPath: /install_files
-          name: install-files
-        imagePullPolicy: Always
-      
-      - image: {{.Values.images.dbsXtrabackupLinux.registry}}/{{.Values.images.dbsXtrabackupLinux.repository}}/{{.Values.images.dbsXtrabackupLinux.name}}:{{.Values.images.dbsXtrabackupLinux.tag}}{{.Values.verTag}}
-        name: dbs-xtrabackup-linux
-        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
-        volumeMounts:
-        - mountPath: /install_files
-          name: install-files
-        imagePullPolicy: Always
       containers:
       - args:
         - -config
