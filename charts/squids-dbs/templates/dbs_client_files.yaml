@@ -2,7 +2,7 @@
 # download and update client files in /var/woqutech/dbs/install_files/
 #
 # deployment for download client files
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: dbs-client-files
