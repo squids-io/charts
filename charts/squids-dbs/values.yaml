@@ -16,7 +16,7 @@ images:
     name: dbs-verify
     tag: 2212.01
   # ms sqlserver for verify use
-  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-mssql-2019:2.0.0
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-mssql-2019
   dbsMssql2019:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
@@ -54,16 +54,22 @@ images:
     name: dbs-xtrabackup-linux
     tag: 2212.01
 
+app:
+  defProjId: abc
+  passwordKey: abc
 squids:
   webApi:
     baseUrl: https://squids.cn/api/v1/
-  appId: dataCommunication
+  appId: abc
+  appSecret: abc
+  credentialKey: abc
+  tokenKey: abc
 
 metaDb:
   host: squids-dbmotion-mysql-primary-headless.squids.svc.cluster.local
   name: qpc
   user: squidsRoot9527
-  pwd: password_placeholder
+  pwd: abc
 
 sqlserver:
   user: sa
@@ -82,7 +88,3 @@ verTag: ""
 
 # local path of client files
 clientFilePath: /var/woqutech/dbs/install_files
-
-# download dbsagent/qfb/s3fs from this url
-clientImage:
-  baseUrl: https---squids.cn
