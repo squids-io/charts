@@ -432,6 +432,9 @@ data:
         ssl_certificate     /etc/nginx/dbs-cert/server.pem;
         ssl_certificate_key /etc/nginx/dbs-cert/server.key;
 
+        client_header_timeout 900s;
+        client_body_timeout 900s;
+
         location / {
           grpc_pass {{.Values.dbs.grpcUrl}};
         }
