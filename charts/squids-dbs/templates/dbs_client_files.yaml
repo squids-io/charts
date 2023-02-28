@@ -17,39 +17,8 @@ spec:
       labels:
         app: dbs-client-files
     spec:
-      #nodeSelector:
-      #  node-role.kubernetes.io/master: ""
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
-      - effect: NoSchedule
-        key: qfusion/master
-        operator: Exists
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: dbs-client-files
-            topologyKey: kubernetes.io/hostname
-        podAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchExpressions:
-              - key: app
-                operator: In
-                values:
-                - apiserver
-            topologyKey: kubernetes.io/hostname
-        nodeAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-            nodeSelectorTerms:
-            - matchExpressions:
-              - key: master-role
-                operator: In
-                values:
-                - master
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
       initContainers:
       - image: {{.Values.images.dbsAgentSetupWin.registry}}/{{.Values.images.dbsAgentSetupWin.repository}}/{{.Values.images.dbsAgentSetupWin.name}}:{{.Values.images.dbsAgentSetupWin.tag}}{{.Values.verTag}}
         name: dbs-setup-sqlserver-win64
@@ -105,3 +74,10 @@ spec:
         hostPath:
           path: {{.Values.clientFilePath}}
           type: DirectoryOrCreate
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
