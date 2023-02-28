@@ -33,19 +33,8 @@ spec:
       labels:
         app: dbs-mssql-2019
     spec:
-      #nodeSelector:
-      #  node-role.kubernetes.io/master: ""
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: dbs-mssql-2019
-            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
       containers:
       - name: dbs-mssql-2019
         image:  {{.Values.images.dbsMssql2019.registry}}/{{.Values.images.dbsMssql2019.repository}}/{{.Values.images.dbsMssql2019.name}}:{{.Values.images.dbsMssql2019.tag}}
@@ -60,3 +49,10 @@ spec:
           value: "1433"
         securityContext:
           privileged: true
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}

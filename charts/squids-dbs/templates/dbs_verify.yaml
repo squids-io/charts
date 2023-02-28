@@ -32,19 +32,8 @@ spec:
       labels:
         app: dbs-verify
     spec:
-      #nodeSelector:
-      #  node-role.kubernetes.io/master: ""
-      tolerations:
-      - key: node-role.kubernetes.io/master
-        operator: Exists
-        effect: NoSchedule
-      affinity:
-        podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: dbs-verify
-            topologyKey: kubernetes.io/hostname
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
       restartPolicy: Always
       containers:
       - name: dbs-verify
@@ -67,6 +56,13 @@ spec:
         - -SshProxy=
         - -ConDbCmd=/opt/mssql-tools/bin/sqlcmd -S 127.0.0.1 -U {{.Values.sqlserver.user}} -P {{.Values.sqlserver.pwd | quote}} -Q @dbs-mssql-2019-ssh
         imagePullPolicy: Always
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
 
 
 
