@@ -113,8 +113,14 @@ spec:
           path: /var/woqutech/dbs/install_files
           type: ""
         name: install-files
-      {{- with .Values.affinity }}
       affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: dbs-client-files
+            topologyKey: kubernetes.io/hostname
+      {{- with .Values.affinity }}
       {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .Values.tolerations }}
