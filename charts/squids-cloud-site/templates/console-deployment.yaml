@@ -37,10 +37,6 @@ spec:
             - containerPort: 8080
               hostPort: 8080
             {{ end }}
-            {{ if .Values.dbs.enable }}
-            - containerPort: 18081
-              hostPort: 18081
-            {{ end }}
           volumeMounts:
             - name: timezone
               mountPath: /etc/timezone

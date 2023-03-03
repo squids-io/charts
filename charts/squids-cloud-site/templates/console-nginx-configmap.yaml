@@ -447,15 +447,3 @@ data:
       }
     {{ end }}
     }
-    {{ if .Values.dbs.enable }}
-    stream {
-      server {
-        listen 18081;
-        proxy_pass gserver;
-      }
-
-      upstream gserver{
-        server {{ .Values.dbs.grpcUrl }};
-      }
-    }
-    {{ end }}
