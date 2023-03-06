@@ -1,7 +1,7 @@
 - name: MySQLCluster
   type: MySQL
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: my-db-hang
     - name: my-execute-count
@@ -13,7 +13,7 @@
 - name: RedisCluster
   type: Redis
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: rd-db-hang
     - name: rd-execute-count
@@ -25,7 +25,7 @@
 - name: SQLServerCluster
   type: SQLServer
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: ms-db-hang
     - name: ms-execute-count
@@ -38,7 +38,7 @@
 - name: MongoCluster
   type: MongoDB
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: mg-db-hang
     - name: mg-execute-count
@@ -50,7 +50,7 @@
 - name: ClickhouseCluster
   type: ClickHouse
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: ch-db-hang
     - name: os-cpu-usage
@@ -59,7 +59,7 @@
 - name: ElasticSearchCluster
   type: ElasticSearch
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: os-cpu-usage
     - name: os-disk-usage
@@ -67,7 +67,7 @@
 - name: MariaDBCluster
   type: MariaDB
   groupIntervalMinute: 5
-  repeatIntervalMinute: 30
+  repeatIntervalMinute: 240
   metrics:
     - name: my-db-hang
     - name: my-execute-count
