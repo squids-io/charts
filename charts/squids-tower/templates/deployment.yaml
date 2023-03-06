@@ -37,6 +37,8 @@ spec:
               value: "{{ .Values.disableTls }}"
             - name: CURRENT_RUNTIME_ENV
               value: "{{ .Values.currentRuntimeEnv }}"
+            - name: IMAGE_REPO_HOST
+              value: {{ .Values.global.registry }}
           volumeMounts:
             - name: localtime
               mountPath: /etc/localtime
