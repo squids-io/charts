@@ -106,7 +106,8 @@ data:
   install-iptables-rules: "true"
 
   auto-direct-node-routes: "false"
-  enable-bandwidth-manager: "false"
+  enable-bandwidth-manager: "true"
+  enable-bbr: "true"
   enable-local-redirect-policy: "false"
   kube-proxy-replacement:  "strict"
   kube-proxy-replacement-healthz-bind-address: ""
