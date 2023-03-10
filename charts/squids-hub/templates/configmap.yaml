@@ -52,3 +52,7 @@ data:
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
+
+    data-flashback-task:
+      default:
+        days: {{.Values.dataFlashbackTask.default.days}}
