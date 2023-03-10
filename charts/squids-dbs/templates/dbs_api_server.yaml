@@ -1,0 +1,134 @@
+---
+# define configmap for db.conf
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: api-server-conf
+  namespace: {{.Release.Namespace}}
+data:
+  config.yaml: |
+    server:
+      httpPort: 8080
+      grpcPort: 8081
+      runMode: {{if .Values.verTag}}debug{{else}}release{{end}}
+    app:
+      clientFilePath: {{.Values.clientFilePath }}
+      defaultProjectId: {{.Values.app.defProjId }}
+      passwordKey: {{.Values.app.passwordKey }}
+      deleteBackupCron: '0 */1 * * *'
+      squids:
+        enable: true
+        baseUrl: {{ .Values.squids.webApi.baseUrl }}
+        appId: {{.Values.squids.appId }}
+        appSecret: {{.Values.squids.appSecret }}
+        credentialKey: {{.Values.squids.credentialKey }}
+        tokenKey: {{.Values.squids.tokenKey }}
+      logger:
+        level: info
+        format: json
+
+    database:
+      username: {{.Values.metaDb.user}}
+      password: {{.Values.metaDb.pwd | quote}}
+      host: {{ .Values.metaDb.host }}
+      port: 3306
+      database: {{.Values.metaDb.name}}
+      debug: {{if .Values.verTag}}true{{else}}false{{end}}
+      migrateScriptDir: migrations
+---
+# define service for apiserver
+apiVersion: v1
+kind: Service
+metadata:
+  name: dbs-api-server
+  namespace: {{.Release.Namespace}}
+spec:
+  type: NodePort
+  selector:
+    app: apiserver
+  ports:
+  - name: http
+    nodePort: 30080
+    port: 8080
+    targetPort: 8080
+    nodePort: {{.Values.apiServer.webPort}}
+  - name: grpc
+    nodePort: 30081
+    port: 8081
+    targetPort: 8081
+    nodePort: {{.Values.apiServer.grpcPort}}
+---
+# define deployment for apiserver
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-api-server
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: apiserver
+  template:
+    metadata:
+      labels:
+        app: apiserver
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      containers:
+      - args:
+        - -config
+        - /woqutech/conf/config.yaml
+        command:
+        - ./apiserver
+        image: {{.Values.images.dbsApiServer.registry}}/{{.Values.images.dbsApiServer.repository}}/{{.Values.images.dbsApiServer.name}}:{{.Values.images.dbsApiServer.tag}}{{.Values.verTag}}
+        imagePullPolicy: Always
+        name: apiserver
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        - containerPort: 8081
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /woqutech/conf/
+          name: api-server-conf
+        - mountPath: /etc/localtime
+          name: localtime
+        - mountPath: /etc/ssl
+          name: ssl
+        - mountPath: /var/woqutech/dbs/install_files
+          name: install-files
+      volumes:
+      - configMap:
+          defaultMode: 420
+          name: api-server-conf
+        name: api-server-conf
+      - hostPath:
+          path: /etc/localtime
+          type: ""
+        name: localtime
+      - hostPath:
+          path: /etc/ssl
+          type: ""
+        name: ssl
+      - hostPath:
+          path: /var/woqutech/dbs/install_files
+          type: ""
+        name: install-files
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchLabels:
+                app: dbs-client-files
+            topologyKey: kubernetes.io/hostname
+      {{- with .Values.affinity }}
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}      

@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: squids-dts-api-server
+  namespace: {{.Release.Namespace}}
+  labels:
+    app-name: squids-dts-api-server
+spec:
+  type: {{ .Values.service.type}}
+  ports:
+    - name: http
+      port: {{ .Values.image.dbmotionApiServer.httpPort }}
+      targetPort: {{ .Values.image.dbmotionApiServer.httpPort }}
+      nodePort: {{ .Values.service.httpServer.nodeport }}
+    - name: grpc
+      port: {{ .Values.image.dbmotionApiServer.grpcPort }}
+      targetPort: {{ .Values.image.dbmotionApiServer.grpcPort }}
+      nodePort: {{ .Values.service.grpcServer.nodeport }}
+  selector:
+    app-name: squids-dts-api-server

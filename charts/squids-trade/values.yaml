@@ -10,7 +10,7 @@ image:
   name: trade
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: v1.40.0
+  tag: v1.43.0
   containerPort: 29528
 service:
   type: ClusterIP
@@ -27,6 +27,14 @@ mysql:
 paypal:
   clientId: abc
   clientSecret: abc
+alipay:
+  appId: 'abc'
+  merchantPrivateKey: abc
+  alipayPublicKey: abc
+credential:
+  aliYun:
+    keyId: abc
+    keySecret: abc
 mail:
   mailbox: abc@squids.com
   host: abc

@@ -1,0 +1,83 @@
+#
+# download and update client files in /var/woqutech/dbs/install_files/
+#
+# deployment for download client files
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dbs-client-files
+  namespace: {{.Release.Namespace}}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: dbs-client-files
+  template:
+    metadata:
+      labels:
+        app: dbs-client-files
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: ""
+      initContainers:
+      - image: {{.Values.images.dbsAgentSetupWin.registry}}/{{.Values.images.dbsAgentSetupWin.repository}}/{{.Values.images.dbsAgentSetupWin.name}}:{{.Values.images.dbsAgentSetupWin.tag}}{{.Values.verTag}}
+        name: dbs-setup-sqlserver-win64
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsAgentSetupLinux.registry}}/{{.Values.images.dbsAgentSetupLinux.repository}}/{{.Values.images.dbsAgentSetupLinux.name}}:{{.Values.images.dbsAgentSetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-agent-setup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      - image: {{.Values.images.dbsProxySetupWin.registry}}/{{.Values.images.dbsProxySetupWin.repository}}/{{.Values.images.dbsProxySetupWin.name}}:{{.Values.images.dbsProxySetupWin.tag}}{{.Values.verTag}}
+        name: dbs-proxy-setup-win64
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+      
+      - image: {{.Values.images.dbsXtrabackupLinux.registry}}/{{.Values.images.dbsXtrabackupLinux.repository}}/{{.Values.images.dbsXtrabackupLinux.name}}:{{.Values.images.dbsXtrabackupLinux.tag}}{{.Values.verTag}}
+        name: dbs-xtrabackup-linux
+        command: ["/bin/sh", "-c", "cp -rf * /install_files/"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: Always
+
+      containers:
+      - image: {{.Values.images.dbsProxySetupLinux.registry}}/{{.Values.images.dbsProxySetupLinux.repository}}/{{.Values.images.dbsProxySetupLinux.name}}:{{.Values.images.dbsProxySetupLinux.tag}}{{.Values.verTag}}
+        name: show-client-files
+        command: ["/bin/sh", "-c", "sleep 360000"]
+        volumeMounts:
+        - mountPath: /install_files
+          name: installfiles
+        imagePullPolicy: IfNotPresent
+
+      volumes:
+      - name: installfiles
+        hostPath:
+          path: {{.Values.clientFilePath}}
+          type: DirectoryOrCreate
+      {{- with .Values.affinity }}
+      affinity:
+      {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}

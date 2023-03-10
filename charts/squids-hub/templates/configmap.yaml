@@ -11,6 +11,8 @@ data:
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
         driver-class-name: com.mysql.cj.jdbc.Driver
+      jackson:
+        time-zone: GMT+8
 
       redis:
         host: squids-redis-headless # Redis服务器地址
@@ -44,10 +46,9 @@ data:
       phoenixEndpoint: http://{{ .Values.phoenix.domain}}:9091/phoenix/api/v2/
       DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8999/bbm/dms/v1/
       LicenseServerModuleGatewayUrl: {{ .Values.licenseServer.url }}
+      dtsEndpoint: http://{{ .Values.dts.domain}}:31000/api/v2/
+      dbsEndpoint: http://{{ .Values.dbs.domain}}:30080/api/v1/
 
     sms:
       credential:
         keySecret: {{.Values.sms.credential.keySecret}}
-
-    notification:
-      consoleUrl: {{.Values.console.url}}

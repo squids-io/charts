@@ -1,0 +1,105 @@
+# Default values for squids-hub.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+images:
+  pullPolicy: Always
+  dbsApiServer:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-api-server
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-verify
+  dbsVerify:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-verify
+    tag: 2212.01
+  # ms sqlserver for verify use
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-mssql-2019
+  dbsMssql2019:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-mssql-2019
+    tag: 2212.01
+  # dbs agent and proxy setup
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-sqlserver-win64
+  dbsAgentSetupWin:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-agent-sqlserver-win64
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-agent-linux
+  dbsAgentSetupLinux:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-agent-linux
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy-linux
+  dbsProxySetupLinux:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-proxy-linux
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-proxy-win64
+  dbsProxySetupWin:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-proxy-win64
+    tag: 2212.01
+  # swr.cn-east-2.myhuaweicloud.com/squids/dbs-xtrabackup-linux
+  dbsXtrabackupLinux:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-xtrabackup-linux
+    tag: 2212.01
+
+app:
+  defProjId: abc
+  passwordKey: abc
+squids:
+  webApi:
+    baseUrl: https://squids.cn/api/v1/
+  appId: abc
+  appSecret: abc
+  credentialKey: abc
+  tokenKey: abc
+
+metaDb:
+  host: squids-dbmotion-mysql-primary-headless.squids.svc.cluster.local
+  name: qpc
+  user: squidsRoot9527
+  pwd: abc
+
+sqlserver:
+  user: sa
+  pwd: dbs-pwd@123
+
+apiServer:
+  # ui access dbs-api-server from node:30080
+  webPort: 30080
+  # dba-agent connect to dbs-api-server with node:30081
+  grpcPort: 30081
+
+# verTag: -dev|-test
+# empty for product env
+# e.g. --set verTag=-dev
+verTag: ""
+
+# local path of client files
+clientFilePath: /var/woqutech/dbs/install_files
+
+tolerations:
+  - effect: NoSchedule
+    key: node-role.kubernetes.io/master
+    operator: Exists
+
+affinity:
+  nodeAffinity:
+    requiredDuringSchedulingIgnoredDuringExecution:
+      nodeSelectorTerms:
+        - matchExpressions:
+            - key: "vpc.id"
+              operator: In
+              values:
+                - "0"

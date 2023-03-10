@@ -13,7 +13,7 @@ image:
   containerPort: 29527
   hub:
     name: hub
-    tag: v1.41.0
+    tag: v1.44.1
   terraformProvider:
     name: hub-terraform-provider
     tag: v1.0.0
@@ -35,10 +35,12 @@ phoenix:
   domain: phoenix.squids-monitor.svc.cluster.local
 dms:
   domain: woqu-adapter.bb-system.svc.cluster.local
+dts:
+  domain: dts.squids.svc.cluster.local
+dbs:
+  domain: dbs.dbs.svc.cluster.local
 licenseServer:
   url: https://squids.cn/api/v1/
-console:
-  url: https://console.squids.cn
 pool:
   autoInit: false
   autoExpand: true

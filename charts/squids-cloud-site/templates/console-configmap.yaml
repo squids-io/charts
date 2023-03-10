@@ -6,6 +6,7 @@ metadata:
 data:
   root.config.json: |
     {
-      "grafanaBaseurl": "{{.Values.grafana.url}}",
+      "grafanaBaseurl": "{{.Values.grafana.url.rds}}",
+      "dtsGrafanaBaseurl": "{{.Values.grafana.url.dts}}",
       "webUrl": "{{.Values.web.url}}"
     }

@@ -27,6 +27,7 @@ spec:
     - port: 9200
       protocol: TCP
       targetPort: db
+      nodePort: {{ .Values.nodePort }}
   selector:
     {{- include "elasticsearch.selectorLabels" . | nindent 4 }}
   type: NodePort
