@@ -58,6 +58,9 @@ elasticsearch:
 sms:
   credential:
     keySecret: squids123456
+dataFlashbackTask:
+  default:
+    days: 3
 
 imagePullSecrets: [ ]
 nameOverride: ""
