@@ -78,7 +78,7 @@ tolerations:
 dataDirectory: /squids-data
 processors: 5
 masterNumber: 1
-javaOpts: "-Xms2g -Xmx2g"
+javaOpts: "-Xms6g -Xmx6g"
 # 绑定的网卡的名称，有3个特殊值，_local_绑定本地地址，_site_绑定私有地址所在的网卡, _global_绑定公有地址所在的网卡
 networkHost: _site_
 
@@ -88,5 +88,5 @@ cleaner:
     pullPolicy: IfNotPresent
     name: efk-cleaner
     tag: "1.0"
-  defaultExpire: 30
+  defaultExpire: 3
   auditlogExpire: 7
