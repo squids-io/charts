@@ -4,6 +4,7 @@ kind: CustomResourceDefinition
 metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.8.0
+  creationTimestamp: null
   name: oracleclusters.oracle.woqutech.com
 spec:
   group: oracle.woqutech.com
@@ -285,14 +286,6 @@ spec:
                     type: string
                   restoreMethod:
                     type: string
-                required:
-                - clusterName
-                - clusterNamespace
-                - fullBackupSetId
-                - incrementalBackupSetId
-                - initContainerEnvs
-                - onTheFlyBackupServiceName
-                - restoreMethod
                 type: object
               serviceIP:
                 type: string

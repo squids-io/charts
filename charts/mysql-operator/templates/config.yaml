@@ -97,6 +97,8 @@ data:
         images:
           - name: database
             image: swr.cn-east-2.myhuaweicloud.com/squids/qfom:v0.0.12
+          - name: restore
+            image: swr.cn-east-2.myhuaweicloud.com/squids/qfom:v0.0.12
       - name: oracle
         version: 11.2.0.4.0
         storageClass: csi-localpv
