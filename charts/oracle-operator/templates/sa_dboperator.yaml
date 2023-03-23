@@ -1,0 +1,12 @@
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: oracle-operator
+  namespace: {{.Release.Namespace}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: dboperator
+  namespace: {{.Release.Namespace}}-user
