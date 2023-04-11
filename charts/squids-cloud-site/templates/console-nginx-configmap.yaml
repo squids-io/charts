@@ -325,7 +325,7 @@ data:
           proxy_pass http://squids-trade:29528;
         }
 
-        location ~* ^/api/(init|version|(v2/(migrate_task|license|alert|vendor_res|client_files))){
+        location ~* ^/api/(init|version|(v2/(migrate_task|license|alert|vendor_res|client_files|config_template))){
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
