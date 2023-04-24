@@ -16,6 +16,19 @@ data:
       defaultProjectId: {{.Values.app.defProjId }}
       passwordKey: {{.Values.app.passwordKey }}
       deleteBackupCron: '0 */1 * * *'
+      merge:
+        agentOfflineSeconds: 300
+        taskCron: '0 0 0 * * ? '
+        taskTypeRams:
+          MySQL: 2
+          Oracle: 4
+        maxInstance: 64
+        maxInstancePerRegion: 32
+        vendorInstanceSettings:
+          huawei:
+            vhostType: s6.large.4
+            sysDiskTypeId: 32
+            imageName: oracle19c
       squids:
         enable: true
         baseUrl: {{ .Values.squids.webApi.baseUrl }}
