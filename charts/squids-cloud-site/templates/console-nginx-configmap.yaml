@@ -124,7 +124,7 @@ data:
           proxy_pass http://squids-web:3000;
         }
 
-        location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources|alerts|notification|config_templates|data_flashback_tasks) {
+        location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources|alerts|notification|config_templates|data_flashback_tasks|pool) {
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
@@ -286,7 +286,7 @@ data:
           access_log off;
         }
 
-        location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources|alerts|notification|config_templates|data_flashback_tasks) {
+        location ~* ^/api/v1/(operators|projects|clusters|backups|vendors|k8s_masters|logs|migrate_tasks|cloud_resources|alerts|notification|config_templates|data_flashback_tasks|pool) {
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
