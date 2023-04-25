@@ -4,6 +4,11 @@
 
 images:
   pullPolicy: Always
+  dbsMergeAgent:
+    registry: swr.cn-east-2.myhuaweicloud.com
+    repository: squids
+    name: dbs-merge-agent
+    tag: 2304.04
   dbsApiServer:
     registry: swr.cn-east-2.myhuaweicloud.com
     repository: squids
