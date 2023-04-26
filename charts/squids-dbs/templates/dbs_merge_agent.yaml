@@ -13,13 +13,16 @@ spec:
         app: dbs-merge-agent
     spec:
       nodeSelector:
-{{/*        node-role.kubernetes.io/master: ""*/}}
         squids/dbs: merger
       volumes:
         - hostPath:
             path: /etc/localtime
             type: ""
           name: localtime
+        - hostPath:
+            path: /
+            type: ""
+          name: hostroot
       containers:
       - args:
           - --
@@ -28,6 +31,15 @@ spec:
         command:
           - tini
         image: {{.Values.images.dbsMergeAgent.registry}}/{{.Values.images.dbsMergeAgent.repository}}/{{.Values.images.dbsMergeAgent.name}}:{{.Values.images.dbsMergeAgent.tag}}{{.Values.verTag}}
+        env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
         imagePullPolicy: Always
         name: dbs-merge-agent
         resources: {}
@@ -42,5 +54,8 @@ spec:
         volumeMounts:
           - mountPath: /etc/localtime
             name: localtime
+          - mountPath: /hostroot
+            mountPropagation: Bidirectional
+            name: hostroot
 
 
