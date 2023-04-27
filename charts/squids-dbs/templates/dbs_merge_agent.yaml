@@ -40,6 +40,10 @@ spec:
             valueFrom:
               fieldRef:
                 fieldPath: status.hostIP
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
         imagePullPolicy: Always
         name: dbs-merge-agent
         resources: {}
