@@ -23,13 +23,12 @@ spec:
             path: /
             type: ""
           name: hostroot
+      hostPID: true
       containers:
       - args:
-          - --
-          - merge-agent
           - --server=dbs-api-server-internal:8081
         command:
-          - tini
+          - merge-agent
         image: {{.Values.images.dbsMergeAgent.registry}}/{{.Values.images.dbsMergeAgent.repository}}/{{.Values.images.dbsMergeAgent.name}}:{{.Values.images.dbsMergeAgent.tag}}{{.Values.verTag}}
         env:
           - name: MY_NODE_NAME
