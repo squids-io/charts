@@ -11,3 +11,6 @@ spec:
   resources:
     requests:
       storage: 40Gi
+  selector:
+    matchLabels:
+      master-role: "master"
