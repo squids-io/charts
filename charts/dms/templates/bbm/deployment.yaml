@@ -24,6 +24,13 @@ spec:
       imagePullSecrets:
         {{- toYaml . | nindent 8 }}
       {{- end }}
+      initContainers:
+        - name: bbm-client-file
+          image: swr.cn-east-2.myhuaweicloud.com/squids/bbm-client-file:latest
+          command: [ sh, -c, 'ls /client' ]
+          volumeMounts:
+            - name: v-bb-client
+              mountPath: /client
       containers:
         - name: bbm
           image: {{ .Values.global.registry }}/{{ .Values.global.repository}}/{{ .Values.bbm.image.name }}:{{.Values.bbm.image.tag}}
@@ -57,10 +64,8 @@ spec:
         - name: v-bbm-cm
           configMap:
             name: bbm-cm
-        - hostPath:
-            path: /squids-data/dms/client
-            type: ""
-          name: v-bb-client
+        - name: v-bb-client
+          emptyDir: { }
       {{- with .Values.affinity }}
       affinity:
       {{- toYaml . | nindent 8 }}
