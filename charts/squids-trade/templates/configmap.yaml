@@ -78,6 +78,7 @@ data:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
       HubModuleGatewayUrl: http://squids-hub:29527/api/v1/
       OperationLogGatewayUrl: http://operation-log:29533/api/v1/
+      DBSModuleGatewayUrl: http://{{ .Values.dbs.domain}}:30080/api/v1/
 
     charging-config:
       discount: 0.7
