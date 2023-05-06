@@ -23,7 +23,7 @@ metadata:
   name: dbs-verify
   namespace: {{.Release.Namespace}}
 spec:
-  replicas: 1
+  replicas: 0
   selector:
     matchLabels:
       app: dbs-verify
