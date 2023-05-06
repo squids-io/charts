@@ -26,7 +26,7 @@ data:
         maxInstancePerRegion: 32
         vendorInstanceSettings:
           huawei:
-            vhostType: s6.large.4
+            vhostTypes: c3.large.4,c3.xlarge.2,c6.large.4,c6.xlarge.2,c6s.xlarge.2,s2.large.4,s2.xlarge.2,s3.large.4,s3.xlarge.2,s6.large.4,s6.xlarge.2
             sysDiskTypeId: 32
             imageName: oracle19c
       squids:
