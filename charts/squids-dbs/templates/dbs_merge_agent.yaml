@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: dbs-merge-agent
+  namespace: {{.Release.Namespace}}
+spec:
+  selector:
+    matchLabels:
+      app: dbs-merge-agent
+  template:
+    metadata:
+      labels:
+        app: dbs-merge-agent
+    spec:
+      nodeSelector:
+        squids/dbs: merger
+      volumes:
+        - hostPath:
+            path: /etc/localtime
+            type: ""
+          name: localtime
+        - hostPath:
+            path: /
+            type: ""
+          name: hostroot
+      hostPID: true
+      containers:
+      - args:
+          - --server=dbs-api-server-internal:8081
+        command:
+          - merge-agent
+        image: {{.Values.images.dbsMergeAgent.registry}}/{{.Values.images.dbsMergeAgent.repository}}/{{.Values.images.dbsMergeAgent.name}}:{{.Values.images.dbsMergeAgent.tag}}{{.Values.verTag}}
+        env:
+          - name: MY_NODE_NAME
+            valueFrom:
+              fieldRef:
+                fieldPath: spec.nodeName
+          - name: HOST_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.hostIP
+          - name: POD_IP
+            valueFrom:
+              fieldRef:
+                fieldPath: status.podIP
+        imagePullPolicy: Always
+        name: dbs-merge-agent
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+              - SYS_ADMIN
+              - DAC_READ_SEARCH
+          privileged: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+          - mountPath: /etc/localtime
+            name: localtime
+          - mountPath: /hostroot
+            mountPropagation: Bidirectional
+            name: hostroot
+
+
