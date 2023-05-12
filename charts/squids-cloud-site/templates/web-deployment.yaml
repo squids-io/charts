@@ -35,7 +35,7 @@ spec:
             - name: localtime
               mountPath: /etc/localtime
             - name: squids-web-config
-              mountPath: /app/public/config
+              mountPath: /app/apps/web/public/config
       volumes:
         - name: timezone
           hostPath:
