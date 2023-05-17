@@ -80,6 +80,10 @@ spec:
       - args:
         - -config
         - /woqutech/conf/config.yaml
+        - -operation-log-endpoint
+        - http://operation-log.squids.svc.cluster.local:29533/api/v1/
+        - -jwt-secret
+        - squids_secret_xz98fj9r1wq
         command:
         - ./apiserver
         image: {{.Values.images.dbsApiServer.registry}}/{{.Values.images.dbsApiServer.repository}}/{{.Values.images.dbsApiServer.name}}:{{.Values.images.dbsApiServer.tag}}{{.Values.verTag}}
