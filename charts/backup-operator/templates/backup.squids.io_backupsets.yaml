@@ -148,6 +148,18 @@ spec:
                     - position
                     type: object
                 type: object
+              openGaussInfo:
+                description: OpenGaussInfo
+                properties:
+                  gsProBackupSetID:
+                    type: string
+                  instance:
+                    type: string
+                  startLSN:
+                    type: string
+                  stopLSN:
+                    type: string
+                type: object
               redisInfo:
                 description: RedisInfo
                 type: object
