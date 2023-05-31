@@ -56,3 +56,9 @@ data:
     data-flashback-task:
       default:
         days: {{.Values.dataFlashbackTask.default.days}}
+
+    credential:
+      provider:
+        aliYun:
+          keyId: {{.Values.credential.aliYun.keyId}}
+          keySecret: {{.Values.credential.aliYun.keySecret}}
