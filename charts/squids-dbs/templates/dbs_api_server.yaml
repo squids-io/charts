@@ -63,10 +63,12 @@ spec:
   ports:
   - name: http
     port: 8080
+    nodePort: 30080
     targetPort: 8080
     nodePort: {{.Values.apiServer.webPort}}
   - name: grpc
     port: 8081
+    nodePort: 30081
     targetPort: 8081
     nodePort: {{.Values.apiServer.grpcPort}}
 ---

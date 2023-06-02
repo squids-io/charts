@@ -23,6 +23,14 @@ spec:
             path: /
             type: ""
           name: hostroot
+        - hostPath:
+            path: /etc/ssl
+            type: ""
+          name: ssl
+        - hostPath:
+            path: /etc/pki
+            type: ""
+          name: pki
       hostPID: true
       containers:
       - args:
@@ -60,5 +68,10 @@ spec:
           - mountPath: /hostroot
             mountPropagation: Bidirectional
             name: hostroot
+          - mountPath: /etc/ssl
+            name: ssl
+          - mountPath: /etc/pki
+            name: pki
+
 
 
