@@ -1,0 +1,36 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: monitor-conf
+data:
+{{ (.Files.Glob "conf/alertmanager.yml").AsConfig | indent 2 }}
+{{ (.Files.Glob "conf/inhibit.yml").AsConfig | indent 2 }}
+{{ (.Files.Glob "conf/prometheus.yml").AsConfig | indent 2 }}
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: alert-tmpl
+data:
+{{ (.Files.Glob "tmpl/*.tmpl").AsConfig | indent 2 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: phoenix-conf
+data:
+{{ (.Files.Glob "conf/alerting_type.yml").AsConfig | indent 2 }}
+{{ (.Files.Glob "conf/squids_model.yml").AsConfig | indent 2 }}
+{{ (.Files.Glob "conf/target_type.yml").AsConfig | indent 2 }}
+{{ (.Files.Glob "conf/templates.yml").AsConfig | indent 2 }}
+
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: mysql-conf
+data:
+  my.cnf: |
+    [mysqld]
+    lower_case_table_names=1

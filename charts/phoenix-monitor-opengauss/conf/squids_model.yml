@@ -1,0 +1,209 @@
+# OS
+- name: os-cpu-usage
+  aliasName: os-cpu-usage
+  labels:
+    alertingTypeName: OS
+  supportedTargetTypes:
+    - OpenGauss
+  description: check database cpu usage
+  spec:
+    unitOptional: false
+    rules:
+      - name: os-cpu-usage
+        expr: (100 - (avg by (instance,target) (irate(node_cpu_seconds_total{job="node",mode="idle"}[5m])) * 100))
+        advanced:
+          last: 1
+          status: false
+        description: check database cpu usage
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 240
+        match:
+          labelName: ""
+          values: [ ]
+          prompt: ""
+          desc: ""
+          status: false
+          op: ""
+        warn:
+          errorcode: os-cpu-usage-warning
+          message: OS {{ $labels.instance }} CPU usage {{ $value | printf "%.1f" }}% is above Warning Threshold.
+          suggest: check the host cpu usage.
+          operator: '>='
+          value: 70
+          status: true
+        critical:
+          errorcode: os-cpu-usage-critical
+          message: OS {{ $labels.instance }} CPU usage {{ $value | printf "%.1f" }}% is above Critical Threshold.
+          suggest: check the host cpu usage.
+          operator: '>='
+          value: 90
+          status: true
+        severity:
+          value: ""
+          status: false
+        unit:
+          desc: "%"
+          value: percent
+
+- name: os-disk-usage
+  aliasName: os-disk-usage
+  labels:
+    alertingTypeName: OS
+  supportedTargetTypes:
+    - OpenGauss
+  description: check database storage space usage
+  spec:
+    unitOptional: false
+    rules:
+      - name: os-disk-usage
+        expr: (node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} - node_filesystem_free_bytes{device="/dev/mapper/squids--group-squids--data"}) / node_filesystem_size_bytes{device="/dev/mapper/squids--group-squids--data"} * 100
+        advanced:
+          last: 2
+          status: true
+        description: check database storage space usage
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 240
+        match:
+          labelName: ""
+          values: [ ]
+          prompt: ""
+          desc: ""
+          status: false
+          op: ""
+        warn:
+          errorcode: os-disk-usage-warning
+          message: OS {{ $labels.instance }} SSD Filesystem usage {{ $value | printf "%.1f" }}% is above warning threshold.
+          suggest: check the host SSD Filesystem usage.
+          operator: '>='
+          value: 80
+          status: true
+        critical:
+          errorcode: os-disk-usage-critical
+          message: OS {{ $labels.instance }} SSD Filesystem usage {{ $value | printf "%.1f" }}% is above critical threshold.
+          suggest: check the host SSD Filesystem usage.
+          operator: '>='
+          value: 90
+          status: true
+        severity:
+          value: ""
+          status: false
+        unit:
+          desc: "%"
+          value: percent
+
+
+# opengauss
+- name: og-db-hang
+  aliasName: og-db-hang
+  labels:
+    alertingTypeName: OpenGaussCluster
+  supportedTargetTypes:
+    - OpenGauss
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: og-db-hang
+        expr: (pg_up or (absent(pg_up)-1))
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 2
+          status: true
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 240
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: og-up-warning
+          message: OpenGauss instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: og-up-critical
+          message: OpenGauss instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""
+- name: og-replication-delay
+  aliasName: og-replication-delay
+  labels:
+    alertingTypeName: OpenGaussCluster
+  supportedTargetTypes:
+    - OpenGauss
+  description: check replication delay seconds
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: og-replication-delay
+        expr: mysql_slave_status_seconds_behind_master
+        description: check slave delay seconds
+        # 是否开启高级功能
+        advanced:
+          last: 2
+          status: true
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 240
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: my-slave-delay-warning
+          message: MySQL cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: check slave delay seconds.
+          operator: '>='
+          value: 30
+          status: true
+        critical:
+          errorcode: my-slave-delay-critical
+          message: MySQL cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
+          suggest: check slave delay seconds.
+          operator: '>='
+          value: 60
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: second
