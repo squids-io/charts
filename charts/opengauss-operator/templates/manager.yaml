@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: operator
-          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/opengauss-operator: {{include "operator.tag" .}}
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/opengauss-operator:{{include "operator.tag" .}}
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           env:
             - name: DEBUG
