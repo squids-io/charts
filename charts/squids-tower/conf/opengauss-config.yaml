@@ -140,7 +140,7 @@ data:
        type: int
        blockSize: 1
        needRestart: false
-       range: 100~2147483647
+       range: 100~7552
        description: 设置openGauss执行堆栈的最大安全深度。需要这个安全界限是因为在服务器里，并非所有程序都检查了堆栈深度，只是在可能递规的过程，比如表达式计算这样的过程里面才进行检查。
        engine: opengauss
        version: 5.0.0
