@@ -86,7 +86,7 @@ data:
       server {
         {{ if eq .Values.env "pro" }}
         listen       443 ssl;
-        server_name  squids.cn www.squids.cn;
+        server_name  {{ .Values.web.domain }} {{ .Values.web.subDomain }};
 
         ssl_certificate  /etc/nginx/cert/squids.crt;
         ssl_certificate_key /etc/nginx/cert/squids.key;
@@ -96,7 +96,7 @@ data:
         ssl_prefer_server_ciphers on;
 
         set $allow_origin "";
-        if ( $http_origin ~ '^https?://(blog.|console.|)squids.cn' ) {
+        if ( $http_origin ~ '^https?://(blog.|console.|){{ .Values.web.domain }}' ) {
                 set $allow_origin $http_origin;
         }
         {{ end }}
@@ -249,7 +249,7 @@ data:
       server {
         {{ if eq .Values.env "pro" }}
         listen       443 ssl;
-        server_name  console.squids.cn;
+        server_name  {{ .Values.console.domain }};
 
         ssl_certificate  /etc/nginx/cert/squids.crt;
         ssl_certificate_key /etc/nginx/cert/squids.key;
@@ -259,7 +259,7 @@ data:
         ssl_prefer_server_ciphers on;
 
         set $allow_origin "";
-        if ( $http_origin ~ '^https?://(blog.|console.|)squids.cn' ) {
+        if ( $http_origin ~ '^https?://(blog.|console.|){{ .Values.web.domain }}' ) {
                 set $allow_origin $http_origin;
         }
         {{ end }}
@@ -442,14 +442,14 @@ data:
     {{ if eq .Values.env "pro" }}
       server {
         listen       80;
-        server_name  squids.cn www.squids.cn;
-        rewrite ^/(.*)$ https://squids.cn$1 permanent;
+        server_name  {{ .Values.web.domain }} {{ .Values.web.subDomain }};
+        rewrite ^/(.*)$ https://{{ .Values.web.domain }}$1 permanent;
       }
 
       server {
         listen       80;
-        server_name  console.squids.cn ;
-        rewrite ^/(.*)$ https://console.squids.cn$1 permanent;
+        server_name  {{ .Values.console.domain }} ;
+        rewrite ^/(.*)$ https://{{ .Values.console.domain }}$1 permanent;
       }
     {{ end }}
     {{ if ne .Values.env "pro" }}

@@ -69,7 +69,7 @@ data:
       host: {{ .Values.mail.host }}
       password: {{ .Values.mail.password }}
       {{ if eq .Values.env "pro" }}
-      active-email-url: https://squids.cn/oauth?action=verify-email&code=
+      active-email-url: https://{{.Values.web.domain}}/oauth?action=verify-email&code=
       {{ else }}
       active-email-url: http://{{ .Values.server.host }}/oauth?action=verify-email&code=
       {{ end }}
@@ -79,8 +79,8 @@ data:
       reward_amount: 5000
       #注册地址
       {{ if eq .Values.env "pro" }}
-      register_url: https://squids.cn/login?action=join
-      cookie-domain: squids.cn
+      register_url: https://{{.Values.web.domain}}/login?action=join
+      cookie-domain: {{.Values.web.domain}}
       {{ else }}
       register_url: http://{{.Values.server.host}}/login?action=join
       cookie-domain: {{.Values.server.host}}
