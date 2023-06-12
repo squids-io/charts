@@ -17,63 +17,63 @@ spec:
         opengauss-operator.squids.io/control-plane: controller-manager
     spec:
       containers:
-      - name: operator
-        image: {{ .Values.global.registry }}/{{.Values.global.repository}}/opengauss-operator:{{include "operator.tag" .}}
-        imagePullPolicy: {{ .Values.image.pullPolicy }}
-        env:
-        - name: DEBUG
-          value: "{{ .Values.debug }}"
-        - name: IMAGE_OPENGAUSS_5_0_0
-          value: "swr.cn-east-2.myhuaweicloud.com/squids/squids-opengauss:{{ .Values.image.opengauss_5_0_0.tag }}"
-        - name: IMAGE_BACKUP
-          value: "swr.cn-east-2.myhuaweicloud.com/squids/opengauss-backup:{{ .Values.image.backup.tag }}"
-        - name: IMAGE_EXPORTER
-          value: "swr.cn-east-2.myhuaweicloud.com/squids/opengauss_exporter:{{ .Values.image.exporter.tag }}"
-        - name: IMAGE_BOOTSTRAP
-          value: "swr.cn-east-2.myhuaweicloud.com/squids/opengauss-backup:{{ .Values.image.bootstrap.tag }}"
-        securityContext:
-          allowPrivilegeEscalation: false
-          capabilities:
-            drop:
-              - "ALL"
-          readOnlyRootFilesystem: true
-          runAsNonRoot: true
-        livenessProbe:
-          httpGet:
-            path: /healthz
-            port: 8081
-          initialDelaySeconds: 15
-          periodSeconds: 20
-        readinessProbe:
-          httpGet:
-            path: /readyz
-            port: 8081
-          initialDelaySeconds: 5
-          periodSeconds: 10
+        - name: operator
+          image: {{ .Values.global.registry }}/{{.Values.global.repository}}/opengauss-operator: {{include "operator.tag" .}}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            - name: DEBUG
+              value: "{{ .Values.debug }}"
+            - name: IMAGE_OPENGAUSS_5_0_0
+              value: "swr.cn-east-2.myhuaweicloud.com/squids/squids-opengauss:{{ .Values.image.opengauss_5_0_0.tag }}"
+            - name: IMAGE_BACKUP
+              value: "swr.cn-east-2.myhuaweicloud.com/squids/opengauss-backup:{{ .Values.image.backup.tag }}"
+            - name: IMAGE_EXPORTER
+              value: "swr.cn-east-2.myhuaweicloud.com/squids/opengauss_exporter:{{ .Values.image.exporter.tag }}"
+            - name: IMAGE_BOOTSTRAP
+              value: "swr.cn-east-2.myhuaweicloud.com/squids/opengauss-backup:{{ .Values.image.bootstrap.tag }}"
+          securityContext:
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop:
+                - "ALL"
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: 8081
+            initialDelaySeconds: 15
+            periodSeconds: 20
+          readinessProbe:
+            httpGet:
+              path: /readyz
+              port: 8081
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          volumeMounts:
+            - name: localtime
+              mountPath: /etc/localtime
+            - name: logdir
+              mountPath: /var/log/operator
       serviceAccountName: opengauss-operator
       terminationGracePeriodSeconds: 10
-      volumeMounts:
+      volumes:
         - name: localtime
-          mountPath: /etc/localtime
+          hostPath:
+            path: /etc/localtime
         - name: logdir
-          mountPath: /var/log/operator
-    volumes:
-      - name: localtime
-        hostPath:
-          path: /etc/localtime
-      - name: logdir
-        hostPath:
-          path: /apps/logs/squids/operator/
-          type: DirectoryOrCreate
-    {{- with .Values.nodeSelector }}
-    nodeSelector:
-      {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.affinity }}
-    affinity:
-      {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-    tolerations:
-      {{- toYaml . | nindent 8 }}
-    {{- end }}
+          hostPath:
+            path: /apps/logs/squids/operator/
+            type: DirectoryOrCreate
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
