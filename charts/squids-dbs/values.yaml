@@ -70,10 +70,6 @@ squids:
   credentialKey: abc
   tokenKey: abc
 
-operation:
-  log:
-    endpoint: http://operation-log.squids.svc.cluster.local:29533/api/v1/
-
 metaDb:
   host: squids-dbmotion-mysql-primary-headless.squids.svc.cluster.local
   name: qpc

@@ -108,7 +108,7 @@ spec:
         - -config
         - /woqutech/conf/config.yaml
         - -operation-log-endpoint
-        - {{.Values.operation.log.endpoint}}
+        - {{.Values.squids.webApi.baseUrl}}
         - -jwt-secret
         - squids_secret_xz98fj9r1wq
         command:
