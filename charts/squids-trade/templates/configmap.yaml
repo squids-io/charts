@@ -27,7 +27,7 @@ data:
       clientId: {{ .Values.paypal.clientId }}
       clientSecret: {{ .Values.paypal.clientSecret }}
       cancelUrl: https://{{.Values.web.domain}}
-      returnUrl: http://{{.Values.web.domain}}/api/v1/tradeRechargeOrder/paySuccess
+      returnUrl: https://{{.Values.web.domain}}/api/v1/tradeRechargeOrder/paySuccess
       active: Live
     alipay-config:
       appId: {{  .Values.alipay.appId }}
