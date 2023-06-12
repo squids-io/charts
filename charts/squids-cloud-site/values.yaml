@@ -26,9 +26,12 @@ dms:
 console:
   url: https://console.squids.cn
   ip: 127.0.0.1
+  domain: console.squids.cn
 web:
   url: https://squids.cn
   ip: 127.0.0.1
+  domain: squids.cn
+  subDomain: www.squids.cn
 grafana:
   url:
     rds: https://chartlog.squids.cn:30001
