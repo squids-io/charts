@@ -1,0 +1,1501 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opengauss-cluster-config
+  namespace: squids
+data:
+  "configs": |
+    "5.0.0":
+     - uuid: 849d534e1ebd11ed9699f02f74a088c2
+       name: max_connections
+       defaultValue: 5000
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 10~262143
+       description: 允许和数据库连接的最大并发连接数。此参数会影响openGauss的并发能力
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d534e1ebd11ed969af02f74a088c2
+       name: authentication_timeout
+       defaultValue: 60
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~600
+       description: 完成客户端认证的最长时间。如果一个客户端没有在这段时间里完成与服务器端的认证，则服务器自动中断与客户端的连接，这样就避免了出问题的客户端无限制地占用连接数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d534e1ebd11ed969bf02f74a088c2
+       name: session_timeout
+       defaultValue: 600
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~86400
+       description: 表明与服务器建立链接后，不进行任何操作的最长时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d534e1ebd11ed969cf02f74a088c2
+       name: idle_in_transaction_session_timeout
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~86400
+       description: 表明与服务器建立链接后，如果当前会话处于事务中，不进行任何操作的最长时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d534e1ebd11ed969df02f74a088c2
+       name: tcp_keepalives_idle
+       defaultValue: 60
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~3600
+       description: 在支持TCP_KEEPIDLE套接字选项的系统上，设置发送活跃信号的间隔秒数。不设置发送保持活跃信号，连接就会处于闲置状态。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d534e1ebd11ed969ef02f74a088c2
+       name: tcp_keepalives_interval
+       defaultValue: 30
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~180
+       description: 在支持TCP_KEEPINTVL套接字选项的操作系统上，以秒数声明在重新传输之间等待响应的时间。(如果操作系统不支持TCP_KEEPINTVL选项，这个参数的值必须为0。将该值设置为0时，将使用系统的值。)
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d534e1ebd11ed969ff02f74a088c2
+       name: tcp_keepalives_count
+       defaultValue: 20
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~100
+       description: 在支持TCP_KEEPCNT套接字选项的操作系统上，设置openGauss服务端在断开与客户端连接之前可以等待的保持活跃信号个数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d67ae1ebd11ed969ff02f74a088c2
+       name: work_mem
+       defaultValue: 4096
+       type: int
+       blockSize: 64
+       needRestart: false
+       range: 64~2147483647
+       description: 设置内部排序操作和Hash表在开始写入临时磁盘文件之前使用的内存大小。ORDER BY、DISTINCT和merge joins都要用到排序操作。Hash表在散列连接、散列为基础的聚集、散列为基础的IN子查询处理中都要用到。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d67ae1ebd11ed96a0f02f74a088c2
+       name: maintenance_work_mem
+       defaultValue: 131072
+       type: int
+       blockSize: 1024
+       needRestart: false
+       range: 1024~2147483647
+       description: 设置在维护性操作（比如VACUUM、CREATE INDEX、ALTER TABLE ADD FOREIGN KEY等）中可使用的最大的内存。该参数的设置会影响VACUUM、VACUUM FULL、CLUSTER、CREATE INDEX的执行效率。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d67ae1ebd11ed96a2f02f74a088c2
+       name: memorypool_enable
+       defaultValue: off
+       type: string
+       needRestart: true
+       range: on|off
+       description: 设置是否允许使用内存池。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d7c031ebd11ed96a2f02f74a088c2
+       name: memorypool_size
+       defaultValue: 524288
+       type: int
+       blockSize: 1024
+       needRestart: true
+       range: 131072~1073741824
+       description: 设置内存池大小。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d7c031ebd11ed96a3f02f74a088c2
+       name: enable_memory_limit
+       defaultValue: on
+       type: string
+       needRestart: true
+       range: on|off
+       description: 启用逻辑内存管理模块。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d7c031ebd11ed96a5f02f74a088c2
+       name: temp_buffers
+       defaultValue: 8192
+       type: int
+       blockSize: 8
+       needRestart: false
+       range: 100~1073741823
+       description: 设置每个数据库会话使用的LOCAL临时缓冲区的大小。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96a6f02f74a088c2
+       name: max_stack_depth
+       defaultValue: 2048
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 100~7552
+       description: 设置openGauss执行堆栈的最大安全深度。需要这个安全界限是因为在服务器里，并非所有程序都检查了堆栈深度，只是在可能递规的过程，比如表达式计算这样的过程里面才进行检查。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96a7f02f74a088c2
+       name: temp_file_limit
+       defaultValue: -1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 限制一个会话中，触发下盘操作时，下盘文件占用的空间大小。例如一次会话中，排序和哈希表使用的临时文件，或者游标占用的临时文件。此设置为会话级别的下盘文件控制。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96a8f02f74a088c2
+       name: sql_use_spacelimit
+       defaultValue: -1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 限制单个SQL在单个数据库节点上、触发落盘操作时、落盘文件的空间大小、管控的空间包括普通表、临时表以及中间结果集落盘占用的空间，对初始用户不生效。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96a9f02f74a088c2
+       name: max_files_per_process
+       defaultValue: 1000
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 25~2147483647
+       description: 设置每个服务器进程允许同时打开的最大文件数目。如果操作系统内核强制一个合理的数目，则不需要设置。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96abf02f74a088c2
+       name: shared_preload_libraries
+       defaultValue: ''
+       type: string
+       needRestart: true
+       range: pg_stat_statements,auth_delay|pg_stat_statements|auth_delay
+       description: 此参数用于声明一个或者多个在服务器启动的时候预先装载的共享库，多个库名称之间用逗号分隔。比如 '$libdir/mylib' 会在加载标准库目录中的库文件之前预先加载mylib.so（某些平台上可能是mylib.sl）库文件。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96acf02f74a088c2
+       name: vacuum_cost_delay
+       defaultValue: 0
+       type: int
+       blockSize: 10
+       needRestart: false
+       range: 0~100
+       description: 指定开销超过vacuum_cost_limit的值时，进程睡眠的时间
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849d903f1ebd11ed96adf02f74a088c2
+       name: vacuum_cost_page_hit
+       defaultValue: 1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~10000
+       description: 清理一个在共享缓存里找到的缓冲区的预计开销。它代表锁住缓冲池、查找共享的Hash表、扫描页面内容的开销。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849da4961ebd11ed96adf02f74a088c2
+       name: vacuum_cost_page_miss
+       defaultValue: 10
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~10000
+       description: 清理一个要从磁盘上读取的缓冲区的预计开销。它代表锁住缓冲池、查找共享Hash表、从磁盘读取需要的数据块、扫描它的内容的开销。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849da4961ebd11ed96aef02f74a088c2
+       name: vacuum_cost_page_dirty
+       defaultValue: 20
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~10000
+       description: 清理修改一个原先是干净的块的预计开销。它代表把一个脏的磁盘块再次刷新到磁盘上的额外开销。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849da4961ebd11ed96b0f02f74a088c2
+       name: vacuum_cost_limit
+       defaultValue: 200
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~10000
+       description: 设置清理进程休眠的开销限制。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849da4961ebd11ed96b1f02f74a088c2
+       name: bgwriter_delay
+       defaultValue: 2000
+       type: int
+       blockSize: 10
+       needRestart: false
+       range: 10~10000
+       description: 设置后端写进程写“脏”共享缓冲区之间的时间间隔。每一次，后端写进程都会为一些脏的缓冲区发出写操作（用bgwriter_lru_maxpages参数控制每次写的量），然后休眠bgwriter_delay毫秒后才再次启动。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db85b1ebd11ed96b1f02f74a088c2
+       name: bgwriter_lru_maxpages
+       defaultValue: 100
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~1000
+       description: 设置后端写进程每次可写入磁盘的“脏”缓存区的个数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db9241ebd11ed96b1f02f74a088c2
+       name: bgwriter_lru_multiplier
+       defaultValue: 2
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~10
+       description: 通过与已使用缓存区数目的乘积评估下次服务器需要的缓存区数目。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db9241ebd11ed96b2f02f74a088c2
+       name: effective_io_concurrency
+       defaultValue: 1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~1000
+       description: 磁盘子系统可以同时有效处理的请求数。对于RAID阵列，此参数应该是阵列中驱动器主轴的数量。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db9241ebd11ed96b3f02f74a088c2
+       name: wal_level
+       defaultValue: hot_standby
+       type: string
+       needRestart: true
+       range: hot_standby
+       description: 设置写入WAL信息量的级别。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db9241ebd11ed96b4f02f74a088c2
+       name: wal_buffers
+       defaultValue: 2048
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: -1~262144
+       description: 设置用于存放WAL数据的共享内存空间的XLOG_BLCKSZ数，XLOG_BLCKSZ的大小默认为8KB。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db9241ebd11ed96b5f02f74a088c2
+       name: wal_writer_delay
+       defaultValue: 200
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~10000
+       description: WalWriter进程的写间隔时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849db9241ebd11ed96b6f02f74a088c2
+       name: commit_delay
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~100000
+       description: 表示一个已经提交的数据在WAL缓冲区中存放的时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849dcce41ebd11ed96b6f02f74a088c2
+       name: commit_siblings
+       defaultValue: 5
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~1000
+       description: 当一个事务发出提交请求时，如果数据库中正在执行的事务数量大于此参数的值，则该事务将等待一段时间（commit_delay的值），否则该事务则直接写入WAL。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849dcdc31ebd11ed96b6f02f74a088c2
+       name: synchronous_commit
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off|local|remote_write|remote_receive|remote_apply
+       description: 设置当前事务的同步方式。(on：表示主机事务提交需要等待备机将对应日志刷新到磁盘。|off：表示主机事务提交无需等待主机自身将对应日志刷新到磁盘，通常也称为异步提交。|local：表示主机事务提交需要等待主机自身将对应日志刷新到磁盘，通常也称为本地提交。|remote_write：表示主机事务提交需要等待备机将对应日志写到文件系统（无需刷新到磁盘）。|remote_receive：表示主机事务提交需要等待备机接收到对应日志数据（无需写入文件系统）。|remote_apply：表示主机事务提交需要等待备机完成对应日志的回放操作。)
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849dcdc31ebd11ed96b7f02f74a088c2
+       name: checkpoint_segments
+       defaultValue: 64
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~2147483647
+       description: 设置checkpoint_timeout周期内所保留的最少WAL日志段文件数量。每个日志文件大小为16MB。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849dcdc31ebd11ed96b8f02f74a088c2
+       name: checkpoint_timeout
+       defaultValue: 900
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 30~3600
+       description: 设置自动WAL检查点之间的最长时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849dcdc31ebd11ed96b9f02f74a088c2
+       name: checkpoint_completion_target
+       defaultValue: 0.5
+       type: float
+       blockSize: 0.1
+       needRestart: false
+       range: 0.0~1.0
+       description: 指定检查点完成的目标。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849de1891ebd11ed96b9f02f74a088c2
+       name: checkpoint_warning
+       defaultValue: 300
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 如果由于填充检查点段文件导致检查点发生的时间间隔接近这个参数表示的秒数，就向服务器日志发送一个建议增加checkpoint_segments值的消息。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849de23c1ebd11ed96b9f02f74a088c2
+       name: checkpoint_wait_timeout
+       defaultValue: 60
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 2~3600
+       description: 设置请求检查点等待checkpointer线程启动的最长时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849de23c1ebd11ed96bbf02f74a088c2
+       name: enable_incremental_checkpoint
+       defaultValue: on
+       type: string
+       needRestart: true
+       range: on|off
+       description: 增量检查点开关。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849de23c1ebd11ed96bcf02f74a088c2
+       name: incremental_checkpoint_timeout
+       defaultValue: 60
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~3600
+       description: 增量检查点开关打开之后，设置自动WAL检查点之间的最长时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849de23c1ebd11ed96bdf02f74a088c2
+       name: pagewriter_sleep
+       defaultValue: 2000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~3600000
+       description: 设置用于增量检查点打开后，pagewrite线程每隔pagewriter_sleep的时间刷一批脏页下盘。当脏页占据shared_buffers的比例达到dirty_page_percent_max时，每批页面数量以设定的max_io_capacity计算出的值刷页，其余情况每批页面数量按比例相对减少。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849df6901ebd11ed96bef02f74a088c2
+       name: enable_xlog_prune
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 设置在任一备机断联时，主机是否根据xlog日志的大小超过参数max_size_for_xlog_prune的值而回收日志。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849df6901ebd11ed96bff02f74a088c2
+       name: max_size_for_xlog_prune
+       defaultValue: 2147483647
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 在enable_xlog_prune、synchronous_commit都打开时生效，如果有备机断连且xlog日志大小大于此阈值，则回收日志。所有备机断联且无逻辑复制槽时，不回收日志。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849df6901ebd11ed96c0f02f74a088c2
+       name: default_statistics_target
+       defaultValue: 100
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -100~10000
+       description: 为没有用ALTER TABLE SET STATISTICS设置字段目标的表设置缺省统计目标。此参数设置为正数时，代表统计信息的样本数量；设置为负数时，代表使用百分比的形式设置统计目标，负数转换为对应的百分比，即-5代表5%。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849df6901ebd11ed96c1f02f74a088c2
+       name: wal_keep_segments
+       defaultValue: 16
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 2~2147483647
+       description: Xlog日志文件段数量。设置“pg_xlog”目录下保留事务日志文件的最小数目，备机通过获取主机的日志进行流复制。(设置建议：1.当服务器开启日志归档或者从检查点恢复时，保留的日志文件数量可能大于wal_keep_segments设定的值。2.如果此参数设置过小，则在备机请求事务日志时，此事务日志可能已经被产生的新事务日志覆盖，导致请求失败，主备关系断开。3.当双机为异步传输时，以COPY方式连续导入4G以上数据需要增大wal_keep_segments配置。以T6000单板为例，如果导入数据量为50G，建议调整参数为1000。您可以在导入完成并且日志同步正常后，动态恢复此参数设置。4.若 synchronous_commit 级别小于LOCAL_FLUSH，重建备机时，建议调大改参数为1000，避免重建过程中，主机日志回收导致重建失败。)
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849df6901ebd11ed96c2f02f74a088c2
+       name: wal_sender_timeout
+       defaultValue: 6000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置本端等待事务日志接收端接收日志的最大等待时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e0ae81ebd11ed96c3f02f74a088c2
+       name: enable_slot_log
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 是否开启逻辑复制槽主备同步特性。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e0ae81ebd11ed96c4f02f74a088c2
+       name: max_replication_slots
+       defaultValue: 8
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~1024
+       description: 设置主机端的日志复制slot个数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e0ae81ebd11ed96c5f02f74a088c2
+       name: max_changes_in_memory
+       defaultValue: 4096
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 1~2147483647
+       description: 逻辑解码时单条事务在内存中缓存的DML语句数量上限。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e0ae81ebd11ed96c6f02f74a088c2
+       name: max_cached_tuplebufs
+       defaultValue: 8192
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 1~2147483647
+       description: 逻辑解码时总元组信息在内存中缓存的数量上限。建议设置为max_changes_in_memory的两倍以上。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e1f2c1ebd11ed96c6f02f74a088c2
+       name: most_available_sync
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 在有同步备机故障时，主机事务不因同步备机故障而被阻塞。比如有两个同步备机，一个故障，另一个正常，这个时候主机事务只会等好的这个同步备，而不被故障的同步备所阻塞； 再比如走quorum协议时，一主三同步备，配置ANY 2(node1,node2,node3)，当node1、node3故障，node2正常时，主机业务同样不被阻塞。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e33671ebd11ed96c6f02f74a088c2
+       name: keep_sync_window
+       defaultValue: 6
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 延迟进入最大可用模式的时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e33671ebd11ed96c7f02f74a088c2
+       name: data_replicate_buffer_size
+       defaultValue: 16384
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 4096~1072693248
+       description: 发送端与接收端传递数据页时，队列占用内存的大小。此参数会影响主备之间复制的缓冲大小。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e33671ebd11ed96c9f02f74a088c2
+       name: walsender_max_send_size
+       defaultValue: 8192
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置主机端日志或数据发送缓冲区的大小。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e33671ebd11ed96caf02f74a088c2
+       name: hot_standby
+       defaultValue: on
+       type: string
+       needRestart: true
+       range: on|off
+       description: 设置是否允许备机在恢复过程中连接和查询。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e33671ebd11ed96cbf02f74a088c2
+       name: max_standby_archive_delay
+       defaultValue: 3000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 当开启双机热备模式时，如果备机正处理归档WAL日志数据，这时进行查询就会产生冲突，此参数就是设置备机取消查询之前所等待的时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e47d01ebd11ed96ccf02f74a088c2
+       name: max_standby_streaming_delay
+       defaultValue: 3000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 当开启双机热备模式时，如果备机正通过流复制接收WAL日志数据，这时进行查询就会产生冲突，这个参数就是设置备机取消查询之前所等待的时间。当参数值较大，或业务压力大时，概率出现等待事务回放落盘的报错。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e47d01ebd11ed96cef02f74a088c2
+       name: wal_receiver_status_interval
+       defaultValue: 5000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置WAL日志接收进程的状态通知给主机的最大时间间隔。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e47d01ebd11ed96cff02f74a088c2
+       name: hot_standby_feedback
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 设置是否允许将备机上执行查询的结果反馈给主机，这可以避免查询冲突。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e47d01ebd11ed96d0f02f74a088c2
+       name: wal_receiver_timeout
+       defaultValue: 6000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置从主机接收数据的最大等待时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e47d01ebd11ed96d1f02f74a088c2
+       name: wal_receiver_connect_timeout
+       defaultValue: 2
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483
+       description: 设置连接主机的最大等待超时时间。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e47d01ebd11ed96d3f02f74a088c2
+       name: wal_receiver_connect_retries
+       defaultValue: 1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~2147483647
+       description: 设置连接主机的最大尝试次数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e5d8a1ebd11ed96d3f02f74a088c2
+       name: max_logical_replication_workers
+       defaultValue: 4
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 0~262143
+       description: 订阅端apply worker线程的最大数量。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e5d8a1ebd11ed96d4f02f74a088c2
+       name: max_sync_workers_per_subscription
+       defaultValue: 2
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~262143
+       description: 订阅端每个订阅的tablesync worker线程的最大数量。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e5d8a1ebd11ed96d6f02f74a088c2
+       name: enable_bitmapscan
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对位图扫描规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e723e1ebd11ed96d6f02f74a088c2
+       name: enable_hashagg
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对Hash聚集规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e723e1ebd11ed96d7f02f74a088c2
+       name: enable_hashjoin
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对Hash连接规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e86b21ebd11ed96daf02f74a088c2
+       name: enable_indexscan
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对索引扫描规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e86b21ebd11ed96dbf02f74a088c2
+       name: enable_indexonlyscan
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对仅索引扫描规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e86b21ebd11ed96dcf02f74a088c2
+       name: enable_material
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对实体化的使用。消除整个实体化是不可能的，但是可以关闭这个变量以防止优化器插入实体节点。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e86b21ebd11ed96ddf02f74a088c2
+       name: enable_mergejoin
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对融合连接规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e86b21ebd11ed96def02f74a088c2
+       name: enable_nestloop
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对内表全表扫描嵌套循环连接规划类型的使用。完全消除嵌套循环连接是不可能的，但是关闭这个变量就会让优化器在存在其他方法的时候优先选择其他方法。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96def02f74a088c2
+       name: enable_seqscan
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对顺序扫描规划类型的使用。完全消除顺序扫描是不可能的，但是关闭这个变量会让优化器在存在其他方法的时候优先选择其他方法。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c2
+       name: enable_sort
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器使用的排序步骤。完全消除明确的排序是不可能的，但是关闭这个变量可以让优化器在存在其他方法的时候优先选择其他方法。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c3
+       name: enable_tidscan
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对TID扫描规划类型的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c4
+       name: enable_kill_query
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: CASCADE模式删除用户时，会删除此用户拥有的所有对象。此参数标识是否允许在删除用户的时候，取消锁定此用户所属对象的query。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c5
+       name: effective_cache_size
+       defaultValue: 131072
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置优化器在一次单一的查询中可用的磁盘缓冲区的有效大小。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c6
+       name: geqo
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制基因查询优化的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c7
+       name: geqo_threshold
+       defaultValue: 12
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 2~2147483647
+       description: 如果执行语句的数量超过设计的FROM的项数，则会使用基因查询优化来执行查询。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c8
+       name: geqo_effort
+       defaultValue: 5
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~10
+       description: 控制GEQO在规划时间和规划质量之间的平衡。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088c9
+       name: geqo_pool_size
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 控制GEQO使用池的大小，也就是基因全体中的个体数量。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d0
+       name: geqo_generations
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 控制GEQO使用的算法的迭代次数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d1
+       name: geqo_selection_bias
+       defaultValue: 2
+       type: int
+       blockSize: 0.1
+       needRestart: false
+       range: 1.5~2.0
+       description: 控制GEQO的选择性偏好，即就是一个种群中的选择性压力。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d2
+       name: geqo_seed
+       defaultValue: 0
+       type: int
+       blockSize: 0.1
+       needRestart: false
+       range: 0.0~1.0
+       description: 控制GEQO使用的随机数生产器的初始化值，用来从顺序连接在一起的查询空间中查找随机路径。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d3
+       name: constraint_exclusion
+       defaultValue: partition
+       type: string
+       needRestart: false
+       range: on|off|partition
+       description: 控制查询优化器使用表约束查询的优化。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d4
+       name: cursor_tuple_fraction
+       defaultValue: 0.1
+       type: int
+       blockSize: 0.1
+       needRestart: false
+       range: 0.0~1.0
+       description: 优化器估计游标获取行数在总行数中的占比。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d5
+       name: from_collapse_limit
+       defaultValue: 8
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 根据生成的FROM列表的项数来判断优化器是否将把子查询合并到上层查询，如果FROM列表项个数小于等于该参数值，优化器会将子查询合并到上层查询。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d6
+       name: join_collapse_limit
+       defaultValue: 8
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 根据得出的列表项数来判断优化器是否执行把除FULL JOINS之外的JOIN构造重写到FROM列表中。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d7
+       name: plan_mode_seed
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 该参数为调测参数，目前仅支持OPTIMIZE_PLAN和RANDOM_PLAN两种。其中： OPTIMIZE_PLAN表示通过动态规划算法进行代价估算的最优plan，参数值设置为0；RANDOM_PLAN表示随机生成的plan；如果设置guc参数值为-1，表示用户不指定随机数的种子标识符seed值，由优化器随机生成[1, 2147483647]范围整型值的随机数，并根据随机数生成随机的执行计划。 如果设置guc参数值为[1, 2147483647]范围的整型值，表示指定的生成随机数的种子标识符seed，优化器需要根据seed值生成随机的执行计划。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d8
+       name: check_implicit_conversions
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制是否对查询中有隐式类型转换的索引列是否会生成候选索引路径进行检查。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088d9
+       name: enable_expr_fusion
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制SRF、表达式展平、取消集中式Seq Scan投影、共享聚合函数的转移状态和Step步数优化特性的开关。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e0
+       name: enable_functional_dependency
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: ANALYZE生成的多列统计信息是否包含函数依赖统计信息，是否应用函数依赖统计信息计算选择率。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e1
+       name: enable_indexscan_optimization
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制是否对astore存储引擎下的btree索引扫描 (IndexScan和IndexOnlyScan) 进行优化。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e2
+       name: enable_inner_unique_opt
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器对Inner Unique优化的使用。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e3
+       name: log_min_duration_statement
+       defaultValue: 1000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 当某条语句的持续时间大于或者等于特定的毫秒数时，log_min_duration_statement参数用于控制记录每条完成语句的持续时间。设置log_min_duration_statement可以很方便地跟踪需要优化的查询语句。对于使用扩展查询协议的客户端，语法分析、绑定、执行每一步所花时间被独立记录。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e4
+       name: debug_print_parse
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 用于控制打印解析树结果。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e5
+       name: debug_print_rewritten
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 用于控制打印查询重写结果。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e6
+       name: debug_print_plan
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 用于设置是否将查询的执行计划打印到日志中。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e7
+       name: debug_pretty_print
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 设置此选项对debug_print_parse、debug_print_rewritten和debug_print_plan产生的日志进行缩进，会生成易读但比设置为off时更长的输出格式。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e8
+       name: log_checkpoints
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制在服务器日志中记录检查点和重启点的信息。打开此参数时，服务器日志消息包含涉及检查点和重启点的统计量，其中包含需要写的缓存区的数量及写入所花费的时间等。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088e9
+       name: log_connections
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制记录客户端的连接请求信息。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f0
+       name: log_disconnections
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制记录客户端结束连接信息。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f1
+       name: log_error_verbosity
+       defaultValue: default
+       type: string
+       needRestart: false
+       range: terse|verbose|default
+       description: 控制服务器日志中每条记录的消息写入的详细度。(1、terse代表输出不包括DETAIL、HINT、QUERY及CONTEXT错误信息的记录。2、verbose代表输出包括SQLSTATE错误代码、源代码文件名、函数名及产生错误所在的行号。3、default代表输出包括DETAIL、HINT、QUERY及CONTEXT错误信息的记录，不包括SQLSTATE错误代码 、源代码文件名、函数名及产生错误所在的行号。)
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f2
+       name: log_temp_files
+       defaultValue: -1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 控制记录临时文件的删除信息。临时文件可以用来排序、哈希及临时查询结果。当一个临时文件被删除时，将会产生一条日志消息。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f3
+       name: log_timezone
+       defaultValue: PRC
+       type: string
+       needRestart: false
+       range: PRC
+       description: 设置服务器写日志文件时使用的时区。与TimeZone不同，这个值是数据库范围的，针对所有连接到本数据库的会话生效。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f4
+       name: track_activities
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制收集每个会话中当前正在执行命令的统计数据。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f5
+       name: track_counts
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制收集数据库活动的统计数据。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f6
+       name: track_io_timing
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制收集数据库I/O调用时序的统计数据。I/O时序统计数据可以在pg_stat_database中查询。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f7
+       name: track_functions
+       defaultValue: none
+       type: string
+       needRestart: false
+       range: pl|all|none
+       description: 控制收集函数的调用次数和调用耗时的统计数据。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f8
+       name: track_activity_query_size
+       defaultValue: 1024
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 100～102400
+       description: 设置用于跟踪每一个活动会话的当前正在执行命令的字节数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088f9
+       name: track_thread_wait_status_interval
+       defaultValue: 30
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~1440
+       description: 用来定期收集thread状态信息的时间间隔。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g0
+       name: track_sql_count
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制对每个会话中当前正在执行的SELECT、INSERT、UPDATE、DELETE、MERGE INTO语句进行计数的统计数据。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g1
+       name: log_parser_stats
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器输出parser模块的性能日志。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g2
+       name: log_planner_stats
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器输出planner模块的性能日志。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g3
+       name: log_executor_stats
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器输出executor模块的性能日志。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g4
+       name: log_statement_stats
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制优化器输出该语句的性能日志。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g5
+       name: autovacuum
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制数据库自动清理线程（autovacuum）的启动。自动清理线程运行的前提是将track_counts设置为on。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g6
+       name: log_autovacuum_min_duration
+       defaultValue: -1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~2147483647
+       description: 当自动清理的执行时间大于或者等于某个特定的值时，向服务器日志中记录本次自动清理执行的概要信息。设置此选项有助于追踪自动清理的行为。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g7
+       name: autovacuum_max_workers
+       defaultValue: 3
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 0~262143
+       description: 设置能同时运行的自动清理线程的最大数量，该参数的取值上限与GUC参数max_connections和job_queue_processes大小有关。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g8
+       name: autovacuum_naptime
+       defaultValue: 60
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~2147483
+       description: 设置两次自动清理操作的时间间隔。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088g9
+       name: autovacuum_vacuum_threshold
+       defaultValue: 50
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置触发VACUUM的阈值。当表上被删除或更新的记录数超过设定的阈值时才会对这个表执行VACUUM操作。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h0
+       name: autovacuum_analyze_threshold
+       defaultValue: 50
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 设置触发ANALYZE操作的阈值。当表上被删除、插入或更新的记录数超过设定的阈值时才会对这个表执行ANALYZE操作。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h1
+       name: autovacuum_vacuum_scale_factor
+       defaultValue: 0.2
+       type: int
+       blockSize: 0.1
+       needRestart: false
+       range: 0.0~100.0
+       description: 设置触发一个VACUUM时增加到autovacuum_vacuum_threshold的表大小的缩放系数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h2
+       name: autovacuum_analyze_scale_factor
+       defaultValue: 0.1
+       type: int
+       blockSize: 0.1
+       needRestart: false
+       range: 0.0~100.0
+       description: 设置触发一个ANALYZE时增加到autovacuum_analyze_threshold的表大小的缩放系数。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h3
+       name: autovacuum_freeze_max_age
+       defaultValue: 4000000000
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 100000～576460752303423487
+       description: 设置事务内的最大时间，使得表的pg_class.relfrozenxid字段在VACUUM操作执行之前被写入。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h4
+       name: autovacuum_vacuum_cost_delay
+       defaultValue: 20
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~100
+       description: 设置在自动VACUUM操作里使用的开销延迟数值。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h5
+       name: autovacuum_vacuum_cost_limit
+       defaultValue: -1
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -1~10000
+       description: 设置在自动VACUUM操作里使用的开销限制数值。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h6
+       name: client_min_messages
+       defaultValue: notice
+       type: string
+       needRestart: false
+       range: debug|debug5|debug4|debug3|debug2|debug1|info|log|notice|warning|error|fatal|panic
+       description: 控制发送到客户端的消息级别。每个级别都包含排在它后面的所有级别中的信息。级别越低，发送给客户端的消息就越少。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h7
+       name: check_function_bodies
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 设置是否在CREATE FUNCTION执行过程中进行函数体字符串的合法性验证。为了避免产生问题（比如避免从转储中恢复函数定义时向前引用的问题），偶尔会禁用验证。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h8
+       name: default_transaction_isolation
+       defaultValue: read committed
+       type: string
+       needRestart: false
+       range: read committed|repeatable read
+       description: 设置默认的事务隔离级别。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088h9
+       name: default_transaction_deferrable
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制每个新事务的默认延迟状态。只读事务或者那些比序列化更加低的隔离级别的事务除外。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i0
+       name: session_replication_role
+       defaultValue: origin
+       type: string
+       needRestart: false
+       range: origin|replica|local
+       description: 控制当前会话与复制相关的触发器和规则的行为。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i1
+       name: statement_timeout
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 当语句执行时间超过该参数设置的时间（从服务器收到命令时开始计时）时，该语句将会报错并退出执行。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i2
+       name: vacuum_freeze_min_age
+       defaultValue: 50000000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~576460752303423487
+       description: 指定VACUUM在扫描一个表时用于判断是否用FrozenXID替换事务ID的中断寿命（在同一个事务中）。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i3
+       name: vacuum_freeze_table_age
+       defaultValue: 4000000000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~576460752303423487
+       description: 指定VACUUM对全表的扫描冻结元组的时间。如果表的pg_class.relfrozenxid字段的值已经达到了参数指定的时间，VACUUM对全表进行扫描。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i4
+       name: bytea_output
+       defaultValue: hex
+       type: string
+       needRestart: false
+       range: hex|escape
+       description: 设置bytea类型值的输出格式。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i5
+       name: xmlbinary
+       defaultValue: base64
+       type: string
+       needRestart: false
+       range: hex|base64
+       description: 设置二进制值是如何在XML中进行编码的。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i6
+       name: xmloption
+       defaultValue: content
+       type: string
+       needRestart: false
+       range: document|content
+       description: 当XML和字符串值之间进行转换时，设置document或content是否是隐含的。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i7
+       name: max_compile_functions
+       defaultValue: 1000
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 1~2147483647
+       description: 设置服务器存储的函数编译结果的最大数量。存储过多的函数和存储过程的编译结果可能占用很大内存。将此参数设置为一个合理的值，有助于减少内存占用，提升系统性能。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i8
+       name: gin_pending_list_limit
+       defaultValue: 4096
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 64~2147483647
+       description: 设置当GIN索引启用fastupdate时，pending list容量的最大值。当pending list的容量大于设置值时，会把pending list中数据批量移动到GIN索引数据结构中以进行清理。单个GIN索引可通过更改索引存储参数覆盖此设置值。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088i9
+       name: timezone
+       defaultValue: PRC
+       type: string
+       needRestart: false
+       range: PRC|GMT|Asia/Shanghai
+       description: 设置显示和解释时间类型数值时使用的时区。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j0
+       name: extra_float_digits
+       defaultValue: 0
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: -15~3
+       description: 这个参数为浮点数值调整显示的数据位数，浮点类型包括float4、float8 以及几何数据类型。参数值加在标准的数据位数上（FLT_DIG或DBL_DIG中合适的）。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j1
+       name: deadlock_timeout
+       defaultValue: 1000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~2147483647
+       description: 设置死锁超时检测时间，以毫秒为单位。当申请的锁超过设定值时，系统会检查是否产生了死锁。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j2
+       name: lockwait_timeout
+       defaultValue: 1200000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 1~2147483647
+       description: 控制单个锁的最长等待时间。当申请的锁等待时间超过设定值时，系统会报错。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j3
+       name: max_locks_per_transaction
+       defaultValue: 256
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 10~2147483647
+       description: 控制每个事务能够得到的平均的对象锁的数量。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j4
+       name: max_pred_locks_per_transaction
+       defaultValue: 64
+       type: int
+       blockSize: 1
+       needRestart: true
+       range: 10~2147483647
+       description: 控制每个事务允许断定锁的最大数量，是一个平均值。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j5
+       name: array_nulls
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制数组输入解析器是否将未用引用的NULL识别为数组的一个NULL元素。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j6
+       name: backslash_quote
+       defaultValue: safe_encoding
+       type: string
+       needRestart: false
+       range: on|off|safe_encoding
+       description: 控制字符串文本中的单引号是否能够用\'表示。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j7
+       name: default_with_oids
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 在没有声明WITH OIDS和WITHOUT OIDS的情况下，这个选项控制在新创建的表中CREATE TABLE和CREATE TABLE AS是否包含一个OID字段。它还决定SELECT INTO创建的表里面是否包含OID 。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j8
+       name: escape_string_warning
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 警告在普通字符串中直接使用反斜杠转义。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088j9
+       name: quote_all_identifiers
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 当数据库生成SQL时，此选项强制引用所有的标识符（包括非关键字）。这将影响到EXPLAIN的输出及函数的结果，例如pg_get_viewdef。详细说明请参见gs_dump的–quote-all-identifiers选项。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088k0
+       name: standard_conforming_strings
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制普通字符串文本（'…'）中是否按照SQL标准把反斜扛当普通文本。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088k1
+       name: synchronize_seqscans
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 控制启动同步的顺序扫描。在大约相同的时间内并行扫描读取相同的数据块，共享I/O负载。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088k2
+       name: exit_on_error
+       defaultValue: off
+       type: string
+       needRestart: false
+       range: on|off
+       description: 打开该开关，ERROR级别报错会升级为PANIC报错，从而可以产生core堆栈。主要用于问题定位和业务测试。
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088k3
+       name: enable_codegen
+       defaultValue: on
+       type: string
+       needRestart: false
+       range: on|off
+       description: 标识是否允许开启代码生成优化，目前代码生成使用的是LLVM优化。(目前LLVM优化仅支持向量化执行引擎特性，在其他场景下建议关闭此参数。)
+       engine: opengauss
+       version: 5.0.0
+     - uuid: 849e9b031ebd11ed96dff02f74a088k4
+       name: codegen_cost_threshold
+       defaultValue: 10000
+       type: int
+       blockSize: 1
+       needRestart: false
+       range: 0~2147483647
+       description: 由于LLVM编译生成最终的可执行机器码需要一定时间，因此只有当实际执行的代价大于编译生成机器码所需要的代码和优化后的执行代价之和时，利用代码生成才有收益。codegen_cost_threshold标识代价的阈值，当执行估算代价大于该代价时，使用LLVM优化。
+       engine: opengauss
+       version: 5.0.0
