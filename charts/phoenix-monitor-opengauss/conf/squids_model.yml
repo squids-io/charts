@@ -4,7 +4,7 @@
   labels:
     alertingTypeName: OS
   supportedTargetTypes:
-    - OpenGauss
+    - openGauss
   description: check database cpu usage
   spec:
     unitOptional: false
@@ -52,7 +52,7 @@
   labels:
     alertingTypeName: OS
   supportedTargetTypes:
-    - OpenGauss
+    - openGauss
   description: check database storage space usage
   spec:
     unitOptional: false
@@ -102,7 +102,7 @@
   labels:
     alertingTypeName: OpenGaussCluster
   supportedTargetTypes:
-    - OpenGauss
+    - openGauss
   description: check if the database is available
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
@@ -157,14 +157,14 @@
   labels:
     alertingTypeName: OpenGaussCluster
   supportedTargetTypes:
-    - OpenGauss
+    - openGauss
   description: check replication delay seconds
   spec:
     # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
     unitOptional: false
     rules:
       - name: og-replication-delay
-        expr: mysql_slave_status_seconds_behind_master
+        expr: OpenGauss_slave_status_seconds_behind_master
         description: check slave delay seconds
         # 是否开启高级功能
         advanced:
@@ -187,15 +187,15 @@
           status: false
           op: '!~'
         warn:
-          errorcode: my-slave-delay-warning
-          message: MySQL cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          errorcode: og-slave-delay-warning
+          message: OpenGauss cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
           suggest: check slave delay seconds.
           operator: '>='
           value: 30
           status: true
         critical:
-          errorcode: my-slave-delay-critical
-          message: MySQL cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
+          errorcode: og-slave-delay-critical
+          message: OpenGauss cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
           suggest: check slave delay seconds.
           operator: '>='
           value: 60
