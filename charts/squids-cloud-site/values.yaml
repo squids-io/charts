@@ -41,6 +41,12 @@ dbmotion:
 dbs:
   enable: true
   url: http://dbs-api-server.dbs.svc.cluster.local:8080
+operationLog:
+  host: operation-log.squids
+license:
+  host: squids-license-server.squids
+launcher:
+  host: squids-launcher.squids
 
 enableLauncher: true
 enableLicenseServer: true
