@@ -7,7 +7,7 @@ data:
   application-prod.yaml: |
     spring:
       datasource:
-        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/backup?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://{{ .Values.mysql.host }}:{{ .Values.mysql.port }}/backup?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
         driver-class-name: com.mysql.cj.jdbc.Driver
@@ -15,9 +15,9 @@ data:
         time-zone: GMT+8
 
       redis:
-        host: squids-redis-headless # Redis服务器地址
+        host: {{ .Values.redis.host }} # Redis服务器地址
         database: 0 # Redis数据库索引（默认为0）
-        port: 6379 # Redis服务器连接端口
+        port: {{ .Values.redis.port }} # Redis服务器连接端口
         password: # Redis服务器连接密码（默认为空）
         timeout: 300ms # 连接超时时间（毫秒）
     api:
@@ -30,4 +30,4 @@ data:
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
       HubModuleGatewayUrl: http://squids-hub:29527/api/v1/
-      OperationLogGatewayUrl: http://operation-log:29533/api/v1/
+      OperationLogGatewayUrl: http://{{ .Values.operationLog.host }}:29533/api/v1/

@@ -24,15 +24,22 @@ service:
 # env: pro private
 env: pro
 mysql:
+  host: squids-web-mysql-primary-headless.squids
+  port: 3306
   username: squidsRoot9527
   password:
 
+redis:
+  host: squids-redis-headless.squids
+  port: 6379
 apiserver:
   port: 8443
 tower:
   port: 8888
 dbpool:
   port: 9999
+operationLog:
+  host: operation-log.squids
 
 imagePullSecrets: [ ]
 nameOverride: ""

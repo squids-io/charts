@@ -10,15 +10,15 @@ data:
 
     spring:
       datasource:
-        url: jdbc:mysql://squids-web-mysql-primary-headless:3306/tradedb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+        url: jdbc:mysql://{{ .Values.mysql.host }}:{{ .Values.mysql.port }}/tradedb?useUnicode=true&allowMultiQueries=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
         username: {{ .Values.mysql.username }}
         password: {{ .Values.mysql.password }}
       jackson:
         time-zone: GMT+8
       redis:
-        host: squids-redis-headless # Redis服务器地址
+        host: {{ .Values.redis.host }} # Redis服务器地址
         database: 0 # Redis数据库索引（默认为0）
-        port: 6379 # Redis服务器连接端口
+        port: {{ .Values.redis.port }} # Redis服务器连接端口
         password: # Redis服务器连接密码（默认为空）
         timeout: 300ms # 连接超时时间（毫秒）
 
@@ -77,7 +77,7 @@ data:
     moduleService:
       UserModuleGatewayUrl: http://squids-user:29529/api/v1/
       HubModuleGatewayUrl: http://squids-hub:29527/api/v1/
-      OperationLogGatewayUrl: http://operation-log:29533/api/v1/
+      OperationLogGatewayUrl: http://{{ .Values.operationLog.host }}:29533/api/v1/
       DBSModuleGatewayUrl: http://{{ .Values.dbs.domain}}:30080/api/v1/
 
     charging-config:
