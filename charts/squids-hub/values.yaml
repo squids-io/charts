@@ -29,6 +29,8 @@ env: pro
 server:
   host: localhost
 mysql:
+  host: squids-web-mysql-primary-headless.squids
+  port: 3306
   username: squidsRoot9527
   password: squids123456
 phoenix:
@@ -46,6 +48,9 @@ pool:
   autoExpand: true
   chargeType: demand
 
+redis:
+  host: squids-redis-headless.squids
+  port: 6379
 apiserver:
   port: 8443
 tower:
@@ -55,6 +60,8 @@ dbpool:
 elasticsearch:
   host: http://elasticsearch-logging.squids-logging.svc.cluster.local
   port: 9200
+operationLog:
+  host: operation-log.squids
 sms:
   credential:
     keySecret: squids123456

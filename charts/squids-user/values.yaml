@@ -22,8 +22,15 @@ env: pro
 server:
   host: localhost
 mysql:
+  host: squids-web-mysql-primary-headless.squids
+  port: 3306
   username: squids
   password: squids123456
+redis:
+  host: squids-redis-headless.squids
+  port: 6379
+operationLog:
+  host: operation-log.squids
 oauth2:
   github:
     id: abc
