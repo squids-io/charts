@@ -58,6 +58,10 @@ images:
     repository: squids
     name: dbs-xtrabackup-linux
     tag: 2212.01
+  oracle19cRestorer:
+    tag: v0.0.2
+  oracle19cDatabase:
+    tag: v0.0.13
 
 app:
   defProjId: abc
@@ -84,6 +88,7 @@ apiServer:
   # ui access dbs-api-server from node:30080
   webPort: 30080
   # dba-agent connect to dbs-api-server with node:30081
+  grpcHost: server.squids.cn
   grpcPort: 30081
 
 # verTag: -dev|-test

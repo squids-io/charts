@@ -32,9 +32,10 @@ spec:
             type: ""
           name: pki
       hostPID: true
+      dnsPolicy: Default
       containers:
       - args:
-          - --server=dbs-api-server-internal:8081
+          - --server={{.Values.apiServer.grpcHost}}:{{.Values.apiServer.grpcPort}}
         command:
           - merge-agent
         image: {{.Values.images.dbsMergeAgent.registry}}/{{.Values.images.dbsMergeAgent.repository}}/{{.Values.images.dbsMergeAgent.name}}:{{.Values.images.dbsMergeAgent.tag}}{{.Values.verTag}}
