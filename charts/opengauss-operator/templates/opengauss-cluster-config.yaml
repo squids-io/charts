@@ -278,7 +278,7 @@ data:
        defaultValue: hot_standby
        type: string
        needRestart: true
-       range: hot_standby
+       range: hot_standby|logical
        description: 设置写入WAL信息量的级别。
        engine: opengauss
        version: 5.0.0
