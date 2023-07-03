@@ -23,10 +23,19 @@ spec:
             path: /
             type: ""
           name: hostroot
+        - hostPath:
+            path: /etc/ssl
+            type: ""
+          name: ssl
+        - hostPath:
+            path: /etc/pki
+            type: ""
+          name: pki
       hostPID: true
+      dnsPolicy: Default
       containers:
       - args:
-          - --server=dbs-api-server-internal:8081
+          - --server={{.Values.apiServer.grpcHost}}:{{.Values.apiServer.grpcPort}}
         command:
           - merge-agent
         image: {{.Values.images.dbsMergeAgent.registry}}/{{.Values.images.dbsMergeAgent.repository}}/{{.Values.images.dbsMergeAgent.name}}:{{.Values.images.dbsMergeAgent.tag}}{{.Values.verTag}}
@@ -60,5 +69,10 @@ spec:
           - mountPath: /hostroot
             mountPropagation: Bidirectional
             name: hostroot
+          - mountPath: /etc/ssl
+            name: ssl
+          - mountPath: /etc/pki
+            name: pki
+
 
 
