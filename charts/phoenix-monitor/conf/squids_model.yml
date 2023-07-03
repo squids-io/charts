@@ -12,6 +12,7 @@
     - ClickHouse
     - ElasticSearch
     - MariaDB
+    - openGauss
   description: check database cpu usage
   spec:
     unitOptional: false
@@ -66,6 +67,7 @@
     - ClickHouse
     - ElasticSearch
     - MariaDB
+    - openGauss
   description: check database storage space usage
   spec:
     unitOptional: false
@@ -1072,3 +1074,115 @@
         unit:
           desc: ""
           value: ""
+
+# opengauss
+- name: og-db-hang
+  aliasName: og-db-hang
+  labels:
+    alertingTypeName: OpenGaussCluster
+  supportedTargetTypes:
+    - openGauss
+  description: check if the database is available
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: og-db-hang
+        expr: (pg_up or (absent(pg_up)-1))
+        description: check if the database is available
+        # 是否开启高级功能
+        advanced:
+          last: 2
+          status: true
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 240
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: ""
+        warn:
+          errorcode: og-up-warning
+          message: OpenGauss instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        critical:
+          errorcode: og-up-critical
+          message: OpenGauss instance {{ $labels.instance }} has been down.
+          suggest: Check the availability of the database.
+          operator: '!='
+          value: 1
+          status: false
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: true
+        unit:
+          desc: ""
+          value: ""
+- name: og-replication-delay
+  aliasName: og-replication-delay
+  labels:
+    alertingTypeName: OpenGaussCluster
+  supportedTargetTypes:
+    - openGauss
+  description: check replication delay seconds
+  spec:
+    # 原本是用来切换 百分比|MB|GB 这样的多个告警项的，现已全部平铺，字段弃用
+    unitOptional: false
+    rules:
+      - name: og-replication-delay
+        expr: OpenGauss_slave_status_seconds_behind_master
+        description: check slave delay seconds
+        # 是否开启高级功能
+        advanced:
+          last: 2
+          status: true
+        time:
+          status: true
+          groupInterval: 5
+          repeatInterval: 240
+        # 过滤规则
+        match:
+          # 需要过滤的指标标签，2个的组合使用英文逗号隔开
+          labelName: ""
+          # 默认过滤值
+          values: [ ]
+          # 过滤提示
+          prompt: ""
+          desc: ""
+          # 是否启用过滤功能
+          status: false
+          op: '!~'
+        warn:
+          errorcode: og-slave-delay-warning
+          message: OpenGauss cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above warning threshold.
+          suggest: check slave delay seconds.
+          operator: '>='
+          value: 30
+          status: true
+        critical:
+          errorcode: og-slave-delay-critical
+          message: OpenGauss cluster {{ $labels.alertingTargetName }} delay seconds {{ $value }} is above critical threshold.
+          suggest: check slave delay seconds.
+          operator: '>='
+          value: 60
+          status: true
+        # 状态为true则只开起value中的告警级别，且他是一个状态型告警，否则可以分别配置两个级别的告警阈值
+        severity:
+          value: critical
+          status: false
+        unit:
+          desc: ""
+          value: second

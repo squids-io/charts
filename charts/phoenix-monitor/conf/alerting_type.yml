@@ -30,6 +30,11 @@
   supportedTargetTypes:
     - ElasticSearch
 
+- name: OpenGaussCluster
+  aliasName: OpenGaussCluster
+  supportedTargetTypes:
+    - openGauss
+
 - name: OS
   aliasName: OS
   supportedTargetTypes:
@@ -40,4 +45,5 @@
     - ClickHouse
     - ElasticSearch
     - MariaDB
+    - openGauss
 

@@ -76,3 +76,13 @@
     - name: my-slave-delay
     - name: os-cpu-usage
     - name: os-disk-usage
+
+- name: OpenGaussCluster
+  type: openGauss
+  groupIntervalMinute: 5
+  repeatIntervalMinute: 240
+  metrics:
+    - name: og-db-hang
+    - name: og-replication-delay
+    - name: os-cpu-usage
+    - name: os-disk-usage
