@@ -63,6 +63,8 @@ data:
         sign-type: RSA2
         sign: '{{ .Values.sec.alipay.sign }}'
         app-auth-token: '{{ .Values.sec.alipay.app.token }}'
+        app-private-key: '{{ .Values.sec.alipay.sign }}'
+        alipay-public-key: '{{ .Values.sec.alipay.app.token }}'
 
     user.account.url: https://{{.Values.web.domain}}/account/setup
     user.login.url: https://{{.Values.web.domain}}/login
