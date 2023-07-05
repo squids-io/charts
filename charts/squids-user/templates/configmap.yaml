@@ -64,6 +64,9 @@ data:
         sign: '{{ .Values.sec.alipay.sign }}'
         app-auth-token: '{{ .Values.sec.alipay.app.token }}'
 
+    user.account.url: https://{{.Values.web.domain}}/account/setup
+    user.login.url: https://{{.Values.web.domain}}/login
+
     mail-squids:
       mailbox: {{ .Values.mail.mailbox }}
       host: {{ .Values.mail.host }}
