@@ -66,7 +66,7 @@ data:
         app-private-key: '{{ .Values.sec.alipay.sign }}'
         alipay-public-key: '{{ .Values.sec.alipay.app.token }}'
 
-    user.account.url: https://{{.Values.web.domain}}/account/setup
+    user.account.url: https://{{.Values.web.domain}}/account/profile
     user.login.url: https://{{.Values.web.domain}}/login
 
     mail-squids:
