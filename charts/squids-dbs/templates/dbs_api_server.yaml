@@ -38,7 +38,7 @@ data:
           restoreImages:
             '19.3.0.0.0-ee': swr.cn-east-2.myhuaweicloud.com/squids/sq-restorer:{{.Values.images.oracle19cRestorer.tag}}{{.Values.verTag}}
           databaseImages:
-            '19.3.0.0.0-ee': swr.cn-east-2.myhuaweicloud.com/squids/qfom:{{.Values.images.oracle19cDatabase.tag}}{{.Values.verTag}}
+            '19.3.0.0.0-ee': swr.cn-east-2.myhuaweicloud.com/squids/qfom-docker:{{.Values.images.oracle19cDatabase.tag}}{{.Values.verTag}}
         mysql:
           availableRegions:
             huawei: all
