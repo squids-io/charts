@@ -3,9 +3,9 @@ entries:
   apiserver:
   - apiVersion: v2
     appVersion: v1.0.10
-    created: "2023-07-14T12:23:18.846789904Z"
+    created: "2023-07-17T03:13:42.225829634Z"
     description: A Helm chart for Kubernetes
-    digest: cf1494845203e4e65c3616a9668f472fecd8357d017d359ccf035b4d90b52118
+    digest: dc604cb1a2b99aad86cfff4e9873fe626826a9b7b2297f67c84e253ddeb096ac
     name: apiserver
     type: application
     urls:
@@ -14,9 +14,9 @@ entries:
   backup-exporter:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.847316107Z"
+    created: "2023-07-17T03:13:42.226209144Z"
     description: backup exporter
-    digest: 72f0b1e87c776d2d123f75530dbc7ba17c27b375520b83253e0ec52f01cdd37f
+    digest: fa6a94bab4d60ea349f7b7ef9aabc56062089a481dc50dcaf7510e7b47287af4
     name: backup-exporter
     type: application
     urls:
@@ -25,9 +25,9 @@ entries:
   backup-operator:
   - apiVersion: v2
     appVersion: v1.0.8
-    created: "2023-07-14T12:23:18.848208813Z"
+    created: "2023-07-17T03:13:42.226890362Z"
     description: A Backup Operator Helm chart for Kubernetes
-    digest: 281efd414897ebc124542f3340f2f3ffa335a3c13b5d5bb2c38c9678f35e095c
+    digest: 887ba753d05b93d9bbb44a4a48b5cc26b84e778a857590b444dc9cb9dd035990
     name: backup-operator
     type: application
     urls:
@@ -106,9 +106,9 @@ entries:
             leaves the cluster and which source addresses to use for that traffic.
     apiVersion: v2
     appVersion: 1.10.8
-    created: "2023-07-14T12:23:18.849272719Z"
+    created: "2023-07-17T03:13:42.228064692Z"
     description: eBPF-based Networking, Security, and Observability
-    digest: 73bdb2fb2590c6fe77b95bfa923b10919b49fe725a432066c8178a7f096c0dc1
+    digest: b19c1b3029363f41b245c4116d2d3d3b1aa24aad59ec1a22365b0e198915d15e
     home: https://cilium.io/
     icon: https://cdn.jsdelivr.net/gh/cilium/cilium@master/Documentation/images/logo-solo.svg
     keywords:
@@ -129,9 +129,9 @@ entries:
   clickhouse-exporter:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.849692722Z"
+    created: "2023-07-17T03:13:42.228515504Z"
     description: A Helm chart for Kubernetes
-    digest: 9ebc61fd1033e9cdbce300ebe08cab5e7a56c79522cbf6c1260990a386bde98f
+    digest: decb8aa1a83e4ac78349cbec9d5f34a491ad6c4ebdbdca10876dd75b4b1d36e0
     name: clickhouse-exporter
     type: application
     urls:
@@ -140,9 +140,9 @@ entries:
   clickhouse-operator:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.85112963Z"
+    created: "2023-07-17T03:13:42.229853938Z"
     description: A Helm chart for Kubernetes
-    digest: 0fc81118751b520f7ddd7427ef86cf8a53c7978d199d666af25c410281b6c28d
+    digest: 6ce1429ff40b4336ab6c8d38b8c48cb17e9a5ac87cde78808e58f9ee0ed5825d
     name: clickhouse-operator
     type: application
     urls:
@@ -151,9 +151,9 @@ entries:
   common:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.851677134Z"
+    created: "2023-07-17T03:13:42.230077044Z"
     description: A Common Helm chart for Kubernetes
-    digest: f8769bfe55294e257b0f5c117afaa1b4ebf316ac4551002e9b7f482f2f0c79e5
+    digest: 7aec14bdc8a558d45ca711840063e8b3b629a5569f1466775e6bbde7947a5ab8
     name: common
     type: application
     urls:
@@ -162,9 +162,9 @@ entries:
   dms:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.85276904Z"
+    created: "2023-07-17T03:13:42.231048269Z"
     description: A Helm chart for Kubernetes
-    digest: c21424de5b78dd24c07f7bc0f2f5b4785b7849d7bd84e95dce8aaa8c10eb4330
+    digest: 3912d07d1566819b48da756d3be5e546741bfbefc288422052409b5a02414de0
     name: dms
     type: application
     urls:
@@ -173,9 +173,9 @@ entries:
   elastic-operator:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.854981354Z"
+    created: "2023-07-17T03:13:42.233616836Z"
     description: A Helm chart for Kubernetes
-    digest: 8eda88757f2528ca94f83cf34e16d6fa8d4d83347bc0294c22c3eccd0e1ddbbc
+    digest: a75e9096f4abf09a29033d552fa58c9bac3c7650a689456409155e59debf3b34
     name: elastic-operator
     type: application
     urls:
@@ -184,9 +184,9 @@ entries:
   elasticsearch:
   - apiVersion: v2
     appVersion: 6.8.7
-    created: "2023-07-14T12:23:18.855642158Z"
+    created: "2023-07-17T03:13:42.234520959Z"
     description: A Helm chart for Kubernetes
-    digest: e9055f5fcf0da31d65343c0bb6fb2c49c7380d9991489c5a510dde844467fd93
+    digest: cc41172fab0682951b602f9989c608e227f6dee1de04bfbf96fb664522a85e59
     name: elasticsearch
     type: application
     urls:
@@ -195,9 +195,9 @@ entries:
   fluentbit:
   - apiVersion: v2
     appVersion: 1.6.11
-    created: "2023-07-14T12:23:18.856212461Z"
+    created: "2023-07-17T03:13:42.241976953Z"
     description: A Helm chart for Kubernetes
-    digest: 745a28f4ad7d9ee33e8755b3bd170cb4688b1fe59a45e1a3322e2554cda6db99
+    digest: 07bac1670fb0d795e3aaa84432dddaca52dbafb2905b324f3fe9f771971f6919
     name: fluentbit
     type: application
     urls:
@@ -206,9 +206,9 @@ entries:
   grafana:
   - apiVersion: v2
     appVersion: 8.1.3
-    created: "2023-07-14T12:23:18.861329793Z"
+    created: "2023-07-17T03:13:42.246765777Z"
     description: grafana chart
-    digest: 7dc7a88e94925ca2a74beeda5ee3b976ebec8cd9eee894304ab9866a06311c1a
+    digest: 1a7d5983724b20a7740707be10cb00894c7b87bed2d6d41efe342510f55c8839
     name: grafana
     type: application
     urls:
@@ -217,9 +217,9 @@ entries:
   kafka-operator:
   - apiVersion: v2
     appVersion: 0.28.0
-    created: "2023-07-14T12:23:18.866207322Z"
+    created: "2023-07-17T03:13:42.250998786Z"
     description: Kafka Operator Helm chart for Kubernetes
-    digest: afe8ab2f29ef71028a4e505168aa8748d0f0b7f62582cf68795e88908be4f59b
+    digest: 15583568621f720c247ea8a479a2a02831273654ce412ff1980aa7ffeaafcbd3
     name: kafka-operator
     type: application
     urls:
@@ -228,9 +228,9 @@ entries:
   kibana:
   - apiVersion: v2
     appVersion: 6.4.1
-    created: "2023-07-14T12:23:18.867316829Z"
+    created: "2023-07-17T03:13:42.251478799Z"
     description: A Helm chart for Kubernetes
-    digest: ce87d7132879c3313e543524f7e4e139a6727a4f658145668efa998e7df23f48
+    digest: 72a460c1514b50616e97a757be4f219920f1e47d7a96ac4dbae818a52ce8e55c
     name: kibana
     type: application
     urls:
@@ -239,9 +239,9 @@ entries:
   local-path-storage:
   - apiVersion: v2
     appVersion: v0.0.20
-    created: "2023-07-14T12:23:18.867749032Z"
+    created: "2023-07-17T03:13:42.251865009Z"
     description: A local-path-storage Helm chart for Kubernetes
-    digest: 2115d3ad45c697ed74c3edd2cb26d9afaab802bcbc0fe56ef0577b2b947b4490
+    digest: da0fbd6d25d617e8d059029df13782493d91939858b44356daeac25cf2ad4575
     name: local-path-storage
     type: application
     urls:
@@ -250,9 +250,9 @@ entries:
   middleware-operator:
   - apiVersion: v2
     appVersion: v0.0.1
-    created: "2023-07-14T12:23:18.868414536Z"
+    created: "2023-07-17T03:13:42.252607728Z"
     description: A Operator Helm chart for db middleware
-    digest: ef727f5e0932689f641ccb7c080767bf5332538aa83a2ac2fd2da6a9ac08ddac
+    digest: f725d03b1abde2306895032f3cfd1941ae808132e7da913d93f1b6d82f7b0460
     name: middleware-operator
     type: application
     urls:
@@ -261,9 +261,9 @@ entries:
   mongo-operator:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.869424442Z"
+    created: "2023-07-17T03:13:42.254353173Z"
     description: A MongoDB Database Operator Helm chart for Kubernete
-    digest: 5a11cbce87430cc6b485d7d4145b3a2bd9b38f6203873bcd528fc4475aee2820
+    digest: 984f26c0be003514f0ef21585489bc2b4711068b03e77667b3223e867c589b56
     name: mongo-operator
     type: application
     urls:
@@ -272,9 +272,9 @@ entries:
   mssql-operator:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.871931057Z"
+    created: "2023-07-17T03:13:42.255077792Z"
     description: A Helm chart for Kubernetes
-    digest: 6ad4ac7987029f3593187655d7dbe6ea262ef2c9fbd25b6dd185c7b7aa6ecaeb
+    digest: 88a1dd1e696722d5e1252cb1a2065f908cbfa72d9bcb0ea3174899ddccdb6fbe
     name: mssql-operator
     type: application
     urls:
@@ -283,9 +283,9 @@ entries:
   mysql-exporter:
   - apiVersion: v2
     appVersion: v0.0.1
-    created: "2023-07-14T12:23:18.87229746Z"
+    created: "2023-07-17T03:13:42.255422501Z"
     description: mysql exporter
-    digest: bd00df366ae241ec1f207fbd104d2164e68fab4dae0158560f7babccb9018de4
+    digest: afa54aa566596922b3206adc00e65254cb339b47984d20ae4a92db6b24b327b6
     name: mysql-exporter
     type: application
     urls:
@@ -294,9 +294,9 @@ entries:
   mysql-operator:
   - apiVersion: v2
     appVersion: v1.0.16
-    created: "2023-07-14T12:23:18.87564678Z"
+    created: "2023-07-17T03:13:42.258610884Z"
     description: A MySQL Database Operator Helm chart for Kubernetes
-    digest: 91a4471caa517cab48ea7b687d78cc8c2199338247dc8c9427808cb20b7f0213
+    digest: 4b7e223ef48861158eaacf77eef54a1ec0a74b5fda2bade9b1a50598aa267f12
     name: mysql-operator
     type: application
     urls:
@@ -305,9 +305,9 @@ entries:
   node-exporter:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.875953482Z"
+    created: "2023-07-17T03:13:42.258914691Z"
     description: node exporter
-    digest: b64493059bce4da124e50de274e63e5185561e6aab5bc9cc3e0c7226840ca0b7
+    digest: bba5efc259ff2dd3786c8628a742317979ad0a1213bc75d71ace5b5f23a5e34a
     name: node-exporter
     type: application
     urls:
@@ -316,9 +316,9 @@ entries:
   opengauss-operator:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.878214696Z"
+    created: "2023-07-17T03:13:42.26233688Z"
     description: An OpenGauss Database Operator Helm chart for Kubernetes
-    digest: 721cbb477953153f5c47deeffa5c63a1d3196f7498376b69d1974c147350337a
+    digest: 29384a5ff558950ce5f3e5d4acdbbdf3c0fed18152d051d11d8241e67ec18a7a
     name: opengauss-operator
     type: application
     urls:
@@ -327,9 +327,9 @@ entries:
   operation-log:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.8790095Z"
+    created: "2023-07-17T03:13:42.262871994Z"
     description: A Helm chart for Kubernetes
-    digest: 3f596d0fc59066a5c3d4e3163837170e919d6e50d56268b4f4fde28fdba02bf7
+    digest: 5bab53a31c6cbac5e5bef00d85bf8aaca173d44fafb3399f49f82f557ba58f68
     name: operation-log
     type: application
     urls:
@@ -338,9 +338,9 @@ entries:
   oracle-operator:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.880714611Z"
+    created: "2023-07-17T03:13:42.264018524Z"
     description: A Helm chart for Kubernetes
-    digest: cd2e6eb4489727059a606ff94de29e48c7dd13b78e506f96a163312ff37d9312
+    digest: d0eb70ee7ec9c353e68b7ad63b9ffb57b60b7bfa36bacbcdc82a5454928398ad
     name: oracle-operator
     type: application
     urls:
@@ -349,9 +349,9 @@ entries:
   phoenix-monitor:
   - apiVersion: v2
     appVersion: v1.4.1
-    created: "2023-07-14T12:23:18.882423921Z"
+    created: "2023-07-17T03:13:42.26541026Z"
     description: A high avaliable monitoring architecture
-    digest: c5b4a9f0aeabb2eab48d3084c0115734768cb4d3c0259f10ee6ec19d3bec5163
+    digest: 4883a92a8bfde92d8308ef77a1abf0f6df61bfc2b15d0767e7a827736f733f48
     name: phoenix-monitor
     type: application
     urls:
@@ -360,9 +360,9 @@ entries:
   phoenix-monitor-opengauss:
   - apiVersion: v2
     appVersion: v1.4.1
-    created: "2023-07-14T12:23:18.883752329Z"
+    created: "2023-07-17T03:13:42.266656692Z"
     description: A high avaliable monitoring architecture
-    digest: f0e803c65e8474c7898a43b4d25e308520f3c09461cbef9bc1fb51aa133a745c
+    digest: 02ef2d290e0ef75f957fac6d282558e7f417fefa98e835dab0cf5cfca707aa74
     name: phoenix-monitor-opengauss
     type: application
     urls:
@@ -371,9 +371,9 @@ entries:
   redis-operator:
   - apiVersion: v2
     appVersion: v1.0.2
-    created: "2023-07-14T12:23:18.887506852Z"
+    created: "2023-07-17T03:13:42.271070106Z"
     description: A Redis Operator Helm chart for Kubernetes
-    digest: 968108a32c05c7883396841f395d3bb08524b98174b0ebc1c19a11f73fbf67aa
+    digest: 98a8ca61ddeb3e1bb67f43bc18eddfdadd866e656d77605729a462c6b4013571
     name: redis-operator
     type: application
     urls:
@@ -382,9 +382,9 @@ entries:
   squids-backup:
   - apiVersion: v2
     appVersion: v1.48.0
-    created: "2023-07-14T12:23:18.88872336Z"
+    created: "2023-07-17T03:13:42.27198553Z"
     description: A Helm chart for Kubernetes
-    digest: ce7282c0381bbf8d6d17c2799e8cc2a65bcdbfb0d25cf597f2caea2f69803241
+    digest: dccb05c640d07eee75f8693b2a91314569f30e34e9c1c3fe51074b26af7a5134
     name: squids-backup
     type: application
     urls:
@@ -393,9 +393,9 @@ entries:
   squids-cloud-site:
   - apiVersion: v2
     appVersion: 1.34.0
-    created: "2023-07-14T12:23:18.889954167Z"
+    created: "2023-07-17T03:13:42.272816452Z"
     description: A squids-cloud-site Helm chart for Kubernetes
-    digest: 8a6a074d41e89ab80a754a9d76181dda60a07afc2f7cccb0eb1b22ed4d130a7f
+    digest: ca76ae05cc64a25817183f753b36e805b9c730f87008e3d9e0ea19c49dfc1a0e
     name: squids-cloud-site
     type: application
     urls:
@@ -404,9 +404,9 @@ entries:
   squids-dbmotion-monitor:
   - apiVersion: v2
     appVersion: v1.0.0
-    created: "2023-07-14T12:23:18.891581777Z"
+    created: "2023-07-17T03:13:42.273947181Z"
     description: A high avaliable monitoring architecture
-    digest: 56b7e9e36598081b274c464ca4a32af790afba753b9307c0429dbf6722e9a907
+    digest: cf47893d888da6e766ca28b92b19e7a0dbec9f1bd2ab1b63e617837c1dd4c351
     name: squids-dbmotion-monitor
     type: application
     urls:
@@ -415,9 +415,9 @@ entries:
   squids-dbmotion-mysql:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.891848579Z"
+    created: "2023-07-17T03:13:42.274202288Z"
     description: A Helm chart for Kubernetes
-    digest: 32a69c8a20d2ca06133bbf2812e6d605cbc294d94cbbbc52d9ab9ee1497645aa
+    digest: 4330835e88c123335e73a66de8fa5e841a1d8ee76c84be772b1a1fdb1e88ca61
     name: squids-dbmotion-mysql
     type: application
     urls:
@@ -426,9 +426,9 @@ entries:
   squids-dbmotion-saas-server:
   - apiVersion: v2
     appVersion: "2302.01"
-    created: "2023-07-14T12:23:18.892680184Z"
+    created: "2023-07-17T03:13:42.274927806Z"
     description: A squids-hub Helm chart for Kubernetes
-    digest: d2d9b77fd3cb53c2c3723c932c416c2f7a8e73da1f779c5ec425b8087ad527e0
+    digest: 81a24019ae5136e9fd0ffd1da09d21499dddbb6d2027d27d20a97445904a0874
     name: squids-dbmotion-saas-server
     type: application
     urls:
@@ -437,9 +437,9 @@ entries:
   squids-dbpool:
   - apiVersion: v2
     appVersion: v1.0.15
-    created: "2023-07-14T12:23:18.893087586Z"
+    created: "2023-07-17T03:13:42.275300316Z"
     description: A Helm chart for Kubernetes
-    digest: 1c635c8fbb21f5d5d6593338bd8512290ee8e0a92e7e2d85e011894f416ee645
+    digest: e7ff57c81b4c961d528fe86c17bcdff1c5c22627b9254acfba6eed34de8475bb
     name: squids-dbpool
     type: application
     urls:
@@ -448,9 +448,9 @@ entries:
   squids-dbs:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.893786891Z"
+    created: "2023-07-17T03:13:42.276049836Z"
     description: A squids-hub Helm chart for Kubernetes
-    digest: 928f05d68fd15e9c7355f3ec670899947db9ae7197b936cfcc7084b153f7f881
+    digest: 58576ced060e40a6a59d5d11e363ea6cc65df6895a6a4c59959243c5fdd40a23
     name: squids-dbs
     type: application
     urls:
@@ -459,9 +459,9 @@ entries:
   squids-dbs-mysql:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.894020092Z"
+    created: "2023-07-17T03:13:42.276279441Z"
     description: A Helm chart for Kubernetes
-    digest: adf663f72b3a2d95d57d03abbcc7b689d71ffbe3a147bb47d3db05355fd87b2b
+    digest: 3b56c394cdc61dc4aeecc2ab8298db75ed5fcee7a94d49fa97e40212d8efd6f0
     name: squids-dbs-mysql
     type: application
     urls:
@@ -470,9 +470,9 @@ entries:
   squids-hub:
   - apiVersion: v2
     appVersion: v1.50.0
-    created: "2023-07-14T12:23:18.894745796Z"
+    created: "2023-07-17T03:13:42.277025161Z"
     description: A squids-hub Helm chart for Kubernetes
-    digest: 07ea9305f6d889090427159e461e291970d04ec68131679f5251c931e9ca9f3b
+    digest: 7f27744d2f11c3abc2aebf85979e46f87592de7c3703714590b60d3c0014c230
     name: squids-hub
     type: application
     urls:
@@ -481,9 +481,9 @@ entries:
   squids-launcher:
   - apiVersion: v2
     appVersion: v1.44.0
-    created: "2023-07-14T12:23:18.8952634Z"
+    created: "2023-07-17T03:13:42.277565975Z"
     description: A squids-hub Helm chart for Kubernetes
-    digest: 22b7abf9df01be1c17ff38aa7cacd6769e2f05ae73fb3bc8168ba41baa72f70a
+    digest: 56d60e67306f6025718002506f71ed6c7521dedbf1f5c3c7fbce29f1c46c82f4
     name: squids-launcher
     type: application
     urls:
@@ -492,9 +492,9 @@ entries:
   squids-license-server:
   - apiVersion: v2
     appVersion: v1.40.0
-    created: "2023-07-14T12:23:18.895933404Z"
+    created: "2023-07-17T03:13:42.278095389Z"
     description: A Helm chart for Kubernetes
-    digest: c28e42b32ac273e21af99f7b07519e079a02821644cd03777906f8c46bee6110
+    digest: 724c53b3097d420455dba031b6be7bf05b463ce5799cb183dbc30262a562979c
     name: squids-license-server
     type: application
     urls:
@@ -503,9 +503,9 @@ entries:
   squids-redis:
   - apiVersion: v2
     appVersion: 6.0.16
-    created: "2023-07-14T12:23:18.896761909Z"
+    created: "2023-07-17T03:13:42.278832608Z"
     description: A Helm chart for Kubernetes
-    digest: f93c16dd3107f395ae5f9bfd459384055ef8bb6b1754f4713e41ac3e2b340e87
+    digest: eb8d990cafab5d139f204b53572982c0ab8a753de203c73de8c818590715619e
     name: squids-redis
     type: application
     urls:
@@ -514,9 +514,9 @@ entries:
   squids-tower:
   - apiVersion: v2
     appVersion: v1.0.16
-    created: "2023-07-14T12:23:18.897175411Z"
+    created: "2023-07-17T03:13:42.279203417Z"
     description: A Helm chart for Kubernetes
-    digest: afdf7aa18f650754f97dd2b9b862a062ec0843c481e3a69a7a142cd4bd64f46b
+    digest: ea86837d63201a2fe74682558754545178f37f237d4c222f6cb3f6c72bb285f8
     name: squids-tower
     type: application
     urls:
@@ -525,9 +525,9 @@ entries:
   squids-trade:
   - apiVersion: v2
     appVersion: v1.47.0
-    created: "2023-07-14T12:23:18.897954116Z"
+    created: "2023-07-17T03:13:42.279831634Z"
     description: A Helm chart for Kubernetes
-    digest: 17967350b8e298f3d744517a646d41d5bef15e3a1c166414ae5277b23fa0f597
+    digest: 4b2ced7b81b59fd7b83d0077866442d077057cac34ac2b3121f777c2150b2cf3
     name: squids-trade
     type: application
     urls:
@@ -536,9 +536,9 @@ entries:
   squids-user:
   - apiVersion: v2
     appVersion: v1.40.0
-    created: "2023-07-14T12:23:18.898724621Z"
+    created: "2023-07-17T03:13:42.280590353Z"
     description: A Helm chart for Kubernetes
-    digest: d53f4436e0e0c3d191b59aa65fd656fee7a73b7fba50e482df56b0c4493909ea
+    digest: db2acf95627e39b4a89e36aaed78becb16c2046618fda637a803128ee167b368
     name: squids-user
     type: application
     urls:
@@ -547,9 +547,9 @@ entries:
   squids-web-mysql:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.899098423Z"
+    created: "2023-07-17T03:13:42.28084016Z"
     description: A Helm chart for Kubernetes
-    digest: 417b831038452266e1ef6bfd632bf700cb3dbd3217891d53b5234f08a82a4ac2
+    digest: 89821c027e138784af0238f5c873de39dbfaf8eb544f64c1536d761b17ecee01
     name: squids-web-mysql
     type: application
     urls:
@@ -558,9 +558,9 @@ entries:
   volume-exporter:
   - apiVersion: v2
     appVersion: 1.0.0
-    created: "2023-07-14T12:23:18.899371525Z"
+    created: "2023-07-17T03:13:42.281102266Z"
     description: volume exporter
-    digest: 0e5fdb32ddcba33a795f51f3e15dbbdc19efa1a9fc7628abbe6ad42d51c7ab3d
+    digest: 4a7ce76dd71bf95f485bfba519223131f857700ba08f89841719d64cc54eeae3
     name: volume-exporter
     type: application
     urls:
@@ -569,12 +569,12 @@ entries:
   web-monitor:
   - apiVersion: v2
     appVersion: 2.19.2
-    created: "2023-07-14T12:23:18.90194294Z"
+    created: "2023-07-17T03:13:42.284025942Z"
     description: A high avaliable monitoring architecture
-    digest: 97a82568efdba2c84a427e307f2b2e3663af2085acf0ec828558c64ed06ae972
+    digest: b1fa03f8543959c145452cf0b261b0f6b63908f401d5006c9d5f9f5511d0741a
     name: web-monitor
     type: application
     urls:
     - https://squids-io.github.io/charts/web-monitor-0.1.2.tgz
     version: 0.1.2
-generated: "2023-07-14T12:23:18.840054663Z"
+generated: "2023-07-17T03:13:42.225151316Z"
