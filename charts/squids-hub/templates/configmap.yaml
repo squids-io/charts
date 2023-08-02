@@ -62,3 +62,6 @@ data:
         aliYun:
           keyId: {{.Values.credential.aliYun.keyId}}
           keySecret: {{.Values.credential.aliYun.keySecret}}
+
+    scheduling:
+      enabled: {{.Values.scheduling.enabled}}
