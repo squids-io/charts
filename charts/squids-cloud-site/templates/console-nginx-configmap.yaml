@@ -204,7 +204,7 @@ data:
           proxy_pass http://{{.Values.license.host}}:29532;
         }
         {{ end }}
-        location ~* ^/api/motion/(init|version|(v2/(migrate_tasks|license))) {
+        location ~* ^/api/motion/v2/(migrate_tasks|license) {
           auth_basic off;
           add_header Access-Control-Allow-Origin '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
@@ -352,7 +352,7 @@ data:
           proxy_pass http://{{.Values.operationLog.host}}:29533;
         }
 
-        location ~* ^/api/motion/(init|version|(v2/(migrate_tasks|license|alert|vendor_res|client_files|config_template|check_tasks))){
+        location ~* ^/api/motion/v2/(init|version|migrate_tasks|license|alert|vendor_res|client_files|config_template|check_tasks){
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
