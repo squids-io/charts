@@ -66,6 +66,20 @@ data:
       database: {{.Values.metaDb.name}}
       debug: {{if .Values.verTag}}true{{else}}false{{end}}
       migrateScriptDir: migrations
+    alert:
+      parallelism: 4
+      runMode: prod
+      sender:
+        email:
+          host: smtpdm.aliyun.com
+          port: 465
+          username: notification@alert.squids.cn
+          password: ki13allDBA
+        sms:
+          accessKeyId: LTAI5tCVGY9msiYkoUVkWFo9
+          accessKeySecret: cKOpWB7ynVl2HtQk00Yk2INYelNg9P
+          signName: Squids
+          templateCode: SMS_462555887
 ---
 # define service for apiserver
 apiVersion: v1
