@@ -73,13 +73,13 @@ data:
         email:
           host: smtpdm.aliyun.com
           port: 465
-          username: notification@dev.squids.cn
-          password: squids123456
+          username: {{.Values.alert.euser}}
+          password: {{.Values.alert.epwd | quote}}
         sms:
-          accessKeyId: squids123456
-          accessKeySecret: squids123456
-          signName: squids123456
-          templateCode: squids123456
+          accessKeyId: {{.Values.alert.sak}}
+          accessKeySecret: {{.Values.alert.ssk}}
+          signName: {{.Values.alert.ssign}}
+          templateCode: {{.Values.alert.stemp}}
 ---
 # define service for apiserver
 apiVersion: v1
