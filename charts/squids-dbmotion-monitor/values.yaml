@@ -28,9 +28,9 @@ phoenix:
   args:
     endpoint:
       receiver: https://squids.cn/api/v1/alerts/phoenix/receivers
-      target: http://squids-dts-api-server.squids.svc.cluster.local:3000/api/v2/alert/phoenix/targets
+      target: http://squids-dts-api-server.squids.svc.cluster.local:3000/api/v2/motion/alert/phoenix/targets
     alert:
-      hook: http://squids-dts-api-server.squids.svc.cluster.local:3000/api/v2/alert/notice
+      hook: http://squids-dts-api-server.squids.svc.cluster.local:3000/api/motion/v2/alert/notice
 
 database:
   image:

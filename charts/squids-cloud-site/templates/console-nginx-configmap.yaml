@@ -352,7 +352,7 @@ data:
           proxy_pass http://{{.Values.operationLog.host}}:29533;
         }
 
-        location ~* ^/api/motion/v2/(init|version|migrate_tasks|license|alert|vendor_res|client_files|config_template|check_tasks){
+        location ~* ^/api/motion/v2/(init|version|migrate_tasks|license|alert|vendor_res|client_files|config_template|check_tasks|tasks){
           auth_basic off;
           add_header Access-Control-Allow-Origin  '$allow_origin';
           add_header Access-Control-Allow-Credentials 'true';
