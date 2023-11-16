@@ -46,7 +46,7 @@ data:
       phoenixEndpoint: http://{{ .Values.phoenix.domain}}:9091/phoenix/api/v2/
       DmsModuleGatewayUrl: http://{{ .Values.dms.domain}}:8999/bbm/dms/v1/
       LicenseServerModuleGatewayUrl: {{ .Values.licenseServer.url }}
-      dtsEndpoint: http://{{ .Values.dts.domain}}:31000/api/v2/
+      dtsEndpoint: http://{{ .Values.dts.domain}}:31000/api/motion/v2/
       dbsEndpoint: http://{{ .Values.dbs.domain}}:30080/api/v1/
 
     sms:
